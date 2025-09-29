@@ -3,7 +3,7 @@
 
     <hr style="border-top: 2px solid #1e3a8a; margin-bottom: 20px;">
 
-    <a href="<?= site_url('dokter_pengirim/add') ?>" class="btn btn-primary mb-3">Tambah Dokter</a>
+    <a href="<?= site_url('dokter_pengirim/add') ?>" class="btn btn-primary mb-3">Tambah Data Dokter</a>
 
     <?php if ($this->session->flashdata('success')): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
