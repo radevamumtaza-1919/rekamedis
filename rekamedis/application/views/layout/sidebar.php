@@ -53,14 +53,14 @@
 
         <li class="nav-item">
           <a href="<?= site_url('form_permintaan') ?>" class="nav-link <?= $this->uri->segment(1) == 'form_permintaan' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-credit-card"></i>
-            <p>Form Pendaftaran</p>
+            <i class="nav-icon fas fa-clinic-medical text-success"></i>
+            <p>Form Pendaftaran Klinik</p>
           </a>
         </li>
 
         <li class="nav-item">
           <a href="<?= site_url('dokter_pengirim') ?>" class="nav-link <?= $this->uri->segment(1) == 'dokter_pengirim' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-user-md"></i>
+            <i class="nav-icon fas fa-user-md text-success"></i>
             <p>Data Dokter Pengirim</p>
           </a>
         </li>
@@ -68,7 +68,7 @@
                 <?php if($this->session->userdata('role') == 'admin' || $this->session->userdata('role') == 'petugas'): ?>
         <li class="nav-item">
             <a href="<?= site_url('pasien') ?>" class="nav-link <?= $this->uri->segment(1) == 'pasien' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-users"></i>
+                <i class="nav-icon fas fa-users text-success"></i>
                 <span>Data Pasien</span>
                 </a>
             </li>
@@ -77,21 +77,21 @@
 
                 <li class="nav-item">
           <a href="<?= site_url('ambil_sampel') ?>" class="nav-link <?= $this->uri->segment(1) == 'ambil_sampel' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-vial"></i>
+            <i class="nav-icon fas fa-vial text-success"></i>
             <p>Data Ambil Sampel</p>
           </a>
         </li>
 
         <li class="nav-item">
           <a href="<?= site_url('pembayaran') ?>" class="nav-link <?= $this->uri->segment(1) == 'pembayaran' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-credit-card"></i>
+            <i class="nav-icon fas fa-credit-card text-success"></i>
             <p>Pembayaran</p>
           </a>
         </li>
 
         <li class="nav-item">
           <a href="<?= site_url('rekam_medis') ?>" class="nav-link <?= $this->uri->segment(1) == 'rekam_medis' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-file-medical"></i>
+            <i class="nav-icon fas fa-file-medical text-success"></i>
             <p>Rekam Medis</p>
           </a>
         </li>
@@ -99,7 +99,7 @@
          
         <li class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['laporan_keuangan','laporan_pemeriksaan']) ? 'menu-open' : '' ?>">
     <a href="#" class="nav-link <?= in_array($this->uri->segment(1), ['laporan_keuangan','laporan_pemeriksaan']) ? 'active' : '' ?>">
-        <i class="nav-icon fas fa-file-alt"></i>
+        <i class="nav-icon fas fa-file-alt text-success"></i>
         <p>
             Laporan
             <i class="right fas fa-angle-left"></i>
@@ -136,16 +136,23 @@
   <ul class="nav nav-treeview">
 
   <li class="nav-item">
+          <a href="<?= site_url('Form_Kesmas') ?>" class="nav-link <?= $this->uri->segment(1) == 'Form_Kesmasl' ? 'active' : '' ?>">
+            <i class="nav-icon fas fa-user-plus text-primary"></i>
+            <p>Pendaftaran Kesmas</p>
+          </a>
+        </li>
+  
+  <li class="nav-item">
           <a href="<?= site_url('Identitas_sampel') ?>" class="nav-link <?= $this->uri->segment(1) == 'Identitas_sampel' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-vials"></i>
+            <i class="nav-icon fas fa-vials text-primary"></i>
             <p>Identitas Sampel</p>
           </a>
         </li>
 
         <li class="nav-item">
           <a href="<?= site_url('Jenis_sampel') ?>" class="nav-link <?= $this->uri->segment(1) == 'Jenis_sampel' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-file-medical"></i>
-            <p>Jenis Sampel</p>
+            <i class="nav-icon fas fa-file-medical text-primary"></i>
+            <p>Identitas Pengirim</p>
           </a>
         </li>
                 </ul>
