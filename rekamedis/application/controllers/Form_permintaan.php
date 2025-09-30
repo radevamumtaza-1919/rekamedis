@@ -9,17 +9,39 @@ class Form_permintaan extends CI_Controller {
     }
 
     public function index() {
-    $data['title'] = 'Formulir Permintaan Pemeriksaan';
-    $data['no_register'] = $this->generate_no_register(); // Tambah baris ini
+    $data['title'] = 'Data Formulir Permintaan';
+    $data['formulir'] = $this->Form_model->get_all_formulir(); // Ambil data dari model
 
     $this->load->view('layout/header', $data);
     $this->load->view('layout/sidebar');
-    $this->load->view('form_permintaan/form', $data); // Kirim ke view
+    $this->load->view('form_permintaan/index', $data);
     $this->load->view('layout/footer');
 }
 
 
-    public function create() {
+        public function data() {
+    $this->load->model('Form_model');
+    $data['title'] = 'Data Formulir Permintaan';
+    $data['formulir'] = $this->Form_model->get_all_formulir();
+
+    $this->load->view('layout/header', $data);
+    $this->load->view('layout/sidebar');
+    $this->load->view('form_permintaan/index', $data);
+    $this->load->view('layout/footer');
+}
+
+        public function create() {
+    $data['title'] = 'Formulir Permintaan Pemeriksaan';
+    $data['no_register'] = $this->generate_no_register();
+
+    $this->load->view('layout/header', $data);
+    $this->load->view('layout/sidebar');
+    $this->load->view('form_permintaan/form', $data);
+    $this->load->view('layout/footer');
+}
+
+
+    public function store() {
     $post = $this->input->post();
 
     // 1. Cek atau Tambah Dokter Pengirim
@@ -112,6 +134,24 @@ private function generate_no_register() {
 
     return $prefix . str_pad($last_number, 4, '0', STR_PAD_LEFT);
 }
+
+    public function detail($id) {
+    $this->load->model('Form_model');
+
+    $data['form'] = $this->Form_model->get_formulir_by_id($id);
+    if (!$data['form']) {
+        show_404(); // tampilkan halaman tidak ditemukan jika data tidak ada
+    }
+
+    $data['title'] = 'Detail Formulir Permintaan Pemeriksaan';
+
+    $this->load->view('layout/header', $data);
+    $this->load->view('layout/sidebar');
+    $this->load->view('form_permintaan/detail', $data);
+    $this->load->view('layout/footer');
+}
+
+
     public function simpan() {
         $this->Form_model->simpan_form($this->input->post());
         $this->session->set_flashdata('success', 'Data berhasil disimpan.');

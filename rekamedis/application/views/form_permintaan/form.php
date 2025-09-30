@@ -8,7 +8,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="<?= site_url('form_permintaan/create') ?>" method="post" class="card card-body shadow-sm">
+    <form action="<?= site_url('form_permintaan/store') ?>" method="post" class="card card-body shadow-sm">
 
         <h5 class="text-primary">Identitas Pasien</h5>
         <div class="row">
@@ -163,8 +163,122 @@
             <textarea name="info_tambahan" class="form-control" rows="2"></textarea>
         </div>
 
+                    
+
+<h5 class="text-primary mt-4 text-center">Daftar Jenis Pemeriksaan</h5>
+<div class="row justify-content-center">
+  <!-- Tabel Hematologi -->
+  <div class="col-md-6">
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr>
+          <th class="text-center" style="width:30px;"></th>
+          <th colspan="3" class="text-center bg-light">
+            <h6 class="mb-0">Hematologi</h6>
+          </th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>Pemeriksaan</th>
+          <th style="width:50px;">Hasil</th>
+          <th style="width:50px;">Paraf</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center"><input type="checkbox" name="pilih_hematologi"></td>
+          <td>Hemoglobin</td>
+          <td><input type="text" name="hemoglobin" class="form-control form-control-sm" style="width:50px;"></td>
+          <td><input type="text" name="hemoglobin_paraf" class="form-control form-control-sm" style="width:50px;"></td>
+        </tr>
+
+        <tr>
+          <td class="text-center"><input type="checkbox" name="pilih_pkt_rutin"></td>
+          <td><strong>Paket Hematologi Rutin</strong></td>
+          <td colspan="2"></td>
+        </tr>
+        <tr><td></td><td>Hb</td><td><input type="text" name="hasil_hb" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_hb" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>Leukosit</td><td><input type="text" name="hasil_leukosit" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_leukosit" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>Eritrosit</td><td><input type="text" name="hasil_eritrosit" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_eritrosit" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>Ht</td><td><input type="text" name="hasil_ht" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_ht" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>Trombosit</td><td><input type="text" name="hasil_trombosit" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_trombosit" class="form-control form-control-sm" style="width:50px;"></td></tr>
+
+        <tr>
+          <td class="text-center"><input type="checkbox" name="pilih_pkt_lengkap"></td>
+          <td><strong>Paket Hematologi Lengkap</strong></td>
+          <td colspan="2"></td>
+        </tr>
+        <tr><td></td><td>MCV</td><td><input type="text" name="hasil_mcv" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_mcv" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>MCH</td><td><input type="text" name="hasil_mch" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_mch" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>MCHC</td><td><input type="text" name="hasil_mchc" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_mchc" class="form-control form-control-sm" style="width:50px;"></td></tr>
+
+        <tr><td></td><td><strong>Hitung Jenis</strong></td><td colspan="2"></td></tr>
+        <tr><td></td><td>Basofil</td><td><input type="text" name="hasil_basofil" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_basofil" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>Eosinofil</td><td><input type="text" name="hasil_eosinofil" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_eosinofil" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>Netrofil</td><td><input type="text" name="hasil_netrofil" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_netrofil" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>Limfosit</td><td><input type="text" name="hasil_limfosit" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_limfosit" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td></td><td>Monosit</td><td><input type="text" name="hasil_monosit" class="form-control form-control-sm" style="width:50px;"></td><td><input type="text" name="paraf_monosit" class="form-control form-control-sm" style="width:50px;"></td></tr>
+
+        <tr>
+          <td class="text-center"><input type="checkbox" name="pilih_led"></td>
+          <td>LED</td>
+          <td><input type="text" name="hasil_led" class="form-control form-control-sm" style="width:50px;"></td>
+          <td><input type="text" name="paraf_led" class="form-control form-control-sm" style="width:50px;"></td>
+        </tr>
+
+        <tr>
+          <td class="text-center"><input type="checkbox" name="pilih_goldar"></td>
+          <td>Golongan Darah</td>
+          <td><input type="text" name="hasil_goldar" class="form-control form-control-sm" style="width:50px;"></td>
+          <td><input type="text" name="paraf_goldar" class="form-control form-control-sm" style="width:50px;"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Kimia Darah tidak berubah -->
+  <div class="col-md-6">
+<!-- Tabel Kimia Darah -->
+  <div class="col-md-6">
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr>
+          <th colspan="3" class="text-center bg-light">
+            <h6 class="mb-0">Kimia Darah</h6>
+          </th>
+        </tr>
+        <tr>
+          <th>Pemeriksaan</th>
+          <th>Hasil</th>
+          <th>Paraf</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Glukosa Puasa</td><td><input type="text" name="glukosa_puasa" class="form-control form-control-sm"></td><td><input type="text" name="glukosa_puasa_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>Glukosa 2 Jam PP</td><td><input type="text" name="glukosa_2jp" class="form-control form-control-sm"></td><td><input type="text" name="glukosa_2jp_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>Ureum</td><td><input type="text" name="ureum" class="form-control form-control-sm"></td><td><input type="text" name="ureum_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>Kreatinin</td><td><input type="text" name="kreatinin" class="form-control form-control-sm"></td><td><input type="text" name="kreatinin_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>Asam Urat</td><td><input type="text" name="asam_urat" class="form-control form-control-sm"></td><td><input type="text" name="asam_urat_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>SGOT</td><td><input type="text" name="sgot" class="form-control form-control-sm"></td><td><input type="text" name="sgot_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>SGPT</td><td><input type="text" name="sgpt" class="form-control form-control-sm"></td><td><input type="text" name="sgpt_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>Kolesterol Total</td><td><input type="text" name="kolesterol_total" class="form-control form-control-sm"></td><td><input type="text" name="kolesterol_total_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>HDL</td><td><input type="text" name="hdl" class="form-control form-control-sm"></td><td><input type="text" name="hdl_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>LDL</td><td><input type="text" name="ldl" class="form-control form-control-sm"></td><td><input type="text" name="ldl_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+        <tr><td>Trigliserida</td><td><input type="text" name="trigliserida" class="form-control form-control-sm"></td><td><input type="text" name="trigliserida_paraf" class="form-control form-control-sm" style="width:50px;"></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+  </div>
+</div>
+
+
+  
+
+
+                    
         <button type="submit" class="btn btn-primary">Simpan</button>
-        <a href="<?= site_url('dashboard') ?>" class="btn btn-secondary">Kembali</a>
+        <a href="<?= site_url('form_permintaan') ?>" class="btn btn-secondary">Kembali</a>
             </form>
             <script>
         document.addEventListener("DOMContentLoaded", function() {
