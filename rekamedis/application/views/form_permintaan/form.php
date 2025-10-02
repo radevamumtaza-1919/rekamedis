@@ -157,17 +157,13 @@
                 <?php endforeach; ?>
             </div>
         </div>
-
         <div class="mb-3">
             <label>Informasi Tambahan</label>
             <textarea name="info_tambahan" class="form-control" rows="2"></textarea>
         </div>
-
-                    
-
-<h5 class="text-primary mt-4 text-center">Daftar Jenis Pemeriksaan</h5>
-<div class="row justify-content-center">
-
+      <hr class="my-4">
+    <h5 class="text-primary mt-4 text-center">Daftar Jenis Pemeriksaan</h5>
+  <div class="row justify-content-center">
   <!-- HEMATOLOGI -->
   <div class="col-md-4 mb-4">
     <table class="table table-bordered table-md">
@@ -754,6 +750,94 @@
   </table>
 </div>
 </div>
+<hr class="my-4">
+          <div class="mb-3">
+    <label><strong>Kelayakan Sampel</strong></label><br>
+    <!-- Pilihan Layak / Tidak Layak -->
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="kelayakan_sampel" id="layak" value="Layak" onclick="toggleAlasan(false)">
+        <label class="form-check-label" for="layak">Layak</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="kelayakan_sampel" id="tidak_layak" value="Tidak Layak" onclick="toggleAlasan(true)">
+        <label class="form-check-label" for="tidak_layak">Tidak Layak</label>
+    </div>
+
+    <!-- Alasan muncul hanya jika Tidak Layak -->
+    <div id="alasanBox" class="mt-3" style="display: none;">
+        <label><strong>Alasan Ketidaklayakan:</strong></label><br>
+        <?php 
+        $alasan = ['Hemolisis','Bahan baku tidak segar','Darah beku','Bahan tidak sesuai permintaan','Tidak steril','Tidak sesuai','Volume tidak mencukupi'];
+        foreach($alasan as $a): ?>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="alasan_tidak_layak[]" value="<?= $a ?>">
+                <label class="form-check-label"><?= $a ?></label>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+<!-- Volume Sampel -->
+<div class="mb-3">
+    <label for="volume_sampel"><strong>Volume Sampel</strong> (misal: 5 ml)</label>
+    <input type="text" name="volume_sampel" id="volume_sampel" class="form-control" placeholder="Masukkan volume sampel (misal: 5 ml)">
+          <label>Di isi Petugas Penerima Sampel<span class="text-danger">*</span></label>
+  </div>
+<!-- Tambahkan JavaScript -->
+<script>
+function toggleAlasan(show) {
+    document.getElementById('alasanBox').style.display = show ? 'block' : 'none';
+}
+</script>
+<hr class="my-4">
+        <!-- Jumlah Biaya -->
+        <div class="mb-3">
+            <label for="jumlah_biaya"><strong>Jumlah Biaya</strong></label>
+            <div class="input-group">
+                <span class="input-group-text">Rp</span>
+                <input type="number" class="form-control" name="jumlah_biaya" id="jumlah_biaya" placeholder="Masukkan jumlah biaya">
+            </div>
+        </div>
+
+        <!-- Metode Pembayaran -->
+        <div class="mb-3">
+            <label><strong>Metode Pembayaran</strong></label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="metode_pembayaran" id="cash" value="Cash">
+                <label class="form-check-label" for="cash">Cash / Tunai</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="metode_pembayaran" id="bpjs" value="BPJS">
+                <label class="form-check-label" for="bpjs">BPJS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="metode_pembayaran" id="lainnya" value="Lain-lain">
+                <label class="form-check-label" for="lainnya">Lain-lain</label>
+            </div>
+
+            <!-- Jika metode lain-lain dipilih, input teks muncul -->
+            <input type="text" name="metode_lainnya" id="metode_lainnya" class="form-control mt-2" placeholder="Tuliskan metode lain" style="display: none;">
+        </div>
+        <label>Di isi Petugas Pendaftaran<span class="text-danger">*</span></label>
+
+        <!-- Script untuk toggle input lain-lain -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const lainRadio = document.getElementById('lainnya');
+                const inputLain = document.getElementById('metode_lainnya');
+                const radios = document.querySelectorAll('input[name="metode_pembayaran"]');
+
+                radios.forEach(r => {
+                    r.addEventListener('change', function () {
+                        if (lainRadio.checked) {
+                            inputLain.style.display = 'block';
+                        } else {
+                            inputLain.style.display = 'none';
+                            inputLain.value = '';
+                        }
+                    });
+                });
+            });
+        </script>
 
 
         <button type="submit" class="btn btn-primary">Simpan</button>
