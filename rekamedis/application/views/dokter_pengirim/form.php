@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="content-wrapper px-4 pt-4">
   <h4 class="text-primary fw-bold mb-4"><?= $title ?></h4>
 
   <form action="<?= isset($dokter_pengirim) ? site_url('dokter_pengirim/update/' . $dokter_pengirim->id_dokter_pengirim) : site_url('dokter_pengirim/create') ?>" method="post">

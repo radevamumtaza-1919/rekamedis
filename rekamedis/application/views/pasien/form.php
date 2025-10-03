@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<div class="content-wrapper px-4 pt-4">
   <section class="content">
     <div class="container-fluid">
 <form action="<?= site_url('pasien/create') ?>" method="post">

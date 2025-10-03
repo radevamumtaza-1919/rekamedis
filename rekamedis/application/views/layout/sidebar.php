@@ -53,7 +53,7 @@
 
         <li class="nav-item">
           <a href="<?= site_url('form_permintaan') ?>" class="nav-link <?= $this->uri->segment(1) == 'form_permintaan' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-clinic-medical text-success"></i>
+            <i class="nav-icon fas fa-file-medical text-success"></i>
             <p>Form Pendaftaran Klinik</p>
           </a>
         </li>
@@ -89,14 +89,6 @@
           </a>
         </li>
 
-        <li class="nav-item">
-          <a href="<?= site_url('rekam_medis') ?>" class="nav-link <?= $this->uri->segment(1) == 'rekam_medis' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-file-medical text-success"></i>
-            <p>Rekam Medis</p>
-          </a>
-        </li>
-
-         
         <li class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['laporan_keuangan','laporan_pemeriksaan']) ? 'menu-open' : '' ?>">
     <a href="#" class="nav-link <?= in_array($this->uri->segment(1), ['laporan_keuangan','laporan_pemeriksaan']) ? 'active' : '' ?>">
         <i class="nav-icon fas fa-file-alt text-success"></i>

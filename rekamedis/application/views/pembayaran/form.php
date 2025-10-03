@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="content-wrapper px-4 pt-4">
     <h3 class="text-primary fw-bold mb-4"><?= $title ?></h3>
 
     <form action="<?= isset($pembayaran) ? site_url('pembayaran/save/' . $pembayaran->id_pembayaran) : site_url('pembayaran/save') ?>" method="post">

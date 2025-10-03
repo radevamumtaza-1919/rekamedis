@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="content-wrapper px-4 pt-4">
     <h3 class="text-primary fw-bold mb-4">Formulir Permintaan Pemeriksaan</h3>
 
     <?php if ($this->session->flashdata('success')): ?>

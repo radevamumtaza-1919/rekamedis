@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="content-wrapper px-4 pt-4">
     <h3 class="text-primary fw-bold mb-4"><?= $title ?></h3>
 
     <form action="<?= isset($sampel) ? site_url('ambil_sampel/update/' . $sampel->id_ambil_sampel) : site_url('ambil_sampel/create') ?>" method="post">
