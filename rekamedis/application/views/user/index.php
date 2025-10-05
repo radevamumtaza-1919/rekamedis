@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="content-wrapper px-4 pt-4">
     <h3 class="text-primary fw-bold mb-4">Data User</h3>
 
     <hr style="border-top: 2px solid #1e3a8a; margin-bottom: 20px;">

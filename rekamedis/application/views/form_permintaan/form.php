@@ -1,5 +1,5 @@
 <div class="content-wrapper px-4 pt-4">
-    <h3 class="text-primary fw-bold mb-4">Formulir Permintaan Pemeriksaan</h3>
+    <h3 class="text-center fw-bold mb-4">FORMULIR PERMINTAAN PEMERIKSAAN LABORATORIUM KLINIK</h3>
 
     <?php if ($this->session->flashdata('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -10,81 +10,114 @@
 
     <form action="<?= site_url('form_permintaan/store') ?>" method="post" class="card card-body shadow-sm">
 
-        <h5 class="text-primary">Identitas Pasien</h5>
+        <!-- Baris atas dengan 3 card sejajar -->
+<div class="row mb-4">
+
+    <!-- Card Identitas Pasien -->
+    <div class="col-md-4 d-flex">
+        <div class="card border border-dark shadow-lg w-100 h-100 bg-white">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Identitas Pasien
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <label>No. Register</label>
+                    <input type="text" name="no_register" class="form-control" value="<?= $no_register ?>" readonly required>
+                </div>
+                <div class="mb-2">
+                    <label>Nama Pasien <span class="text-danger">*</span></label>
+                    <input type="text" name="nama_pasien" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label>NIK <span class="text-danger">*</span></label>
+                    <input type="text" name="nik" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label>Jenis Kelamin <span class="text-danger">*</span></label>
+                    <select name="gender" class="form-select" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label>Tanggal Lahir</label>
+                    <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label>Umur</label>
+                    <input type="text" name="umur" id="umur" class="form-control" placeholder="Contoh: 34 thn" readonly>
+                </div>
+                <div class="mb-2">
+                    <label>No. Telp</label>
+                    <input type="text" name="no_telp_pasien" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label>Alamat</label>
+                    <input type="text" name="alamat_pasien" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Identitas Pengirim -->
+    <div class="col-md-4 d-flex">
+        <div class="card border border-dark shadow-lg w-100 h-100 bg-white">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Identitas Pengirim
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <label>Nama Dokter</label>
+                    <input type="text" name="nama_dokter" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label>No. Telp Dokter</label>
+                    <input type="text" name="telp_pengirim" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label>Alamat Dokter</label>
+                    <input type="text" name="alamat_pengirim" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label>Tanggal Form</label>
+                    <input type="date" name="tgl_form" class="form-control" required>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Diagnosa Klinis -->
+    <div class="col-md-4 d-flex">
+        <div class="card border border-dark shadow-lg w-100 h-100 bg-white">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Diagnosa Klinis
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <label>Diagnosa/Keterangan Klinik</label>
+                    <textarea name="diagnosa_klinis" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="mb-2">
+                    <label>Obat yang Dikonsumsi</label>
+                    <textarea name="obat_dikonsumsi" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+        <!-- Card View untuk Data Spesimen -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">Data Spesimen</h5>
+    </div>
+    <div class="card-body">
         <div class="row">
-            <div class="mb-3 col-md-6">
-                <label>No. Register</label>
-                <input type="text" name="no_register" class="form-control" value="<?= $no_register ?>" readonly required>
-            </div>
-            <div class="mb-3 col-md-6">
-                <label>Nama Pasien <span class="text-danger">*</span></label>
-                <input type="text" name="nama_pasien" class="form-control" required>
-            </div>
-            <div class="mb-3 col-md-6">
-                <label>NIK <span class="text-danger">*</span></label>
-                <input type="text" name="nik" class="form-control" required>
-            </div>
-            <div class="mb-3 col-md-3">
-                <label>Tanggal Lahir</label>
-                <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control">
-
-            </div>
-            <div class="mb-3 col-md-3">
-                <label>Umur</label>
-                <input type="text" name="umur" id="umur" class="form-control" placeholder="Contoh: 34 thn" readonly>
-
-            </div>
-            <div class="mb-3 col-md-6">
-                <label>Jenis Kelamin<span class="text-danger">*</span></label>
-                <select name="gender" class="form-select" required>
-                    <option value="">-- Pilih --</option>
-                    <option value="Laki-laki">Laki-laki</option>
-                    <option value="Perempuan">Perempuan</option>
-                </select>
-            </div>
-            
-            <div class="mb-3 col-md-6">
-                <label>No. Telp</label>
-                <input type="text" name="no_telp_pasien" class="form-control">
-            </div>
-            <div class="mb-3 col-12">
-                <label>Alamat</label>
-                <input type="text" name="alamat_pasien" class="form-control">
-            </div>
-        </div>
-
-        <h5 class="text-primary mt-4">Identitas Pengirim</h5>
-        <div class="row">
-            <div class="mb-3 col-md-6">
-                <label>Nama Dokter</label>
-                <input type="text" name="nama_dokter" class="form-control">
-            </div>
-            <div class="mb-3 col-md-6">
-                <label>No. Telp Dokter</label>
-                <input type="text" name="telp_pengirim" class="form-control">
-            </div>
-            <div class="mb-3 col-12">
-                <label>Alamat Dokter</label>
-                <input type="text" name="alamat_pengirim" class="form-control">
-            </div>
-            <div class="mb-3 col-md-4">
-                <label>Tanggal Form</label>
-                <input type="date" name="tgl_form" class="form-control" required>
-            </div>
-        </div>
-
-        <h5 class="text-primary mt-4">Diagnosa Klinis</h5>
-        <div class="mb-3">
-            <label>Diagnosa/Keterangan Klinik</label>
-            <textarea name="diagnosa_klinis" class="form-control" rows="2"></textarea>
-        </div>
-        <div class="mb-3">
-            <label>Obat yang Dikonsumsi</label>
-            <textarea name="obat_dikonsumsi" class="form-control" rows="2"></textarea>
-        </div>
-
-        <h5 class="text-primary mt-4">Data Spesimen</h5>
-        <div class="row">
+            <!-- Asal Sampel -->
             <div class="mb-3 col-md-6">
                 <label>Asal Sampel</label><br>
                 <?php foreach(['Langsung', 'Kiriman', 'Rujuk'] as $val): ?>
@@ -94,6 +127,8 @@
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <!-- Status Puasa -->
             <div class="mb-3 col-md-6">
                 <label>Status Puasa</label><br>
                 <?php foreach(['Puasa', 'Tidak Puasa'] as $val): ?>
@@ -105,6 +140,7 @@
             </div>
         </div>
 
+        <!-- Lokasi Pengambilan -->
         <div class="mb-3">
             <label>Lokasi Pengambilan</label><br>
             <?php foreach(['Tangan','Paha','Rectal','Nasofaring','Lain-lain'] as $val): ?>
@@ -116,6 +152,7 @@
             <input type="text" name="lokasi_lainnya" class="form-control mt-2" placeholder="Tuliskan jika lainnya">
         </div>
 
+        <!-- Jenis Spesimen -->
         <div class="mb-3">
             <label>Jenis Spesimen</label><br>
             <?php foreach(['Darah','Urine','Swab','Faeces','Jaringan','Sputum','Cairan','Lain-lain'] as $val): ?>
@@ -157,10 +194,14 @@
                 <?php endforeach; ?>
             </div>
         </div>
+
         <div class="mb-3">
             <label>Informasi Tambahan</label>
             <textarea name="info_tambahan" class="form-control" rows="2"></textarea>
         </div>
+    </div>
+</div>
+
       <hr class="my-4">
     <h5 class="text-primary mt-4 text-center">Daftar Jenis Pemeriksaan</h5>
   <div class="row justify-content-center">
@@ -751,73 +792,89 @@
 </div>
 </div>
 <hr class="my-4">
-          <div class="mb-3">
-    <label><strong>Kelayakan Sampel</strong></label><br>
-    <!-- Pilihan Layak / Tidak Layak -->
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="kelayakan_sampel" id="layak" value="Layak" onclick="toggleAlasan(false)">
-        <label class="form-check-label" for="layak">Layak</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="kelayakan_sampel" id="tidak_layak" value="Tidak Layak" onclick="toggleAlasan(true)">
-        <label class="form-check-label" for="tidak_layak">Tidak Layak</label>
+          <div class="row">
+    <!-- Kelayakan, Volume, Biaya -->
+    <div class="col-md-6">
+        <div class="card shadow mb-4 border border-dark">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Kelayakan Sampel & Biaya
+            </div>
+            <div class="card-body">
+
+                <!-- Kelayakan Sampel -->
+                <div class="mb-3">
+                    <label><strong>Kelayakan Sampel</strong></label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kelayakan_sampel" id="layak" value="Layak" onclick="toggleAlasan(false)">
+                        <label class="form-check-label" for="layak">Layak</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kelayakan_sampel" id="tidak_layak" value="Tidak Layak" onclick="toggleAlasan(true)">
+                        <label class="form-check-label" for="tidak_layak">Tidak Layak</label>
+                    </div>
+
+                    <!-- Alasan Ketidaklayakan -->
+                    <div id="alasanBox" class="mt-3" style="display: none;">
+                        <label><strong>Alasan Ketidaklayakan:</strong></label><br>
+                        <?php 
+                        $alasan = ['Hemolisis','Bahan baku tidak segar','Darah beku','Bahan tidak sesuai permintaan','Tidak steril','Tidak sesuai','Volume tidak mencukupi'];
+                        foreach($alasan as $a): ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="alasan_tidak_layak[]" value="<?= $a ?>">
+                                <label class="form-check-label"><?= $a ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Volume Sampel -->
+                <div class="mb-3">
+                    <label for="volume_sampel"><strong>Volume Sampel</strong> (misal: 5 ml)</label>
+                    <input type="text" name="volume_sampel" id="volume_sampel" class="form-control" placeholder="Masukkan volume sampel">
+                    <label class="form-text">Diisi Petugas Penerima Sampel <span class="text-danger">*</span></label>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Alasan muncul hanya jika Tidak Layak -->
-    <div id="alasanBox" class="mt-3" style="display: none;">
-        <label><strong>Alasan Ketidaklayakan:</strong></label><br>
-        <?php 
-        $alasan = ['Hemolisis','Bahan baku tidak segar','Darah beku','Bahan tidak sesuai permintaan','Tidak steril','Tidak sesuai','Volume tidak mencukupi'];
-        foreach($alasan as $a): ?>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="alasan_tidak_layak[]" value="<?= $a ?>">
-                <label class="form-check-label"><?= $a ?></label>
+    <!-- Metode Pembayaran -->
+    <div class="col-md-6">
+        <div class="card shadow mb-4 border border-dark">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Metode Pembayaran
             </div>
-        <?php endforeach; ?>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label><strong>Metode Pembayaran</strong></label><br>
+                    <!-- Jumlah Biaya -->
+                <div class="mb-3">
+                    <label for="jumlah_biaya"><strong>Jumlah Biaya</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text">Rp</span>
+                        <input type="number" class="form-control" name="jumlah_biaya" id="jumlah_biaya" placeholder="Masukkan jumlah biaya">
+                    </div>
+                </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="metode_pembayaran" id="cash" value="Cash">
+                        <label class="form-check-label" for="cash">Cash / Tunai</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="metode_pembayaran" id="bpjs" value="BPJS">
+                        <label class="form-check-label" for="bpjs">BPJS</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="metode_pembayaran" id="lainnya" value="Lain-lain">
+                        <label class="form-check-label" for="lainnya">Lain-lain</label>
+                    </div>
+
+                    <input type="text" name="metode_lainnya" id="metode_lainnya" class="form-control mt-2" placeholder="Tuliskan metode lain" style="display: none;">
+                </div>
+
+                <label class="form-text">Diisi Petugas Pendaftaran <span class="text-danger">*</span></label>
+            </div>
+        </div>
     </div>
 </div>
-<!-- Volume Sampel -->
-<div class="mb-3">
-    <label for="volume_sampel"><strong>Volume Sampel</strong> (misal: 5 ml)</label>
-    <input type="text" name="volume_sampel" id="volume_sampel" class="form-control" placeholder="Masukkan volume sampel (misal: 5 ml)">
-          <label>Di isi Petugas Penerima Sampel<span class="text-danger">*</span></label>
-  </div>
-<!-- Tambahkan JavaScript -->
-<script>
-function toggleAlasan(show) {
-    document.getElementById('alasanBox').style.display = show ? 'block' : 'none';
-}
-</script>
-<hr class="my-4">
-        <!-- Jumlah Biaya -->
-        <div class="mb-3">
-            <label for="jumlah_biaya"><strong>Jumlah Biaya</strong></label>
-            <div class="input-group">
-                <span class="input-group-text">Rp</span>
-                <input type="number" class="form-control" name="jumlah_biaya" id="jumlah_biaya" placeholder="Masukkan jumlah biaya">
-            </div>
-        </div>
-
-        <!-- Metode Pembayaran -->
-        <div class="mb-3">
-            <label><strong>Metode Pembayaran</strong></label><br>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="metode_pembayaran" id="cash" value="Cash">
-                <label class="form-check-label" for="cash">Cash / Tunai</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="metode_pembayaran" id="bpjs" value="BPJS">
-                <label class="form-check-label" for="bpjs">BPJS</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="metode_pembayaran" id="lainnya" value="Lain-lain">
-                <label class="form-check-label" for="lainnya">Lain-lain</label>
-            </div>
-
-            <!-- Jika metode lain-lain dipilih, input teks muncul -->
-            <input type="text" name="metode_lainnya" id="metode_lainnya" class="form-control mt-2" placeholder="Tuliskan metode lain" style="display: none;">
-        </div>
-        <label>Di isi Petugas Pendaftaran<span class="text-danger">*</span></label>
 
         <!-- Script untuk toggle input lain-lain -->
         <script>
@@ -838,12 +895,7 @@ function toggleAlasan(show) {
                 });
             });
         </script>
-
-
-        <button type="submit" class="btn btn-primary">Simpan</button>
-        <a href="<?= site_url('form_permintaan') ?>" class="btn btn-secondary">Kembali</a>
-            </form>
-            <script>
+        <script>
         document.addEventListener("DOMContentLoaded", function() {
             const tglLahirInput = document.getElementById("tgl_lahir");
             const umurInput = document.getElementById("umur");
@@ -867,5 +919,24 @@ function toggleAlasan(show) {
             });
         });
         </script>
-</div>
+                <script>
+        function toggleAlasan(show) {
+            const alasanBox = document.getElementById('alasanBox');
+            if (show) {
+                alasanBox.style.display = 'block';
+            } else {
+                alasanBox.style.display = 'none';
+
+                // Reset semua checkbox ketika kembali ke "Layak"
+                const checkboxes = alasanBox.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = false);
+            }
+        }
+        </script>
+            </form>
+            <div class="text-end">
+    <button type="submit" class="btn btn-primary">Simpan</button>
+    <a href="<?= site_url('form_permintaan') ?>" class="btn btn-secondary">Kembali</a>
+      </div>
         </div>
+          </div>

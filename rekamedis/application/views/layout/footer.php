@@ -18,7 +18,7 @@
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
 <!-- Inisialisasi DataTables -->
- //form permintaan
+ <!--form permintaan-->
 <script>
   $(document).ready(function() {
     $('#tabel-permintaan').DataTable({
@@ -39,7 +39,7 @@
   });
 </script>
 
-//dokter pengirim
+<!--dokter pengirim-->
 <script>
   $(document).ready(function() {
     $('#tabel-dokter').DataTable({
@@ -60,7 +60,7 @@
   });
 </script>
 
-//pasien
+<!--pasien-->
 <script>
   $(document).ready(function() {
     $('#tabel-pasien').DataTable({
@@ -81,7 +81,7 @@
   });
 </script>
 
-//ambil sampel
+<!--ambil sampel-->
 <script>
   $(document).ready(function() {
     $('#tabel-ambil-sampel').DataTable({
@@ -102,7 +102,7 @@
   });
 </script>
 
-//pembayaran
+<!--pembayaran-->
 <script>
   $(document).ready(function() {
     $('#tabel-pembayaran').DataTable({

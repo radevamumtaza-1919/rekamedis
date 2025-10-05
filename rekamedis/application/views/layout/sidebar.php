@@ -31,7 +31,27 @@
   <div class="sidebar">
     <!-- Menu -->
     <nav class="mt-3">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" data-accordion="false">
+
+      <!-- Sidebar Search Form -->
+        <div class="form-inline px-3 pb-2">
+          <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar bg-light text-dark border-dark" type="search" placeholder="Cari menu..." aria-label="Search" onkeyup="searchSidebar(this.value)">
+            <div class="input-group-append">
+              <button class="btn btn-sidebar bg-secondary">
+                <i class="fas fa-search text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Title: Menu Utama -->
+        <div class="px-3 py-2 bg-dark">
+          <p class="text-secondary fw-bold text-uppercase mb-0" style="font-weight: 800;">Menu Utama</p>
+        </div>
+
+
+
 
         <li class="nav-item">
           <a href="<?= site_url('dashboard') ?>" class="nav-link <?= $this->uri->segment(1) == 'dashboard' ? 'active' : '' ?>">
@@ -39,7 +59,6 @@
             <p>Dashboard</p>
           </a>
         </li>
-
 
         <li class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['dokter_pengirim','pasien','ambil_sampel','pembayaran','Pemeriksaan','form_permintaan','Kesmas']) ? 'menu-open' : '' ?>">
   <a href="#" class="nav-link <?= in_array($this->uri->segment(1), ['dokter_pengirim','pasien','ambil_sampel','pembayaran','Pemeriksaan','form_permintaan','Kesmas']) ? 'active' : '' ?>">
@@ -161,3 +180,23 @@
     </nav>
   </div>
 </aside>
+
+<!--search sidebar-->
+<script>
+  function searchSidebar(keyword) {
+    const navItems = document.querySelectorAll('.nav-sidebar .nav-item');
+    keyword = keyword.toLowerCase();
+
+    navItems.forEach(item => {
+      const link = item.querySelector('a');
+      if (link) {
+        const text = link.innerText.toLowerCase();
+        if (text.includes(keyword)) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      }
+    });
+  }
+</script>
