@@ -70,3 +70,5 @@ $route['pasien'] = 'Pasien/index';
 $route['dokter_pengirim'] = 'dokter_pengirim/index';
 
 $route['pemeriksaan'] = 'pemeriksaan/index';
+
+$route['form_permintaan_klinik'] = 'form_permintaan_klinik/index';

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Form_model extends CI_Model {
+class Form_permintaan_klinik_model extends CI_Model {
     
     public function simpan_form($data) {
         // Mapping input ke kolom database
@@ -34,13 +34,13 @@ class Form_model extends CI_Model {
             'info_tambahan' => $data['info_tambahan']
         ];
 
-        return $this->db->insert('form_permintaan', $insertData);
+        return $this->db->insert('form_permintaan_klinik', $insertData);
     }
     public function get_all_formulir() {
-        return $this->db->get('form_permintaan')->result();
+        return $this->db->get('form_permintaan_klinik')->result();
 
     }
     public function get_formulir_by_id($id) {
-        return $this->db->get_where('form_permintaan', ['id' => $id])->row();
+        return $this->db->get_where('form_permintaan_klinik', ['id' => $id])->row();
     }
 }

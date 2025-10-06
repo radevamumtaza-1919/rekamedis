@@ -8,7 +8,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="<?= site_url('form_permintaan/store') ?>" method="post" class="card card-body shadow-sm">
+    <form action="<?= site_url('form_permintaan_klinik/store') ?>" method="post" class="card card-body shadow-sm">
 
         <!-- Baris atas dengan 3 card sejajar -->
 <div class="row mb-4">
@@ -16,7 +16,7 @@
     <!-- Card Identitas Pasien -->
     <div class="col-md-4 d-flex">
         <div class="card border border-dark shadow-lg w-100 h-100 bg-white">
-            <div class="card-header bg-secondary text-white fw-bold">
+            <div class="card-header bg-secondary text-white fw-bold mb-0" style="font-weight: 800">
                 Identitas Pasien
             </div>
             <div class="card-body">
@@ -63,7 +63,7 @@
     <!-- Card Identitas Pengirim -->
     <div class="col-md-4 d-flex">
         <div class="card border border-dark shadow-lg w-100 h-100 bg-white">
-            <div class="card-header bg-secondary text-white fw-bold">
+            <div class="card-header bg-secondary text-white fw-bold mb-0" style="font-weight: 800">
                 Identitas Pengirim
             </div>
             <div class="card-body">
@@ -90,7 +90,7 @@
     <!-- Card Diagnosa Klinis -->
     <div class="col-md-4 d-flex">
         <div class="card border border-dark shadow-lg w-100 h-100 bg-white">
-            <div class="card-header bg-secondary text-white fw-bold">
+            <div class="card-header bg-secondary text-white fw-bold mb-0" style="font-weight: 800">
                 Diagnosa Klinis
             </div>
             <div class="card-body">
@@ -112,8 +112,8 @@
 
         <!-- Card View untuk Data Spesimen -->
 <div class="card shadow mb-4">
-    <div class="card-header bg-secondary text-white">
-        <h5 class="mb-0">Data Spesimen</h5>
+    <div class="card-header bg-secondary text-white ">
+        <h5 class="mb-0" style="font-weight: 800">Data Spesimen</h5>
     </div>
     <div class="card-body">
         <div class="row">
@@ -203,7 +203,9 @@
 </div>
 
       <hr class="my-4">
-    <h5 class="text-primary mt-4 text-center">Daftar Jenis Pemeriksaan</h5>
+    <div class="card-header bg-secondary text-white fw-bold mb-0" style="font-weight: 800">
+                Jenis Pemeriksaan
+            </div>
   <div class="row justify-content-center">
   <!-- HEMATOLOGI -->
   <div class="col-md-4 mb-4">
@@ -699,32 +701,92 @@
 </div>
 
 <div class="row justify-content-center">
-  <!-- IMUNOLOGI -->
-  <div class="col-md-4 mb-4">
-    <table class="table table-bordered table-md">
-      <thead>
-        <tr><th colspan="4" class="text-center bg-light">Imunologi</th></tr>
-        <tr>
-          <th style="width:30px;"></th>
-          <th>Pemeriksaan</th>
-          <th style="width:80px;">Hasil</th>
-          <th style="width:80px;">Paraf</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="text-center"><input type="checkbox" name="ns1"></td><td>NS-1</td><td><input type="text" name="hasil_ns1" class="form-control form-control-sm w-100 mb-1"></td><td><input type="text" name="paraf_ns1" class="form-control form-control-sm w-100 mb-1"></td></tr>
-        <tr><td class="text-center"><input type="checkbox" name="ns1"></td><td>HIV</td><td><input type="text" name="hasil_ns1" class="form-control form-control-sm w-100 mb-1"></td><td><input type="text" name="paraf_ns1" class="form-control form-control-sm w-100 mb-1"></td></tr>
-        <tr><td class="text-center"><input type="checkbox" name="ns1"></td><td>HBsAg</td><td><input type="text" name="hasil_ns1" class="form-control form-control-sm w-100 mb-1"></td><td><input type="text" name="paraf_ns1" class="form-control form-control-sm w-100 mb-1"></td></tr>
-        <tr><td class="text-center"><input type="checkbox" name="hbsag"></td><td>Anti HBsAg</td><td><input type="text" name="hasil_hbsag" class="form-control form-control-sm w-100 mb-1"></td><td><input type="text" name="paraf_hbsag" class="form-control form-control-sm w-100 mb-1"></td></tr>
-        <tr><td class="text-center"><input type="checkbox" name="anti_hav_igm"></td><td>Anti HAV IgM</td><td><input type="text" name="hasil_anti_hav_igm" class="form-control form-control-sm w-100 mb-1"></td><td><input type="text" name="paraf_anti_hav_igm" class="form-control form-control-sm w-100 mb-1"></td></tr>
-        <tr><td class="text-center"><input type="checkbox" name="anti_hcv_total"></td><td>Anti HCV Total</td><td><input type="text" name="hasil_anti_hcv" class="form-control form-control-sm w-100 mb-1"></td><td><input type="text" name="paraf_anti_hcv" class="form-control form-control-sm w-100 mb-1"></td></tr>
-      </tbody>
-      <tr>
-          <td class="text-center"><input type="checkbox" name="urin_lengkap"></td>
-          <td>Widal</td>
-        </tr>
-    </table>
-  </div>
+  <div class="col-md-8 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-header text-center fw-bold bg-light">IMUNOLOGI</div>
+      <div class="card-body">
+        <div class="row">
+          <!-- Tabel Pemeriksaan -->
+          <div class="col-md-6">
+            <table class="table table-bordered table-sm mb-0">
+              <thead class="table-light text-center">
+                <tr>
+                  <th>Pemeriksaan</th>
+                  <th style="width:80px;">Hasil</th>
+                  <th style="width:80px;">Paraf</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $list = ['NS-1', 'HIV', 'HBsAg', 'Anti HBsAg', 'Anti HAV IgM', 'Anti HCV Total'];
+                foreach ($list as $key => $item): ?>
+                  <tr>
+                    <td><?= $item ?></td>
+                    <td><input type="text" name="hasil_<?= $key ?>" class="form-control form-control-sm"></td>
+                    <td><input type="text" name="paraf_<?= $key ?>" class="form-control form-control-sm"></td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Tabel Widal dan Golongan Darah -->
+          <div class="col-md-6">
+            <table class="table table-bordered table-sm mb-2">
+              <thead class="table-light text-center">
+                <tr>
+                  <th colspan="3">Widal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center"><input type="checkbox" name="urin_lengkap"></td>
+                  <td>Urin Lengkap</td>
+                <tr>
+                  <td class="text-center">
+                    <input type="checkbox" name="widal[]" value="AO">
+                  </td>
+                  <td>AO</td>
+                  <td class="text-center">AH</td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <input type="checkbox" name="widal[]" value="BO">
+                  </td>
+                  <td>BO</td>
+                  <td class="text-center">BH</td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <input type="checkbox" name="widal[]" value="CO">
+                  </td>
+                  <td>CO</td>
+                  <td class="text-center">CH</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Tabel Hasil dan Paraf -->
+            <table class="table table-bordered table-sm">
+              <thead class="table-light text-center">
+                <tr>
+                  <th style="width: 100px;">Hasil</th>
+                  <th style="width: 100px;">Paraf</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" name="hasil_widal" class="form-control form-control-sm text-center"></td>
+                  <td><input type="text" name="paraf_widal" class="form-control form-control-sm text-center"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div> <!-- col-md-5 -->
+        </div> <!-- row -->
+      </div> <!-- card-body -->
+    </div> <!-- card -->
+  </div> <!-- col -->
+
 
   <!-- TOKSIKOLOGI -->
   <div class="col-md-4 mb-4">
@@ -796,8 +858,8 @@
     <!-- Kelayakan, Volume, Biaya -->
     <div class="col-md-6">
         <div class="card shadow mb-4 border border-dark">
-            <div class="card-header bg-secondary text-white fw-bold">
-                Kelayakan Sampel & Biaya
+            <div class="card-header bg-secondary text-white fw-bold mb-0" style="font-weight: 800">
+                Kelayakan Sampel 
             </div>
             <div class="card-body">
 
@@ -840,7 +902,7 @@
     <!-- Metode Pembayaran -->
     <div class="col-md-6">
         <div class="card shadow mb-4 border border-dark">
-            <div class="card-header bg-secondary text-white fw-bold">
+            <div class="card-header bg-secondary text-white fw-bold mb-0" style="font-weight: 800">
                 Metode Pembayaran
             </div>
             <div class="card-body">
@@ -933,10 +995,9 @@
             }
         }
         </script>
-            </form>
             <div class="text-end">
     <button type="submit" class="btn btn-primary">Simpan</button>
-    <a href="<?= site_url('form_permintaan') ?>" class="btn btn-secondary">Kembali</a>
+    <a href="<?= site_url('form_permintaan_klinik') ?>" class="btn btn-secondary">Kembali</a>
       </div>
         </div>
           </div>

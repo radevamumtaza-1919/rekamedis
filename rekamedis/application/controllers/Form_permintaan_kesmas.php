@@ -1,32 +1,32 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Form_permintaan extends CI_Controller {
+class Form_permintaan_klinik extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('Form_model'); // Buat nanti
+        $this->load->model('Form_permintaan_klinik_model'); // Buat nanti
     }
 
     public function index() {
     $data['title'] = 'Data Formulir Permintaan';
-    $data['formulir'] = $this->Form_model->get_all_formulir(); // Ambil data dari model
+    $data['formulir'] = $this->Form_permintaan_klinik_model->get_all_formulir(); // Ambil data dari model
 
     $this->load->view('layout/header', $data);
     $this->load->view('layout/sidebar');
-    $this->load->view('form_permintaan/index', $data);
+    $this->load->view('form_permintaan_klinik/index', $data);
     $this->load->view('layout/footer');
 }
 
 
         public function data() {
-    $this->load->model('Form_model');
+    $this->load->model('Form_permintaan_klinik_model');
     $data['title'] = 'Data Formulir Permintaan';
-    $data['formulir'] = $this->Form_model->get_all_formulir();
+    $data['formulir'] = $this->Form_permintaan_klinik_model->get_all_formulir();
 
     $this->load->view('layout/header', $data);
     $this->load->view('layout/sidebar');
-    $this->load->view('form_permintaan/index', $data);
+    $this->load->view('form_permintaan_klinik/index', $data);
     $this->load->view('layout/footer');
 }
 
@@ -36,7 +36,7 @@ class Form_permintaan extends CI_Controller {
 
     $this->load->view('layout/header', $data);
     $this->load->view('layout/sidebar');
-    $this->load->view('form_permintaan/form', $data);
+    $this->load->view('form_permintaan_klinik/form', $data);
     $this->load->view('layout/footer');
 }
 
@@ -112,10 +112,10 @@ class Form_permintaan extends CI_Controller {
         'prioritas' => $post['prioritas'],
         'info_tambahan' => $post['info_tambahan']
     ];
-    $this->db->insert('form_permintaan', $formData);
+    $this->db->insert('form_permintaan_klinik', $formData);
 
     $this->session->set_flashdata('success', 'Data berhasil disimpan ke semua menu!');
-    redirect('form_permintaan');
+    redirect('form_permintaan_klinik');
 }
 
 private function generate_no_register() {
@@ -135,10 +135,18 @@ private function generate_no_register() {
     return $prefix . str_pad($last_number, 4, '0', STR_PAD_LEFT);
 }
 
-    public function detail($id) {
-    $this->load->model('Form_model');
+        public function delete($id)
+    {
+        $this->db->delete('form_permintaan_klinik', ['id' => $id]);
+        $this->session->set_flashdata('success', 'Data berhasil dihapus.');
+        redirect('form_permintaan_klinik');
+    }
 
-    $data['form'] = $this->Form_model->get_formulir_by_id($id);
+
+    public function detail($id) {
+    $this->load->model('Form_permintaan_klinik_model');
+
+    $data['form'] = $this->Form_permintaan_klinik_model->get_formulir_by_id($id);
     if (!$data['form']) {
         show_404(); // tampilkan halaman tidak ditemukan jika data tidak ada
     }
@@ -147,14 +155,18 @@ private function generate_no_register() {
 
     $this->load->view('layout/header', $data);
     $this->load->view('layout/sidebar');
-    $this->load->view('form_permintaan/detail', $data);
+    $this->load->view('form_permintaan_klinik/detail', $data);
     $this->load->view('layout/footer');
 }
 
 
     public function simpan() {
-        $this->Form_model->simpan_form($this->input->post());
-        $this->session->set_flashdata('success', 'Data berhasil disimpan.');
-        redirect('form_permintaan');
-    }
+    $post = $this->input->post();
+    echo "<pre>"; print_r($post); exit;
+
+    $this->Form_permintaan_klinik_model->simpan_form($post);
+    $this->session->set_flashdata('success', 'Data berhasil disimpan.');
+    redirect('form_permintaan_klinik');
+}
+
 }

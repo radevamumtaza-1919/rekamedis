@@ -50,9 +50,6 @@
           <p class="text-secondary fw-bold text-uppercase mb-0" style="font-weight: 800;">Menu Utama</p>
         </div>
 
-
-
-
         <li class="nav-item">
           <a href="<?= site_url('dashboard') ?>" class="nav-link <?= $this->uri->segment(1) == 'dashboard' ? 'active' : '' ?>">
             <i class="nav-icon fas fa-hospital-user"></i>
@@ -60,8 +57,8 @@
           </a>
         </li>
 
-        <li class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['dokter_pengirim','pasien','ambil_sampel','pembayaran','Pemeriksaan','form_permintaan','Kesmas']) ? 'menu-open' : '' ?>">
-  <a href="#" class="nav-link <?= in_array($this->uri->segment(1), ['dokter_pengirim','pasien','ambil_sampel','pembayaran','Pemeriksaan','form_permintaan','Kesmas']) ? 'active' : '' ?>">
+        <li class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['dokter_pengirim','pasien','ambil_sampel','pembayaran','Pemeriksaan','form_permintaan_klinik','Kesmas']) ? 'menu-open' : '' ?>">
+  <a href="#" class="nav-link <?= in_array($this->uri->segment(1), ['dokter_pengirim','pasien','ambil_sampel','pembayaran','Pemeriksaan','form_permintaan_klinik','Kesmas']) ? 'active' : '' ?>">
     <i class="nav-icon fas fa-clinic-medical"></i>
     <p>
       Klinik
@@ -71,7 +68,7 @@
   <ul class="nav nav-treeview">
 
         <li class="nav-item">
-          <a href="<?= site_url('form_permintaan') ?>" class="nav-link <?= $this->uri->segment(1) == 'form_permintaan' ? 'active' : '' ?>">
+          <a href="<?= site_url('form_permintaan_klinik') ?>" class="nav-link <?= $this->uri->segment(1) == 'form_permintaan_klinik' ? 'active' : '' ?>">
             <i class="nav-icon fas fa-file-medical text-success"></i>
             <p>Form Pendaftaran Klinik</p>
           </a>
@@ -131,10 +128,8 @@
         </li>
     </ul>
 </li>
-
 </ul>
 </li>
-
 
 <li class="nav-item has-treeview <?= in_array($this->uri->segment(1), []) ? 'menu-open' : '' ?>">
   <a href="#" class="nav-link <?= in_array($this->uri->segment(1), []) ? 'active' : '' ?>">
@@ -147,7 +142,7 @@
   <ul class="nav nav-treeview">
 
   <li class="nav-item">
-          <a href="<?= site_url('Form_Kesmas') ?>" class="nav-link <?= $this->uri->segment(1) == 'Form_Kesmasl' ? 'active' : '' ?>">
+          <a href="<?= site_url('Form_permintaan_Kesmas') ?>" class="nav-link <?= $this->uri->segment(1) == 'Form_permintaan_Kesmas' ? 'active' : '' ?>">
             <i class="nav-icon fas fa-user-plus text-primary"></i>
             <p>Pendaftaran Kesmas</p>
           </a>

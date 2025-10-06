@@ -40,7 +40,7 @@ $tanggalLengkap = "$hari, $tanggal $bulan $tahun";
   <small class="text-muted fw-normal"><?= $tanggalLengkap ?></small>
 </h3>
   <hr style="border-top: 2px solid #1e3a8a; margin-bottom: 20px;">
-  <a href="<?= site_url('form_permintaan/create') ?>" class="btn btn-success mb-3 rounded-pill shadow-sm px-4 py-2 d-inline-flex align-items-center">
+  <a href="<?= site_url('form_permintaan_klinik/create') ?>" class="btn btn-success mb-3 shadow-sm px-4 py-2 d-inline-flex align-items-center">
     <i class="fas fa-plus me-2"></i> Tambah Data
 </a>
   <div class="card shadow-sm w-100">
@@ -70,13 +70,13 @@ $tanggalLengkap = "$hari, $tanggal $bulan $tahun";
                                 <td><?= $f->nama_dokter ?></td>
                                 <td><?= date('d-m-Y', strtotime($f->tgl_form)) ?></td>
                                 <td>
-                                    <a href="<?= site_url('form_permintaan/detail/' . $f->id) ?>" class="btn btn-sm btn-outline-primary me-1" title="Lihat">
+                                    <a href="<?= site_url('form_permintaan_klinik/detail/' . $f->id) ?>" class="btn btn-sm btn-outline-primary me-1" title="Lihat">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="<?= site_url('form_permintaan/edit/' . $f->id) ?>" class="btn btn-sm btn-outline-success me-1" title="Edit">
+                                    <a href="<?= site_url('form_permintaan_klinik/edit/' . $f->id) ?>" class="btn btn-sm btn-outline-success me-1" title="Edit">
                                         <i class="fas fa-pen"></i>
                                     </a>
-                                    <a href="<?= site_url('form_permintaan/delete/' . $f->id) ?>" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                    <a href="<?= site_url('form_permintaan_klinik/delete/' . $f->id) ?>" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
