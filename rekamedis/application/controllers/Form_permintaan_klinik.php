@@ -168,5 +168,38 @@ private function generate_no_register() {
     $this->session->set_flashdata('success', 'Data berhasil disimpan.');
     redirect('form_permintaan_klinik');
 }
+        public function get_kunjungan_data() {
+    $tahun = 2025; // Bisa kamu ubah/dinamis nanti
+
+    $query = $this->db->query("
+        SELECT 
+            DATE_FORMAT(STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(no_register, '.', -2), '.', 1), '%Y%m%d'), '%m') AS bulan_angka,
+            COUNT(*) AS jumlah
+        FROM form_permintaan_klinik
+        WHERE no_register LIKE 'PSN." . $tahun . "%'
+        GROUP BY bulan_angka
+    ");
+
+    $result = $query->result();
+
+    $bulan_label = [
+        '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
+        '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
+        '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+    ];
+
+    $data_kunjungan = array_fill_keys(array_keys($bulan_label), 0);
+
+    foreach ($result as $row) {
+        $bulan = $row->bulan_angka;
+        $data_kunjungan[$bulan] = (int)$row->jumlah;
+    }
+
+    echo json_encode([
+        'tahun' => $tahun,
+        'labels' => array_values($bulan_label),
+        'data' => array_values($data_kunjungan)
+    ]);
+}
 
 }

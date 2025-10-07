@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-primary navbar-dark">
+<nav class="main-header navbar navbar-expand navbar-info navbar-dark">
   <div class="container-fluid">
     <!-- Role -->
 <span class="fw-bold text-dark ms-1">Hallo Administrator</span>
@@ -11,7 +11,7 @@
     <!-- Logout Button -->
     <ul class="navbar-nav ms-auto">
       <li class="nav-item">
-        <a href="<?= site_url('auth/logout') ?>" class="btn btn-primary rounded-pill px-3 py-1 d-flex align-items-center">
+        <a href="<?= site_url('auth/logout') ?>" class="btn btn-dark rounded-pill px-3 py-1 d-flex align-items-center">
     <i class="fas fa-sign-out-alt me-2"></i> <span class="text-white">Sign Out</span>
       </a>
         </li>
@@ -20,7 +20,7 @@
              </nav>
 
 <!-- Sidebar -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-info elevation-4">
   <!-- Brand Logo -->
   <a href="<?= site_url('dashboard') ?>" class="brand-link">
     <img src="<?= base_url('assets/img/logolabkes.png') ?>" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">

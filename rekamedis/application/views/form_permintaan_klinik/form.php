@@ -706,24 +706,28 @@
       <div class="card-header text-center fw-bold bg-light">IMUNOLOGI</div>
       <div class="card-body">
         <div class="row">
-          <!-- Tabel Pemeriksaan -->
+           <!-- Bagian Imunologi Utama -->
           <div class="col-md-6">
-            <table class="table table-bordered table-sm mb-0">
+            <table class="table table-bordered table-sm mb-3">
               <thead class="table-light text-center">
                 <tr>
+                  <th style="width: 40px;"></th>
                   <th>Pemeriksaan</th>
-                  <th style="width:80px;">Hasil</th>
-                  <th style="width:80px;">Paraf</th>
+                  <th style="width: 80px;">Hasil</th>
+                  <th style="width: 80px;">Paraf</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                $list = ['NS-1', 'HIV', 'HBsAg', 'Anti HBsAg', 'Anti HAV IgM', 'Anti HCV Total'];
-                foreach ($list as $key => $item): ?>
+                $items = ['NS-1', 'HIV', 'HBsAg', 'Anti HBsAg', 'Anti HAV IgM', 'Anti HCV Total'];
+                foreach ($items as $i => $item): ?>
                   <tr>
+                    <td class="text-center">
+                      <input type="checkbox" name="imunologi[]" value="<?= $item ?>">
+                    </td>
                     <td><?= $item ?></td>
-                    <td><input type="text" name="hasil_<?= $key ?>" class="form-control form-control-sm"></td>
-                    <td><input type="text" name="paraf_<?= $key ?>" class="form-control form-control-sm"></td>
+                    <td><input type="text" name="hasil_imunologi_<?= $i ?>" class="form-control form-control-sm"></td>
+                    <td><input type="text" name="paraf_imunologi_<?= $i ?>" class="form-control form-control-sm"></td>
                   </tr>
                 <?php endforeach; ?>
               </tbody>
@@ -732,53 +736,33 @@
 
           <!-- Tabel Widal dan Golongan Darah -->
           <div class="col-md-6">
-            <table class="table table-bordered table-sm mb-2">
+            <table class="table table-bordered table-sm mb-3">
               <thead class="table-light text-center">
                 <tr>
-                  <th colspan="3">Widal</th>
+                  <th style="width: 40px;"></th>
+                  <th>Pemeriksaan</th>
+                  <th style="width: 80px;">Hasil</th>
+                  <th style="width: 80px;">Paraf</th>
                 </tr>
               </thead>
               <tbody>
+                <!-- Baris Widal -->
                 <tr>
-                  <td class="text-center"><input type="checkbox" name="urin_lengkap"></td>
-                  <td>Urin Lengkap</td>
-                <tr>
-                  <td class="text-center">
-                    <input type="checkbox" name="widal[]" value="AO">
-                  </td>
-                  <td>AO</td>
-                  <td class="text-center">AH</td>
+                  <td class="text-center"><input type="checkbox" name="widal" value="1"></td>
+                  <td colspan="3">Widal</td>
                 </tr>
-                <tr>
-                  <td class="text-center">
-                    <input type="checkbox" name="widal[]" value="BO">
-                  </td>
-                  <td>BO</td>
-                  <td class="text-center">BH</td>
-                </tr>
-                <tr>
-                  <td class="text-center">
-                    <input type="checkbox" name="widal[]" value="CO">
-                  </td>
-                  <td>CO</td>
-                  <td class="text-center">CH</td>
-                </tr>
-              </tbody>
-            </table>
 
-            <!-- Tabel Hasil dan Paraf -->
-            <table class="table table-bordered table-sm">
-              <thead class="table-light text-center">
-                <tr>
-                  <th style="width: 100px;">Hasil</th>
-                  <th style="width: 100px;">Paraf</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><input type="text" name="hasil_widal" class="form-control form-control-sm text-center"></td>
-                  <td><input type="text" name="paraf_widal" class="form-control form-control-sm text-center"></td>
-                </tr>
+                <!-- Baris Golongan Darah -->
+                <?php
+                $golongan = ['O', 'AO', 'BO', 'CO', 'H', 'AH', 'BH', 'CH'];
+                foreach ($golongan as $i => $item): ?>
+                  <tr>
+                    <td></td>
+                    <td><?= $item ?></td>
+                    <td><input type="text" name="hasil_<?= strtolower($item) ?>" class="form-control form-control-sm text-center"></td>
+                    <td><input type="text" name="paraf_<?= strtolower($item) ?>" class="form-control form-control-sm text-center"></td>
+                  </tr>
+                <?php endforeach; ?>
               </tbody>
             </table>
           </div> <!-- col-md-5 -->
@@ -839,19 +823,19 @@
     </table>
   </div>
 
-  <!-- LAIN-LAIN -->
-  <div class="col-md-4 mb-4">
-  <table class="table table-bordered table-md">
-    <thead>
-      <tr><th class="text-center bg-light">Lain-lain</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><input type="text" name="lain1" class="form-control form-control-sm w-100 mb-2" placeholder="Keterangan pemeriksaan lain"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <!-- LAIN-LAIN -->
+    <div class="col-md-4 mb-4">
+    <table class="table table-bordered table-md">
+      <thead>
+        <tr><th class="text-center bg-light">Lain-lain</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" name="lain1" class="form-control form-control-sm w-100 mb-2" placeholder="Keterangan pemeriksaan lain"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <hr class="my-4">
           <div class="row">
@@ -928,16 +912,13 @@
                         <input class="form-check-input" type="radio" name="metode_pembayaran" id="lainnya" value="Lain-lain">
                         <label class="form-check-label" for="lainnya">Lain-lain</label>
                     </div>
-
                     <input type="text" name="metode_lainnya" id="metode_lainnya" class="form-control mt-2" placeholder="Tuliskan metode lain" style="display: none;">
                 </div>
-
                 <label class="form-text">Diisi Petugas Pendaftaran <span class="text-danger">*</span></label>
             </div>
         </div>
     </div>
 </div>
-
         <!-- Script untuk toggle input lain-lain -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {
