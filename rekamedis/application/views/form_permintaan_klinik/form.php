@@ -202,9 +202,12 @@
     </div>
 </div>
 
-      <hr class="my-4">
-    <div class="card-header bg-secondary text-white fw-bold mb-0" style="font-weight: 800">
-                Jenis Pemeriksaan
+<div class="card shadow mb-4">
+    <div class="card-header bg-secondary text-white ">
+        <h5 class="mb-0" style="font-weight: 800">Jenis Pemeriksaan</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
             </div>
   <div class="row justify-content-center">
   <!-- HEMATOLOGI -->
@@ -770,6 +773,7 @@
       </div> <!-- card-body -->
     </div> <!-- card -->
   </div> <!-- col -->
+                
 
 
   <!-- TOKSIKOLOGI -->
@@ -824,19 +828,23 @@
   </div>
 
     <!-- LAIN-LAIN -->
-    <div class="col-md-4 mb-4">
-    <table class="table table-bordered table-md">
-      <thead>
-        <tr><th class="text-center bg-light">Lain-lain</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><input type="text" name="lain1" class="form-control form-control-sm w-100 mb-2" placeholder="Keterangan pemeriksaan lain"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="col-md-12 mb-4">
+  <table class="table table-bordered table-md">
+    <thead>
+      <tr><th class="text-center bg-light">Lain-lain</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <textarea name="lain1" class="form-control form-control-sm" rows="4" placeholder="Keterangan pemeriksaan lain"></textarea>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+</div>
+</div>
+                </div>
 <hr class="my-4">
           <div class="row">
     <!-- Kelayakan, Volume, Biaya -->
@@ -977,7 +985,7 @@
         }
         </script>
             <div class="text-end">
-    <button type="submit" class="btn btn-primary">Simpan</button>
+    <button type="submit" class="btn btn-info">Simpan</button>
     <a href="<?= site_url('form_permintaan_klinik') ?>" class="btn btn-secondary">Kembali</a>
       </div>
         </div>
