@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Put your installation directory here:
+    # If your URL is www.example.com/rekamedis_1/, use /rekamedis_1/
+    RewriteBase /rekamedis/
+    
+    # Do not enable rewriting for files or directories that exist
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # For CI3
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>

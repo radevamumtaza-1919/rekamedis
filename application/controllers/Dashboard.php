@@ -1,0 +1,104 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Dashboard extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('url');
+        $this->load->library('session');
+        $this->load->database();
+
+        // Cek login
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('auth/login');
+        }
+    }
+
+    public function index()
+    {
+        $data['title'] = 'Dashboard';
+        $today = date('Y-m-d');
+
+        // Menggunakan UNION agar pasien yang terdata di Klinik dan RM pada hari yang sama hanya dihitung 1 kali[cite: 2, 5]
+        $query = $this->db->query("
+            SELECT COUNT(*) as total FROM (
+                SELECT nik FROM form_permintaan_klinik 
+                WHERE DATE(tgl_form) = '$today' AND nik IS NOT NULL AND nik != ''
+                UNION
+                SELECT p.nik FROM kunjungan_rm k 
+                JOIN pasien p ON k.no_rm = p.no_rm 
+                WHERE DATE(k.tanggal_kunjungan) = '$today' AND p.nik IS NOT NULL AND p.nik != ''
+            ) as total_unik
+        ");
+
+        $data['total_pasien'] = $query->row()->total;
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/sidebar');
+        $this->load->view('dashboard', $data);
+        $this->load->view('layout/footer');
+    }
+
+    public function get_demographic_data()
+    {
+        $today = date('Y-m-d');
+
+        // Query untuk mendapatkan distribusi gender dari pasien unik hari ini
+        $query = $this->db->query("
+            SELECT gender, COUNT(*) as jumlah FROM (
+                SELECT gender, nik FROM form_permintaan_klinik 
+                WHERE DATE(tgl_form) = '$today' AND gender IS NOT NULL AND gender != ''
+                UNION
+                SELECT p.gender, p.nik FROM kunjungan_rm k 
+                JOIN pasien p ON k.no_rm = p.no_rm 
+                WHERE DATE(k.tanggal_kunjungan) = '$today' AND p.gender IS NOT NULL AND p.gender != ''
+            ) as pasien_unik 
+            GROUP BY gender
+        ");
+
+        $counts = ['Laki-laki' => 0, 'Perempuan' => 0];
+        foreach ($query->result() as $row) {
+            if ($row->gender == 'Laki-laki') {
+                $counts['Laki-laki'] = (int) $row->jumlah;
+            } else if ($row->gender == 'Perempuan') {
+                $counts['Perempuan'] = (int) $row->jumlah;
+            }
+        }
+
+        echo json_encode([
+            'labels' => ['Laki-laki', 'Perempuan'],
+            'data' => [$counts['Laki-laki'], $counts['Perempuan']]
+        ]);
+    }
+
+    public function get_monthly_kunjungan_data()
+    {
+        $tahun = date('Y');
+        // Inisialisasi data 12 bulan dengan nilai 0
+        $kunjungan_data = array_fill(1, 12, 0);
+
+        // Kueri gabungan: Menghitung pasien unik berdasarkan NIK per bulan[cite: 2, 4, 5]
+        $query = $this->db->query("
+            SELECT bulan, COUNT(*) as jumlah FROM (
+                SELECT MONTH(tgl_form) as bulan, nik FROM form_permintaan_klinik 
+                WHERE YEAR(tgl_form) = '$tahun' AND nik IS NOT NULL AND nik != ''
+                UNION
+                SELECT MONTH(k.tanggal_kunjungan) as bulan, p.nik FROM kunjungan_rm k 
+                JOIN pasien p ON k.no_rm = p.no_rm 
+                WHERE YEAR(k.tanggal_kunjungan) = '$tahun' AND p.nik IS NOT NULL AND p.nik != ''
+            ) as gabungan_bulanan 
+            GROUP BY bulan
+        ");
+
+        foreach ($query->result() as $row) {
+            $kunjungan_data[(int)$row->bulan] = (int)$row->jumlah;
+        }
+
+        echo json_encode([
+            'labels' => ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
+            'data' => array_values($kunjungan_data)
+        ]);
+    }
+}
