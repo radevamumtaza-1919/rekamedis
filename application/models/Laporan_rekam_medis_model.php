@@ -6,11 +6,11 @@ class Laporan_rekam_medis_model extends CI_Model
 
     public function get_daily_registrations()
     {
-        $sql = "SELECT tanggal, COUNT(DISTINCT id) as total_pasien 
+        $sql = "SELECT tanggal, COUNT(DISTINCT id_pasien) as total_pasien 
                 FROM (
-                    SELECT DATE(created_at) as tanggal, id FROM pasien_rm WHERE created_at IS NOT NULL
+                    SELECT DATE(created_at) as tanggal, id_pasien FROM pasien WHERE created_at IS NOT NULL
                     UNION
-                    SELECT DATE(updated_at) as tanggal, id FROM pasien_rm WHERE updated_at IS NOT NULL
+                    SELECT DATE(updated_at) as tanggal, id_pasien FROM pasien WHERE updated_at IS NOT NULL
                 ) as combined
                 GROUP BY tanggal
                 ORDER BY tanggal DESC";
@@ -19,7 +19,7 @@ class Laporan_rekam_medis_model extends CI_Model
 
     public function get_patients_by_date($date)
     {
-        $sql = "SELECT DISTINCT * FROM pasien_rm 
+        $sql = "SELECT DISTINCT * FROM pasien 
                 WHERE DATE(created_at) = ? OR DATE(updated_at) = ?
                 ORDER BY COALESCE(updated_at, created_at) DESC";
         return $this->db->query($sql, [$date, $date])->result();
@@ -37,9 +37,9 @@ class Laporan_rekam_medis_model extends CI_Model
 
     public function get_visits_by_date($date)
     {
-        $this->db->select('kunjungan_rm.*, pasien_rm.nama_pasien, pasien_rm.no_rm');
+        $this->db->select('kunjungan_rm.*, pasien.nama_pasien, pasien.no_rm');
         $this->db->from('kunjungan_rm');
-        $this->db->join('pasien_rm', 'pasien_rm.no_rm = kunjungan_rm.no_rm', 'left');
+        $this->db->join('pasien', 'pasien.no_rm = kunjungan_rm.no_rm', 'left');
         $this->db->where('DATE(kunjungan_rm.tanggal_kunjungan)', $date);
         $this->db->order_by('kunjungan_rm.tanggal_kunjungan', 'DESC');
         return $this->db->get()->result();
