@@ -14,10 +14,12 @@ class Laporan_uji_klinik extends CI_Controller {
         $data['title'] = 'Laporan Uji Klinik';
 
         // Ambil data form yang SUDAH diinput hasilnya
-        $this->db->select('f.id, f.no_register, f.nama_pasien, f.nik, f.gender, f.tgl_form, f.nama_dokter');
+        $this->db->select('f.id, p.no_register, p.nama_pasien, p.nik, p.gender, f.tgl_form, f.nama_dokter');
         $this->db->from('form_permintaan_klinik f');
+        $this->db->join('pasien p', 'p.id_pasien = f.id_pasien', 'left');
         $this->db->join('form_permintaan_klinik_detail d', 'f.id = d.id_form');
         $this->db->where('d.hasil IS NOT NULL');
+        $this->db->where('DATE(f.tgl_form)', date('Y-m-d')); // Filter perhari saja
         $this->db->group_by('f.id');
         $this->db->order_by('f.tgl_form', 'DESC');
         $data['laporan'] = $this->db->get()->result();
@@ -34,7 +36,7 @@ class Laporan_uji_klinik extends CI_Controller {
     $data['title'] = 'Detail Laporan Uji Klinik';
 
     // Ambil data form
-    $data['form'] = $this->db->get_where('form_permintaan_klinik', ['id' => $id_form])->row();
+    $data['form'] = $this->Form_permintaan_klinik_model->get_by_id($id_form);
 
     // Ambil hasil pemeriksaan
     $this->db->select('d.*, j.satuan, j.nilai_rujukan, j.metode');
@@ -67,7 +69,7 @@ class Laporan_uji_klinik extends CI_Controller {
     require_once FCPATH . 'vendor/autoload.php';
     $mpdf = new \Mpdf\Mpdf();
 
-    $form = $this->db->get_where('form_permintaan_klinik', ['id' => $id_form])->row();
+    $form = $this->Form_permintaan_klinik_model->get_by_id($id_form);
     $pengambilan = $this->db->select('pk.*, ps.nama_petugas')
                         ->from('form_pengambilan_klinik pk')
                         ->join('petugas_sampel_klinik ps', 'pk.id_petugas = ps.id_petugas', 'left')

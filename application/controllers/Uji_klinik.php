@@ -8,28 +8,12 @@ class Uji_klinik extends CI_Controller {
         $this->load->model('Uji_klinik_model');
         $this->load->model('Form_permintaan_klinik_model');
         $this->load->database();
+        
         $this->load->dbforge();
-
-        // Cek dan tambahkan kolom yang mungkin hilang jika baru pindah database
-        if ($this->db->table_exists('form_permintaan_klinik')) {
-            $fields_to_add = [];
-            
-            if (!$this->db->field_exists('nik', 'form_permintaan_klinik')) {
-                $fields_to_add['nik'] = ['type' => 'VARCHAR', 'constraint' => '50', 'null' => TRUE, 'after' => 'no_register'];
-            }
-            if (!$this->db->field_exists('nama_pasien', 'form_permintaan_klinik')) {
-                $fields_to_add['nama_pasien'] = ['type' => 'VARCHAR', 'constraint' => '100', 'null' => TRUE, 'after' => 'no_register'];
-            }
-            if (!$this->db->field_exists('gender', 'form_permintaan_klinik')) {
-                $fields_to_add['gender'] = ['type' => 'ENUM("Laki-laki","Perempuan")', 'null' => TRUE, 'after' => 'nama_pasien'];
-            }
-            if (!$this->db->field_exists('tgl_lahir', 'form_permintaan_klinik')) {
-                $fields_to_add['tgl_lahir'] = ['type' => 'DATE', 'null' => TRUE, 'after' => 'gender'];
-            }
-
-            if (!empty($fields_to_add)) {
-                $this->dbforge->add_column('form_permintaan_klinik', $fields_to_add);
-            }
+        if (!$this->db->field_exists('id_kunjungan', 'form_pengambilan_klinik')) {
+            $this->dbforge->add_column('form_pengambilan_klinik', [
+                'id_kunjungan' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE]
+            ]);
         }
     }
 
@@ -93,8 +77,13 @@ class Uji_klinik extends CI_Controller {
     $id_petugas = $this->input->post('id_petugas');
     $petugas = $this->db->get_where('petugas_sampel_klinik', ['id_petugas' => $id_petugas])->row();
 
+    // Ambil id_kunjungan dari form_permintaan_klinik
+    $form_klinik = $this->db->get_where('form_permintaan_klinik', ['id' => $id_form])->row();
+    $id_kunjungan = $form_klinik ? $form_klinik->kunjungan_id : null;
+
     $pengambilan = [
         'id_form' => $id_form,
+        'id_kunjungan' => $id_kunjungan,
         'id_petugas' => $id_petugas,
         'petugas_pengambilan' => $petugas ? $petugas->nama_petugas : null,
         'tgl_jam_pengambilan' => $this->input->post('tgl_jam_pengambilan'),

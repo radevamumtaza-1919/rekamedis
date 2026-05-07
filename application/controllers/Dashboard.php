@@ -24,8 +24,9 @@ class Dashboard extends CI_Controller
         // Menggunakan UNION agar pasien yang terdata di Klinik dan RM pada hari yang sama hanya dihitung 1 kali[cite: 2, 5]
         $query = $this->db->query("
             SELECT COUNT(*) as total FROM (
-                SELECT nik FROM form_permintaan_klinik 
-                WHERE DATE(tgl_form) = '$today' AND nik IS NOT NULL AND nik != ''
+                SELECT p.nik FROM form_permintaan_klinik f
+                JOIN pasien p ON f.id_pasien = p.id_pasien
+                WHERE DATE(f.tgl_form) = '$today' AND p.nik IS NOT NULL AND p.nik != ''
                 UNION
                 SELECT p.nik FROM kunjungan_rm k 
                 JOIN pasien p ON k.no_rm = p.no_rm 
@@ -48,8 +49,9 @@ class Dashboard extends CI_Controller
         // Query untuk mendapatkan distribusi gender dari pasien unik hari ini
         $query = $this->db->query("
             SELECT gender, COUNT(*) as jumlah FROM (
-                SELECT gender, nik FROM form_permintaan_klinik 
-                WHERE DATE(tgl_form) = '$today' AND gender IS NOT NULL AND gender != ''
+                SELECT p.gender, p.nik FROM form_permintaan_klinik f
+                JOIN pasien p ON f.id_pasien = p.id_pasien
+                WHERE DATE(f.tgl_form) = '$today' AND p.gender IS NOT NULL AND p.gender != ''
                 UNION
                 SELECT p.gender, p.nik FROM kunjungan_rm k 
                 JOIN pasien p ON k.no_rm = p.no_rm 
@@ -82,8 +84,9 @@ class Dashboard extends CI_Controller
         // Kueri gabungan: Menghitung pasien unik berdasarkan NIK per bulan[cite: 2, 4, 5]
         $query = $this->db->query("
             SELECT bulan, COUNT(*) as jumlah FROM (
-                SELECT MONTH(tgl_form) as bulan, nik FROM form_permintaan_klinik 
-                WHERE YEAR(tgl_form) = '$tahun' AND nik IS NOT NULL AND nik != ''
+                SELECT MONTH(f.tgl_form) as bulan, p.nik FROM form_permintaan_klinik f
+                JOIN pasien p ON f.id_pasien = p.id_pasien
+                WHERE YEAR(f.tgl_form) = '$tahun' AND p.nik IS NOT NULL AND p.nik != ''
                 UNION
                 SELECT MONTH(k.tanggal_kunjungan) as bulan, p.nik FROM kunjungan_rm k 
                 JOIN pasien p ON k.no_rm = p.no_rm 

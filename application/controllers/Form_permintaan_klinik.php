@@ -10,74 +10,12 @@ class Form_permintaan_klinik extends CI_Controller {
         $this->load->library('session');
         $this->load->model('Petugas_verifikasi_model');
         $this->load->model('Petugas_validasi_model');
-        $this->load->dbforge();
-        if ($this->db->table_exists('form_permintaan_klinik')) {
-            $fields_to_add = [];
-            
-            if (!$this->db->field_exists('id_pasien', 'form_permintaan_klinik')) {
-                $fields_to_add['id_pasien'] = ['type' => 'INT', 'constraint' => 11, 'null' => TRUE, 'after' => 'no_rm'];
-            }
-            if (!$this->db->field_exists('nik', 'form_permintaan_klinik')) {
-                $fields_to_add['nik'] = ['type' => 'VARCHAR', 'constraint' => '50', 'null' => TRUE, 'after' => 'no_register'];
-            }
-            if (!$this->db->field_exists('nama_pasien', 'form_permintaan_klinik')) {
-                $fields_to_add['nama_pasien'] = ['type' => 'VARCHAR', 'constraint' => '100', 'null' => TRUE, 'after' => 'no_register'];
-            }
-            if (!$this->db->field_exists('gender', 'form_permintaan_klinik')) {
-                $fields_to_add['gender'] = ['type' => 'ENUM("Laki-laki","Perempuan")', 'null' => TRUE, 'after' => 'nama_pasien'];
-            }
-            if (!$this->db->field_exists('tgl_lahir', 'form_permintaan_klinik')) {
-                $fields_to_add['tgl_lahir'] = ['type' => 'DATE', 'null' => TRUE, 'after' => 'gender'];
-            }
-            if (!$this->db->field_exists('kunjungan_id', 'form_permintaan_klinik')) {
-                $fields_to_add['kunjungan_id'] = ['type' => 'INT', 'constraint' => 11, 'null' => TRUE, 'after' => 'id_pasien'];
-            }
-
-            if (!empty($fields_to_add)) {
-                $this->dbforge->add_column('form_permintaan_klinik', $fields_to_add);
-            }
-        }
         
-        // MIGRATION DETAIL FORM
-        if ($this->db->table_exists('form_permintaan_klinik_detail')) {
-            if (!$this->db->field_exists('id_kunjungan', 'form_permintaan_klinik_detail')) {
-                $this->dbforge->add_column('form_permintaan_klinik_detail', [
-                    'id_kunjungan' => ['type' => 'INT', 'constraint' => 11, 'null' => TRUE, 'after' => 'id_form']
-                ]);
-            }
-        }
-
-        // --- MIGRATION PASIEN ---
-        if ($this->db->table_exists('pasien')) {
-            $pasien_fields = [];
-            
-            // Perbaiki penamaan jika perlu (tapi kita ikuti yang ada di db saja, kita sesuaikan kodenya)
-            // Namun kolom yang BENAR-BENAR hilang harus ditambah
-            if (!$this->db->field_exists('status_pasien', 'pasien')) {
-                $pasien_fields['status_pasien'] = ['type' => 'ENUM("Rujukan","Mandiri")', 'default' => 'Mandiri', 'null' => TRUE];
-            }
-            if (!$this->db->field_exists('id_dokter_pengirim', 'pasien')) {
-                $pasien_fields['id_dokter_pengirim'] = ['type' => 'INT', 'constraint' => 11, 'null' => TRUE];
-            }
-            if (!$this->db->field_exists('diagnosa', 'pasien')) {
-                $pasien_fields['diagnosa'] = ['type' => 'TEXT', 'null' => TRUE];
-            }
-            if (!$this->db->field_exists('obat', 'pasien')) {
-                $pasien_fields['obat'] = ['type' => 'TEXT', 'null' => TRUE];
-            }
-            if (!$this->db->field_exists('no_register', 'pasien')) {
-                $pasien_fields['no_register'] = ['type' => 'VARCHAR', 'constraint' => 50, 'null' => TRUE];
-            }
-            if (!$this->db->field_exists('petugas_pendaftaran', 'pasien')) {
-                $pasien_fields['petugas_pendaftaran'] = ['type' => 'VARCHAR', 'constraint' => 100, 'null' => TRUE];
-            }
-            if (!$this->db->field_exists('updated_at', 'pasien')) {
-                $pasien_fields['updated_at'] = ['type' => 'DATETIME', 'null' => TRUE];
-            }
-
-            if (!empty($pasien_fields)) {
-                $this->dbforge->add_column('pasien', $pasien_fields);
-            }
+        $this->load->dbforge();
+        if (!$this->db->field_exists('id_kunjungan', 'form_permintaan_klinik_detail')) {
+            $this->dbforge->add_column('form_permintaan_klinik_detail', [
+                'id_kunjungan' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE]
+            ]);
         }
     }
 
@@ -250,12 +188,17 @@ class Form_permintaan_klinik extends CI_Controller {
     // Auto-assign to latest Kunjungan if empty
     if (empty($post['kunjungan_id']) && !empty($no_rm)) {
         $this->db->where('no_rm', $no_rm);
+        $this->db->where('DATE(tanggal_kunjungan)', date('Y-m-d'));
         $this->db->order_by('id', 'DESC');
         $kunjungan = $this->db->get('kunjungan_rm')->row();
         if ($kunjungan) {
             $post['kunjungan_id'] = $kunjungan->id;
+        } else {
+            $post['kunjungan_id'] = NULL;
         }
-    }    // 5️⃣ Simpan ke tabel form_permintaan_klinik (via model)
+    }
+
+    // 5️⃣ Simpan ke tabel form_permintaan_klinik (via model)
     $id_form = $this->Form_permintaan_klinik_model->simpan_form($post);
 
     // 6️⃣ Simpan detail pemeriksaan yang dicentang
@@ -378,17 +321,7 @@ $this->db->insert('pembayaran', $data_bayar);
     // === Siapkan data utama (semua dalam satu tabel) ===
     $data_update = [
         // IDENTITAS PASIEN
-        'no_register'       => $post['no_register'] ?? '',
         'no_rm'             => $post['no_rm'] ?? '',
-        'nama_pasien'       => $post['nama_pasien'] ?? '',
-        'nik'               => $post['nik'] ?? '',
-        'tgl_lahir'         => $post['tgl_lahir'] ?? null,
-        'umur'              => $this->input->post('umur', TRUE),
-        'gender'            => $post['gender'] ?? '',
-        'agama'             => $post['agama'] ?? '',
-        'status_nikah'      => $post['status_nikah'] ?? '',
-        'pendidikan'        => $post['pendidikan'] ?? '',
-        'pekerjaan'         => $post['pekerjaan'] ?? '',
 
         // INFORMASI KLINIS
         'diagnosa_klinis'   => $post['diagnosa_klinis'] ?? '',
@@ -493,7 +426,7 @@ $this->db->insert('pembayaran', $data_bayar);
     $this->db->like('no_register', $prefix, 'before');
     $this->db->order_by('id', 'DESC');
     $this->db->limit(1);
-    $last = $this->db->get('form_permintaan_klinik')->row();
+    $last = $this->db->get('pasien')->row();
 
     $last_number = 1;
 
@@ -518,7 +451,7 @@ $this->db->insert('pembayaran', $data_bayar);
     public function delete($id)
 {
     // Ambil data form_permintaan_klinik berdasarkan ID
-    $form = $this->db->get_where('form_permintaan_klinik', ['id' => $id])->row();
+    $form = $this->Form_permintaan_klinik_model->get_by_id($id);
 
     if (!$form) {
         $this->session->set_flashdata('error', 'Data tidak ditemukan.');

@@ -35,12 +35,12 @@ class Uji_rekam_medis extends CI_Controller
         $this->load->view('layout/footer');
     }
 
-    public function detail($nik)
+    public function detail($id_pasien)
     {
         $this->create_table_kunjungan_if_not_exists();
 
         $data['title'] = 'Detail Kunjungan Pasien SOAP';
-        $data['pasien'] = $this->Form_permintaan_rm_model->get_by_nik($nik);
+        $data['pasien'] = $this->Form_permintaan_rm_model->get_by_nik($id_pasien);
 
         if (!$data['pasien']) {
             $this->session->set_flashdata('error', 'Data tidak ditemukan.');
@@ -59,9 +59,9 @@ class Uji_rekam_medis extends CI_Controller
         $this->load->view('layout/footer');
     }
 
-    public function tambah_kunjungan($nik)
+    public function tambah_kunjungan($id_pasien)
     {
-        $pasien = $this->Form_permintaan_rm_model->get_by_nik($nik);
+        $pasien = $this->Form_permintaan_rm_model->get_by_nik($id_pasien);
 
         if (!$pasien) {
             $this->session->set_flashdata('error', 'Data pasien tidak ditemukan.');
@@ -283,24 +283,24 @@ class Uji_rekam_medis extends CI_Controller
     }
     // --- AKHIR FITUR SOAP ---
 
-    public function batal_kunjungan($id, $nik, $redirect_to = 'detail')
+    public function batal_kunjungan($id, $id_pasien, $redirect_to = 'detail')
     {
 
         $this->Kunjungan_rm_model->delete($id);
         $this->session->set_flashdata('success', 'Aksi dibatalkan. Data riwayat kunjungan yang belum selesai telah dihapus.');
 
         if ($redirect_to == 'tambah') {
-            redirect('uji_rekam_medis/tambah_kunjungan/' . $nik);
+            redirect('uji_rekam_medis/tambah_kunjungan/' . $id_pasien);
         } else {
-            redirect('uji_rekam_medis/detail/' . $nik);
+            redirect('uji_rekam_medis/detail/' . $id_pasien);
         }
     }
 
-    public function hapus_kunjungan($id, $nik)
+    public function hapus_kunjungan($id, $id_pasien)
     {
         $this->Kunjungan_rm_model->delete($id);
         $this->session->set_flashdata('success', 'Data Kunjungan berhasil dihapus.');
-        redirect('uji_rekam_medis/detail/' . $nik);
+        redirect('uji_rekam_medis/detail/' . $id_pasien);
     }
 
     private function create_table_kunjungan_if_not_exists()
@@ -378,13 +378,6 @@ class Uji_rekam_medis extends CI_Controller
             }
         }
 
-        // Migrate form_permintaan_klinik as well since we query it from this controller
-        if ($this->db->table_exists('form_permintaan_klinik')) {
-            if (!$this->db->field_exists('kunjungan_id', 'form_permintaan_klinik')) {
-                $fields_to_add['kunjungan_id'] = ['type' => 'INT', 'constraint' => 11, 'null' => TRUE, 'after' => 'id_pasien'];
-                $this->dbforge->add_column('form_permintaan_klinik', $fields_to_add);
-            }
-        }
     }
 
     // tampilan baru untuk kunjungan pasien
