@@ -97,10 +97,10 @@ class Form_permintaan_rm extends CI_Controller
         }
     }
 
-    public function edit($nik)
+    public function edit($id_pasien)
     {
         $data['title'] = 'Edit Data Pasien';
-        $data['pasien'] = $this->Form_permintaan_rm_model->get_by_nik($nik);
+        $data['pasien'] = $this->Form_permintaan_rm_model->get_by_nik($id_pasien);
 
         if (!$data['pasien']) {
             $this->session->set_flashdata('error', 'Data tidak ditemukan.');
@@ -113,13 +113,13 @@ class Form_permintaan_rm extends CI_Controller
         $this->load->view('layout/footer');
     }
 
-    public function update($nik)
+    public function update($id_pasien)
     {
         $post = $this->input->post();
 
         if (!isset($post['nik']) || !ctype_digit($post['nik'])) {
             $this->session->set_flashdata('error', 'Update dibatalkan. Format NIK wajib hanya menggunakan angka (numerik).');
-            redirect('form_permintaan_rm/edit/' . $nik);
+            redirect('form_permintaan_rm/edit/' . $id_pasien);
             return;
         }
 
@@ -140,15 +140,15 @@ class Form_permintaan_rm extends CI_Controller
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
-        $this->Form_permintaan_rm_model->update($nik, $data_update);
+        $this->Form_permintaan_rm_model->update($id_pasien, $data_update);
         $this->session->set_flashdata('success', 'Data pasien Rekam Medis berhasil diperbarui.');
         redirect('form_permintaan_rm');
     }
 
-    public function detail($nik)
+    public function detail($id_pasien)
     {
         $data['title'] = 'Detail Pasien Rekam Medis';
-        $data['pasien'] = $this->Form_permintaan_rm_model->get_by_nik($nik);
+        $data['pasien'] = $this->Form_permintaan_rm_model->get_by_nik($id_pasien);
 
         if (!$data['pasien']) {
             $this->session->set_flashdata('error', 'Data tidak ditemukan.');

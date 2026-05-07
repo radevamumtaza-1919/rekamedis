@@ -9,8 +9,9 @@ class Laporan_uji_klinik_model extends CI_Model {
     }
 
     public function get_all() {
-        $this->db->select('f.id, f.no_register, f.nama_pasien, f.nik, f.gender, f.tgl_permintaan AS tgl_form, f.nama_dokter');
+        $this->db->select('f.id, p.no_register, p.nama_pasien, p.nik, p.gender, f.tgl_permintaan AS tgl_form, f.nama_dokter');
         $this->db->from('form_permintaan_klinik f');
+        $this->db->join('pasien p', 'p.id_pasien = f.id_pasien', 'left');
         $this->db->join('form_permintaan_klinik_detail d', 'd.id_form = f.id', 'left');
         $this->db->where('d.hasil IS NOT NULL'); // hanya yang sudah ada hasil pemeriksaan
         $this->db->group_by('f.id');
@@ -25,8 +26,9 @@ class Laporan_uji_klinik_model extends CI_Model {
      */
     public function get_data_hasil()
 {
-    $this->db->select('f.id, f.no_register, f.nama_pasien, f.nik, f.gender, f.tgl_form, f.nama_dokter');
+    $this->db->select('f.id, p.no_register, p.nama_pasien, p.nik, p.gender, f.tgl_form, f.nama_dokter');
     $this->db->from('form_permintaan_klinik f');
+    $this->db->join('pasien p', 'p.id_pasien = f.id_pasien', 'left');
     $this->db->join('form_permintaan_klinik_detail d', 'd.id_form = f.id', 'left');
     $this->db->where('d.hasil IS NOT NULL');
     $this->db->group_by('f.id');

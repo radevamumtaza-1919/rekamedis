@@ -25,11 +25,11 @@ class Hasil_laporan extends CI_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function hasil_lab($kunjungan_id) {
+    public function hasil_lab($id_pasien) {
         $data['title'] = 'Laporan Hasil Uji Laboratorium & SOAP';
 
         // Gunakan query Multi-Tabel
-        $results = $this->Hasil_laporan_model->get_detail_hasil_uji($kunjungan_id);
+        $results = $this->Hasil_laporan_model->get_detail_hasil_uji($id_pasien);
 
         if (empty($results)) {
             $this->session->set_flashdata('error', 'Data tidak ditemukan untuk kunjungan ini.');
