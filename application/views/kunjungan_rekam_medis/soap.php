@@ -30,12 +30,11 @@
                     <div class="card-body bg-white p-4">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label text-dark fw-bold" style="font-size: 14px;">Tanggal & Waktu
-                                    Kunjungan <span class="text-danger">*</span></label>
+                                <label class="form-label text-dark fw-bold" style="font-size: 14px;">Tanggal Kunjungan <span class="text-danger">*</span></label>
                                 <?php
-                                $tgl_visit = isset($kunjungan->tanggal_kunjungan) && !empty($kunjungan->tanggal_kunjungan) ? date('Y-m-d\TH:i', strtotime($kunjungan->tanggal_kunjungan)) : '';
+                                $tgl_visit = isset($kunjungan->tanggal_kunjungan) && !empty($kunjungan->tanggal_kunjungan) ? date('Y-m-d', strtotime($kunjungan->tanggal_kunjungan)) : '';
                                 ?>
-                                <input type="datetime-local" class="form-control" name="tanggal_kunjungan"
+                                <input type="date" class="form-control" name="tanggal_kunjungan"
                                     id="tanggal_kunjungan" value="<?= $tgl_visit ?>" required>
                             </div>
                         </div>
@@ -334,7 +333,7 @@
             let dateInput = document.getElementById('tanggal_kunjungan');
             let now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            dateInput.value = now.toISOString().slice(0, 16);
+            dateInput.value = now.toISOString().slice(0, 10);
         <?php endif; ?>
 
         // Tampilkan/Sembunyikan hasil live search
