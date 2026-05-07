@@ -5,8 +5,9 @@ class Uji_klinik_model extends CI_Model {
 
     // Ambil semua formulir yang BELUM diinput hasilnya
     public function get_formulir_belum_input() {
-        $this->db->select('f.id, f.no_register, f.nik, f.nama_pasien, f.gender, f.tgl_form, f.nama_dokter');
+        $this->db->select('f.id, p.no_register, p.nik, p.nama_pasien, p.gender, f.tgl_form, f.nama_dokter');
         $this->db->from('form_permintaan_klinik f');
+        $this->db->join('pasien p', 'p.id_pasien = f.id_pasien', 'left');
 
         // Gabung ke detail pemeriksaan (form_permintaan_klinik_detail)
         $this->db->join('(SELECT id_form, COUNT(hasil) AS total_hasil 
@@ -23,8 +24,9 @@ class Uji_klinik_model extends CI_Model {
 
     // Ambil formulir yang BELUM diinput hasilnya UNTUK HARI INI
     public function get_today_formulir_belum_input() {
-        $this->db->select('f.id, f.no_register, f.nik, f.nama_pasien, f.gender, f.tgl_form, f.nama_dokter');
+        $this->db->select('f.id, p.no_register, p.nik, p.nama_pasien, p.gender, f.tgl_form, f.nama_dokter');
         $this->db->from('form_permintaan_klinik f');
+        $this->db->join('pasien p', 'p.id_pasien = f.id_pasien', 'left');
 
         // Gabung ke detail pemeriksaan
         $this->db->join('(SELECT id_form, COUNT(hasil) AS total_hasil 
