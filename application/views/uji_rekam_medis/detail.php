@@ -100,7 +100,7 @@
                 <div class="card-header bg-light border-0 py-3 d-flex align-items-center justify-content-between w-100">
                     <h5 class="mb-0 text-secondary" style="font-weight: 500;">Riwayat Kunjungan</h5>
                     <div>
-                        <a href="<?= site_url('uji_rekam_medis/tambah_kunjungan/' . $pasien->nik) ?>"
+                        <a href="<?= site_url('uji_rekam_medis/tambah_kunjungan/' . $pasien->id_pasien) ?>"
                             class="btn btn-primary btn-sm rounded-1 px-3">
                             <i class="fas fa-plus me-1"></i> Tambah Kunjungan
                         </a>
@@ -180,7 +180,7 @@
                                                             </a>
                                                         <?php endif; ?>
                                                         
-                                                        <a href="<?= site_url('uji_rekam_medis/hapus_kunjungan/' . $k->id . '/' . $pasien->nik) ?>" class="btn btn-sm btn-danger w-50 shadow-sm" style="font-size:12px; font-weight:500;" onclick="return confirm('Hapus data kunjungan ini?')">
+                                                        <a href="<?= site_url('uji_rekam_medis/hapus_kunjungan/' . $k->id . '/' . $pasien->id_pasien) ?>" class="btn btn-sm btn-danger w-50 shadow-sm" style="font-size:12px; font-weight:500;" onclick="return confirm('Hapus data kunjungan ini?')">
                                                             <i class="fas fa-trash me-1"></i> Hapus
                                                         </a>
                                                     </div>

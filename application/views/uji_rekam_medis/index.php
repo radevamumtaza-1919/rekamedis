@@ -69,11 +69,11 @@
                                         </td>
                                         <td class="text-center">
                                                 <div class="d-flex gap-2 justify-content-center">
-                                                <a href="<?= site_url('uji_rekam_medis/detail/' . $p->nik) ?>"
+                                                <a href="<?= site_url('uji_rekam_medis/detail/' . $p->id_pasien) ?>"
                                                     class="btn btn-sm btn-info text-white" title="Pengisian Detail Kunjungan">
                                                     <i class="fas fa-eye me-1"></i>Lihat Kunjungan
                                                 </a>
-                                                <a href="<?= site_url('uji_rekam_medis/tambah_kunjungan/' . $p->nik) ?>"
+                                                <a href="<?= site_url('uji_rekam_medis/tambah_kunjungan/' . $p->id_pasien) ?>"
                                                     class="btn btn-sm btn-primary text-white" title="Pengisian Detail Kunjungan">
                                                     <i class="fas fa-plus me-1"></i> Tambah SOAP
                                                 </a>

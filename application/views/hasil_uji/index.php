@@ -44,6 +44,7 @@
                                 <th width="20%">Nama Pasien</th>
                                 <th width="15%">NIK</th>
                                 <th width="10%">Jenis Kelamin</th>
+                                <th width="10%">detail laporan uji lab & SOAP</th>
                                 <th width="15%" class="text-center">waktu pendaftaran</th>
                                 <th width="10%" class="text-center">Aksi</th>
                             </tr>
@@ -57,10 +58,26 @@
                                         <td><?= htmlspecialchars($p->nama_pasien) ?></td>
                                         <td><?= htmlspecialchars($p->nik) ?></td>
                                         <td><?= ($p->gender == 'Laki-laki') ? 'L' : 'P' ?></td>
-                                        <td><?= htmlspecialchars($p->tanggal_kunjungan) ?></td>
+                                        <td class="text-center">
+                                            <?php
+                                            $has_soap = ($p->status_soap == 'Sudah diisi');
+                                            $has_lab = ($p->total_hasil > 0);
+
+                                            if ($has_soap && $has_lab) {
+                                                echo '<span class="badge bg-success p-2">Ada SOAP & Lab</span>';
+                                            } elseif ($has_soap) {
+                                                echo '<span class="badge bg-success p-2">Ada SOAP</span>';
+                                            } elseif ($has_lab) {
+                                                echo '<span class="badge bg-success p-2">Ada Lab</span>';
+                                            } else {
+                                                echo '<span class="badge bg-secondary p-2">Belum ada isi</span>';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td class="text-center"><?= htmlspecialchars($p->tanggal_kunjungan) ?></td>
                                         <td class="text-center">
                                             <div class="d-flex gap-2 justify-content-center">
-                                                <a href="<?= site_url('hasil_laporan/hasil_lab/' . $p->kunjungan_id) ?>"
+                                                <a href="<?= site_url('hasil_laporan/hasil_lab/' . $p->id_pasien) ?>"
                                                     class="btn btn-sm btn-info text-white" title="Pengisian Detail Kunjungan">
                                                     <i class="fas fa-eye me-1"></i>Lihat Kunjungan
                                                 </a>

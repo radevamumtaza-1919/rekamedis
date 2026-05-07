@@ -84,17 +84,17 @@
                                 <td><?= $p->umur ?></td>
                                 <td><?= $p->no_telp ?></td>
                                 <td>
-                                    <a href="<?= site_url('form_permintaan_rm/detail/' . $p->nik) ?>"
+                                    <a href="<?= site_url('form_permintaan_rm/detail/' . $p->id_pasien) ?>"
                                         class="btn btn-sm btn-outline-primary me-1" title="Lihat">
                                         <i class="fas fa-eye"></i>
                                     </a>
 
-                                    <a href="<?= site_url('form_permintaan_rm/edit/' . $p->nik) ?>"
+                                    <a href="<?= site_url('form_permintaan_rm/edit/' . $p->id_pasien) ?>"
                                         class="btn btn-sm btn-outline-success me-1" title="Edit">
                                         <i class="fas fa-pen"></i>
                                     </a>
 
-                                    <a href="<?= site_url('form_permintaan_rm/delete/' . $p->nik) ?>"
+                                    <a href="<?= site_url('form_permintaan_rm/delete/' . $p->id_pasien) ?>"
                                         class="btn btn-sm btn-outline-danger" title="Hapus"
                                         onclick="return confirm('Yakin ingin menghapus data pasien ini?')">
                                         <i class="fas fa-trash"></i>

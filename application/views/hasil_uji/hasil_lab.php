@@ -70,6 +70,7 @@
             </div>
 
             <!-- BAGIAN TENGAH: RIWAYAT SOAP -->
+            <?php if (!empty($pasien->kunjungan_id)): ?>
             <div class="card shadow-sm mb-4 border-top-warning">
                 <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0"><i class="fas fa-stethoscope me-2"></i> Rincian Catatan Klinis SOAP</h5>
@@ -80,35 +81,30 @@
                     <?php endif; ?>
                 </div>
                 <div class="card-body">
-                    <?php if (isset($pasien->status_soap) && $pasien->status_soap == 'Sudah diisi'): ?>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <strong>Keluhan Utama (Subjective):</strong>
-                                <p class="text-muted"><?= nl2br(htmlspecialchars($pasien->keluhan_utama ?? '-')) ?></p>
-                                
-                                <strong>Riwayat Penyakit:</strong>
-                                <p class="text-muted"><?= nl2br(htmlspecialchars($pasien->riwayat_penyakit ?? '-')) ?></p>
-                            </div>
-                            <div class="col-md-6">
-                                <strong>Asesmen/Diagnosa (Assessment):</strong>
-                                <p class="text-muted"><?= nl2br(htmlspecialchars($pasien->asesmen_diagnosa ?? '-')) ?></p>
-                                
-                                <strong>Rencana (Plan):</strong>
-                                <p class="text-muted"><?= nl2br(htmlspecialchars($pasien->plan_rencana ?? '-')) ?></p>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Keluhan Utama (Subjective):</strong>
+                            <p class="text-muted"><?= nl2br(htmlspecialchars($pasien->keluhan_utama ?? '-')) ?></p>
+                            
+                            <strong>Riwayat Penyakit:</strong>
+                            <p class="text-muted"><?= nl2br(htmlspecialchars($pasien->riwayat_penyakit ?? '-')) ?></p>
                         </div>
-                        <hr>
-                        <div class="d-flex justify-content-between text-muted small">
-                            <span><strong>Dokter Pemeriksa:</strong> <?= htmlspecialchars($pasien->nama_dokter_pemeriksa ?? '-') ?></span>
-                            <span><strong>Unit:</strong> <?= htmlspecialchars($pasien->unit ?? '-') ?></span>
+                        <div class="col-md-6">
+                            <strong>Asesmen/Diagnosa (Assessment):</strong>
+                            <p class="text-muted"><?= nl2br(htmlspecialchars($pasien->asesmen_diagnosa ?? '-')) ?></p>
+                            
+                            <strong>Rencana (Plan):</strong>
+                            <p class="text-muted"><?= nl2br(htmlspecialchars($pasien->plan_rencana ?? '-')) ?></p>
                         </div>
-                    <?php else: ?>
-                        <div class="text-center py-3 text-muted">
-                            <em>Dokter belum menginputkan rincian SOAP untuk kunjungan ini.</em>
-                        </div>
-                    <?php endif; ?>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between text-muted small">
+                        <span><strong>Dokter Pemeriksa:</strong> <?= htmlspecialchars($pasien->nama_dokter_pemeriksa ?? '-') ?></span>
+                        <span><strong>Unit:</strong> <?= htmlspecialchars($pasien->unit ?? '-') ?></span>
+                    </div>
                 </div>
             </div>
+            <?php endif; ?>
 
             <!-- BAGIAN BAWAH: LABORATORIUM -->
             <div class="card shadow-sm mb-4 border-top-success">
