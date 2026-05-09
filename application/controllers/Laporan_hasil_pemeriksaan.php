@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Laporan_rekam_medis extends CI_Controller
+class Laporan_hasil_pemeriksaan extends CI_Controller
 {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Laporan_rekam_medis_model');
+        $this->load->model('Laporan_hasil_pemeriksaan_model');
         $this->load->database();
         $this->load->library('session');
     }
@@ -16,10 +16,10 @@ class Laporan_rekam_medis extends CI_Controller
     {
         $data['title'] = 'Laporan Pasien';
 
-        $data['registrations'] = $this->Laporan_rekam_medis_model->get_daily_registrations();
-        $data['visits'] = $this->Laporan_rekam_medis_model->get_daily_visits();
-        $data['klinik'] = $this->Laporan_rekam_medis_model->get_daily_klinik();
-        $data['uji_klinik'] = $this->Laporan_rekam_medis_model->get_daily_uji_klinik();
+        $data['registrations'] = $this->Laporan_hasil_pemeriksaan_model->get_daily_registrations();
+        $data['visits'] = $this->Laporan_hasil_pemeriksaan_model->get_daily_visits();
+        $data['klinik'] = $this->Laporan_hasil_pemeriksaan_model->get_daily_klinik();
+        $data['uji_klinik'] = $this->Laporan_hasil_pemeriksaan_model->get_daily_uji_klinik();
 
         // Helper array for indonesian days
         $data['hari_indo'] = [
@@ -38,11 +38,13 @@ class Laporan_rekam_medis extends CI_Controller
         $this->load->view('layout/footer');
     }
 
-    public function detail_pasien_klinik($date = null)
+    public function detail_pasien($date = null)
     {
-        $this->load->model('Form_permintaan_klinik_model');
-        $this->load->model('Laporan_rekam_medis_model');
+        $this->load->model('Pasien_model');
+        $this->load->model('Laporan_hasil_pemeriksaan_model');
         
+        $data['tanggal'] = $date;
+
         if ($date) {
             // Convert to nice format
             $timestamp = strtotime($date);
@@ -51,23 +53,47 @@ class Laporan_rekam_medis extends CI_Controller
                 'Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu',
                 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'
             ];
-            $data['title'] = 'Data Pasien Klinik - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
-            $data['formulir'] = $this->Laporan_rekam_medis_model->get_klinik_by_date($date);
+            $data['title'] = 'Identitas Pasien Klinik - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
+            $data['pasien'] = $this->Laporan_hasil_pemeriksaan_model->get_patients_by_date($date);
         } else {
-            $data['title'] = 'Detail Data Seluruh Pasien Klinik';
-            $data['formulir'] = $this->Form_permintaan_klinik_model->get_all_formulir();
+            $data['title'] = 'Identitas Pasien Klinik';
+            $data['pasien'] = $this->Pasien_model->get_all();
         }
 
         $this->load->view('layout/header', $data);
         $this->load->view('layout/sidebar');
-        $this->load->view('laporan_rekam_medis/detail_pasien_klinik', $data);
+        $this->load->view('laporan_rekam_medis/detail_pasien', $data);
         $this->load->view('layout/footer');
+    }
+
+    public function print_pasien_pdf($date)
+    {
+        $data['tanggal'] = $date;
+        $timestamp = strtotime($date);
+        $hari_en = date('l', $timestamp);
+        $hari_indo = [
+            'Sunday' => 'Minggu',
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu'
+        ];
+
+        $data['title'] = 'Laporan Pasien Klinik - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
+        $this->load->model('Laporan_hasil_pemeriksaan_model');
+        $data['pasien'] = $this->Laporan_hasil_pemeriksaan_model->get_patients_by_date($date);
+        $data['is_pdf'] = true;
+
+        $this->load->library('pdf');
+        $this->pdf->generate_view('laporan_rekam_medis/print_pasien', $data, 'Laporan_Pasien_Klinik_' . $date . '.pdf', 'I');
     }
 
     public function detail_uji_klinik($date = null)
     {
         $this->load->model('Uji_klinik_model');
-        $this->load->model('Laporan_rekam_medis_model');
+        $this->load->model('Laporan_hasil_pemeriksaan_model');
         
         if ($date) {
             $timestamp = strtotime($date);
@@ -77,7 +103,7 @@ class Laporan_rekam_medis extends CI_Controller
                 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'
             ];
             $data['title'] = 'Laporan Uji Laboratorium Klinik - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
-            $data['formulir'] = $this->Laporan_rekam_medis_model->get_uji_klinik_by_date($date);
+            $data['formulir'] = $this->Laporan_hasil_pemeriksaan_model->get_uji_klinik_by_date($date);
         } else {
             $data['title'] = 'Laporan Keseluruhan Uji Laboratorium Klinik';
             $data['formulir'] = []; // If needed, can add get_all_uji_klinik
@@ -108,7 +134,7 @@ class Laporan_rekam_medis extends CI_Controller
         ];
 
         $data['title'] = 'Detail Pasien Terdaftar - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
-        $data['pasien'] = $this->Laporan_rekam_medis_model->get_patients_by_date($date);
+        $data['pasien'] = $this->Laporan_hasil_pemeriksaan_model->get_patients_by_date($date);
 
         $this->load->view('layout/header', $data);
         $this->load->view('layout/sidebar');
@@ -135,7 +161,7 @@ class Laporan_rekam_medis extends CI_Controller
         ];
 
         $data['title'] = 'Detail Kunjungan Pasien - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
-        $data['kunjungan'] = $this->Laporan_rekam_medis_model->get_visits_by_date($date);
+        $data['kunjungan'] = $this->Laporan_hasil_pemeriksaan->get_visits_by_date($date);
 
         $this->load->view('layout/header', $data);
         $this->load->view('layout/sidebar');
@@ -158,7 +184,7 @@ class Laporan_rekam_medis extends CI_Controller
         ];
 
         $data['title'] = 'Laporan Pendaftaran Pasien - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
-        $data['pasien'] = $this->Laporan_rekam_medis_model->get_patients_by_date($date);
+        $data['pasien'] = $this->Laporan_hasil_pemeriksaan_model->get_patients_by_date($date);
         $data['is_pdf'] = true;
 
         $this->load->library('pdf');
@@ -181,7 +207,7 @@ class Laporan_rekam_medis extends CI_Controller
         ];
 
         $data['title'] = 'Laporan Kunjungan Pasien - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
-        $data['kunjungan'] = $this->Laporan_rekam_medis_model->get_visits_by_date($date);
+        $data['kunjungan'] = $this->Laporan_hasil_pemeriksaan_model->get_visits_by_date($date);
         $data['is_pdf'] = true;
 
         $this->load->library('pdf');
@@ -317,5 +343,103 @@ class Laporan_rekam_medis extends CI_Controller
         echo '<div class="mb-2"><strong>Objective (O):</strong><br>' . nl2br($visit->objective) . '</div>';
         echo '<div class="mb-2"><strong>Assessment (A):</strong><br>' . nl2br($visit->assessment) . '</div>';
         echo '<div class="mb-2"><strong>Planning (P):</strong><br>' . nl2br($visit->planning) . '</div>';
+    }
+
+    public function laporan_bulanan_tahunan($bulan = null, $tahun = null)
+    {
+        // jika kosong gunakan bulan & tahun sekarang
+        $bulan = $bulan ?? date('m');
+        $tahun = $tahun ?? date('Y');
+
+        $data['bulan'] = $bulan;
+        $data['tahun'] = $tahun;
+
+        $this->load->model('Laporan_hasil_pemeriksaan_model');
+
+        $data['hematologi'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_kategori_bulan('HEMATOLOGI', $bulan, $tahun);
+
+        $data['kimia_darah'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_kategori_bulan('KIMIA DARAH', $bulan, $tahun);
+
+        $data['urinalisis'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_kategori_bulan('URINALISA', $bulan, $tahun);
+
+        $data['hemostasis'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_kategori_bulan('HEMOSTASIS', $bulan, $tahun);
+
+        $data['biomolekuler'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_kategori_bulan('BIOMOLEKULER', $bulan, $tahun);
+
+        $data['imunologi'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_kategori_bulan('IMUNOLOGI', $bulan, $tahun);
+
+        $data['mikrobiologi'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_kategori_bulan('MIKROBIOLOGI', $bulan, $tahun);
+
+        $data['toksikologi'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_kategori_bulan('TOKSIKOLOGI', $bulan, $tahun);
+
+        $data['jumlah_pasien'] = 
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_jumlah_pasien_bulan($bulan, $tahun);
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/sidebar');
+        $this->load->view('laporan_bulanan_tahunan/index', $data);
+        $this->load->view('layout/footer');
+    }
+    // ================= LAPORAN TAHUNAN =================
+    public function laporan_tahunan()
+    {
+        $tahun = $this->input->get('tahun');
+
+        if(!$tahun){
+            $tahun = date('Y');
+        }
+
+        $data['tahun'] = $tahun;
+
+        $this->load->model('Laporan_hasil_pemeriksaan_model');
+
+        $data['laporan_tahunan'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_laporan_tahunan($tahun);
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/sidebar');
+        $this->load->view('laporan_bulanan_tahunan/laporan_tahunan', $data);
+        $this->load->view('layout/footer');
+    }
+
+    public function export_excel_tahunan()
+    {
+        $tahun = $this->input->get('tahun');
+
+        if(!$tahun){
+            $tahun = date('Y');
+        }
+
+        $data['tahun'] = $tahun;
+
+        $this->load->model('Laporan_hasil_pemeriksaan_model');
+
+        $data['laporan_tahunan'] =
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_laporan_tahunan($tahun);
+
+        // Header for Excel file
+        header("Content-type: application/vnd-ms-excel");
+        header("Content-Disposition: attachment; filename=Laporan_Tahunan_" . $tahun . ".xls");
+
+        $this->load->view('laporan_bulanan_tahunan/excel_laporan_tahunan', $data);
     }
 }

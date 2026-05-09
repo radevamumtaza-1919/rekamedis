@@ -20,6 +20,6 @@ class Form_laporan_akhir extends CI_Controller {
     {
         $tahun = $tahun ?? date('Y');
 
-        redirect('laporan_bulanan_tahunan/index/' . $bulan . '/' . $tahun);
+        redirect('Laporan_hasil_pemeriksaan/laporan_bulanan_tahunan/' . $bulan . '/' . $tahun);
     }
 }

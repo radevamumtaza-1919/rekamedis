@@ -9,7 +9,7 @@
                 <div class="col-sm-6">
                     <h1>
                         <i class="fas fa-chart-bar"></i>
-                        Laporan Bulanan dan Tahunan
+                        Laporan Hasil Pemeriksaan Laboratorium Klinik
                     </h1>
                 </div>
 
@@ -44,9 +44,11 @@
 
                                 <select name="tahun" class="form-control">
 
-                                    <?php for($i = date('Y'); $i >= 2020; $i--): ?>
+                                    <?php 
+                                    $selected_tahun = $this->input->get('tahun') ?? date('Y');
+                                    for($i = date('Y'); $i >= 2020; $i--): ?>
 
-                                        <option value="<?= $i ?>">
+                                        <option value="<?= $i ?>" <?= ($i == $selected_tahun) ? 'selected' : '' ?>>
                                             <?= $i ?>
                                         </option>
 
@@ -72,7 +74,7 @@
                             <div class="col-md-3 d-flex align-items-end">
 
                                 <button type="submit"
-                                    formaction="<?= site_url('laporan_bulanan_tahunan/laporan_tahunan') ?>"
+                                    formaction="<?= site_url('Laporan_hasil_pemeriksaan/laporan_tahunan') ?>"
                                     class="btn btn-success btn-block">
 
                                     <i class="fas fa-chart-line"></i>
@@ -124,19 +126,34 @@
                     'info'
                 ];
 
+                $icon = [
+                    'fas fa-heartbeat',
+                    'fas fa-stethoscope',
+                    'fas fa-user-md',
+                    'fas fa-microscope',
+                    'fas fa-vials',
+                    'fas fa-x-ray',
+                    'fas fa-notes-medical',
+                    'fas fa-hospital',
+                    'fas fa-pills',
+                    'fas fa-ambulance',
+                    'fas fa-briefcase-medical',
+                    'fas fa-book-medical'
+                ];
+
                 ?>
 
                 <?php foreach($bulan as $key => $b): ?>
 
                 <div class="col-md-3">
 
-                    <div class="card card-<?= $warna[$key] ?> shadow">
+                    <div class="card card-<?= $warna[$key] ?> shadow-sm" style="border-radius: 15px; transition: transform 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
 
-                        <div class="card-header">
+                        <div class="card-header" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
 
-                            <h3 class="card-title">
+                            <h3 class="card-title font-weight-bold">
 
-                                <i class="fas fa-calendar-alt"></i>
+                                <i class="fas fa-calendar-alt mr-1"></i>
                                 <?= $b ?>
 
                             </h3>
@@ -145,14 +162,14 @@
 
                         <div class="card-body text-center">
 
-                            <h2 class="mb-3">
-                                <i class="fas fa-file-medical"></i>
-                            </h2>
+                            <div class="mb-4 mt-2">
+                                <i class="<?= $icon[$key] ?> fa-3x text-<?= $warna[$key] ?>" style="opacity: 0.8;"></i>
+                            </div>
 
                             <a href="<?= site_url('form_laporan_akhir/detail/'.($key+1).'/'.$this->input->get('tahun')) ?>"
-    class="btn btn-<?= $warna[$key] ?> btn-block">
+    class="btn btn-<?= $warna[$key] ?> btn-block shadow-sm" style="border-radius: 10px;">
 
-                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye mr-1"></i>
                                 Lihat Laporan
 
                             </a>

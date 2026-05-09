@@ -36,7 +36,7 @@
     $tanggalLengkap = "$hari, $tanggal $bulan $tahun";
     ?>
     <h3 class="text-dark fw-bold mb-4 d-flex justify-content-between align-items-center">
-        <span>DATA PASIEN REKAM MEDIS</span>
+        <span>Data Identitas Pasien</span>
         <small class="text-muted fw-normal"><?= $tanggalLengkap ?></small>
     </h3>
     <hr style="border-top: 2px solid #1e3a8a; margin-bottom: 20px;">
