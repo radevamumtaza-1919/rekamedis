@@ -211,9 +211,9 @@
         <?php if ($is_admin): ?>
           <li class="nav-header text-uppercase">Menu Data Pasien</li>
           <li
-            class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['laporan_rekam_medis']) ? 'menu-open' : '' ?>">
+            class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['laporan_rekam_medis','laporan_bulanan_tahunan','form_laporan_akhir']) ? 'menu-open' : '' ?>">
             <a href="#"
-              class="nav-link <?= in_array($this->uri->segment(1), ['laporan_rekam_medis']) ? 'active' : '' ?>">
+              class="nav-link <?= in_array($this->uri->segment(1), ['laporan_rekam_medis','laporan_bulanan_tahunan','form_laporan_akhir']) ? 'active' : '' ?>">
               <i class="nav-icon fas fa-clinic-medical"></i>
               <p>
                 Menu Laporan Data Pasien
@@ -221,15 +221,31 @@
               </p>
             </a>
            <ul class="nav nav-treeview">
-               <li class="nav-item">
+               <!-- <li class="nav-item">
                 <a href="<?= site_url('laporan_rekam_medis') ?>"
                   class="nav-link <?= ($this->uri->segment(1) == 'laporan_rekam_medis' && $this->uri->segment(2) == '') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Data Pasien</p>
                 </a>
-              </li>
-            </ul>
-            
+              </li> -->
+            <!-- LAPORAN BULANAN & TAHUNAN -->
+            <!--<li class="nav-item">
+                <a href="<?= site_url('laporan_bulanan_tahunan') ?>"
+                    class="nav-link <?= ($this->uri->segment(1) == 'laporan_bulanan_tahunan' && $this->uri->segment(2) == '') ? 'active' : '' ?>">
+                    <i class="far fa-chart-bar nav-icon"></i>
+                    <p>Laporan Bulanan & Tahunan</p>
+                </a>
+            </li>-->
+            <li class="nav-item">
+              <a href="<?= site_url('form_laporan_akhir') ?>"
+                  class="nav-link <?= ($this->uri->segment(1) == 'form_laporan_akhir' && $this->uri->segment(2) == '') ? 'active' : '' ?>">
+
+                  <i class="far fa-file-alt nav-icon"></i>
+
+                  <p>Form Laporan Akhir</p>
+              </a>
+          </li>
+        </ul>
           </li>
         <?php endif; ?>
 
