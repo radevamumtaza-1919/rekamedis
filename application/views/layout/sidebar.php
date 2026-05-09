@@ -165,9 +165,9 @@
         <?php if ($is_admin || $is_pendaftaran || $is_rm): ?>
           <li class="nav-header text-uppercase">Menu Rekam Medis</li>
           <li
-            class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['form_permintaan_rm', 'uji_rekam_medis', 'laporan_hasil_uji_soap']) ? 'menu-open' : '' ?>">
+            class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['form_permintaan_rm', 'uji_rekam_medis', 'hasil_laporan']) ? 'menu-open' : '' ?>">
             <a href="#"
-              class="nav-link <?= in_array($this->uri->segment(1), ['form_permintaan_rm', 'uji_rekam_medis', 'laporan_hasil_uji_soap']) ? 'active' : '' ?>">
+              class="nav-link <?= in_array($this->uri->segment(1), ['form_permintaan_rm', 'uji_rekam_medis', 'hasil_laporan']) ? 'active' : '' ?>">
               <i class="nav-icon fas fa-clinic-medical"></i>
               <p>
                 Rekam Medis
@@ -193,18 +193,18 @@
                     <p>Detail Kunjungan Pasien</p>
                   </a>
                 </li>
+
+                <?php if ($is_admin || $is_rm): ?>
+                  <li class="nav-item">
+                    <a href="<?= site_url('hasil_laporan') ?>" class="nav-link <?= $this->uri->segment(2) == 'hasil_laporan' ? 'active' : '' ?>">
+                      <i class="nav-icon fas fa-flask text-info"></i>
+                      <p>Laporan Hasil Uji klinik dan SOAP</p>
+                    </a>
+                  </li>
+                <?php endif; ?>
+
               <?php endif; ?>
             </ul>
-          </li>
-        <?php endif; ?>
-
-        <?php if ($is_admin || $is_pendaftaran || $is_rm || $is_pemeriksa): ?>
-          <li class="nav-header text-uppercase">Menu Hasil Uji Lab</li>
-          <li class="nav-item">
-            <a href="<?= site_url('hasil_laporan') ?>" class="nav-link <?= $this->uri->segment(1) == 'hasil_laporan' ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-flask text-info"></i>
-              <p>Laporan Hasil Uji Lab</p>
-            </a>
           </li>
         <?php endif; ?>
 
