@@ -209,7 +209,7 @@
         <?php endif; ?>
 
         <?php if ($is_admin): ?>
-          <li class="nav-header text-uppercase">Menu Data Pasien</li>
+          <li class="nav-header text-uppercase">Menu Laporan Akhir</li>
           <li
             class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['laporan_rekam_medis','laporan_bulanan_tahunan','form_laporan_akhir']) ? 'menu-open' : '' ?>">
             <a href="#"
@@ -221,13 +221,13 @@
               </p>
             </a>
            <ul class="nav nav-treeview">
-               <li class="nav-item">
+               <!-- <li class="nav-item">
                 <a href="<?= site_url('laporan_hasil_pemeriksaan') ?>"
                   class="nav-link <?= ($this->uri->segment(1) == 'laporan_rekam_medis' && $this->uri->segment(2) == '') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Data Pasien</p>
                 </a>
-              </li> 
+              </li>  -->
             <li class="nav-item">
               <a href="<?= site_url('form_laporan_akhir') ?>"
                   class="nav-link <?= ($this->uri->segment(1) == 'form_laporan_akhir' && $this->uri->segment(2) == '') ? 'active' : '' ?>">
@@ -252,9 +252,9 @@
 
           <li class="nav-header text-uppercase">Menu Manajemen Petugas</li>
           <li
-            class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['petugas_sampel', 'penanggung_teknis', 'petugas_hasil', 'verifikator', 'petugas_verifikasi', 'petugas_validasi', 'petugas_dokter']) ? 'menu-open' : '' ?>">
+            class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['petugas_sampel', 'penanggung_teknis', 'petugas_hasil', 'verifikator', 'petugas_verifikasi', 'petugas_validasi', 'petugas_dokter','puskesmas_wilayah']) ? 'menu-open' : '' ?>">
             <a href="#"
-              class="nav-link <?= in_array($this->uri->segment(1), ['petugas_sampel', 'penanggung_teknis', 'petugas_hasil', 'verifikator', 'petugas_verifikasi', 'petugas_validasi', 'petugas_dokter']) ? 'active' : '' ?>">
+              class="nav-link <?= in_array($this->uri->segment(1), ['petugas_sampel', 'penanggung_teknis', 'petugas_hasil', 'verifikator', 'petugas_verifikasi', 'petugas_validasi', 'petugas_dokter','puskesmas_wilayah']) ? 'active' : '' ?>">
               <i class="nav-icon fas fa-users-cog text-primary"></i>
               <p>
                 Manajemen Petugas
@@ -308,6 +308,12 @@
                   class="nav-link <?= $this->uri->segment(1) == 'petugas_dokter' ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon text-blue-600"></i>
                   <p>Dokter Pemeriksa Rekam Medis</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= site_url('puskesmas_wilayah') ?>" class="nav-link <?= $this->uri->segment(1) == 'puskesmas_wilayah' ? 'active' : '' ?>">
+                  <i class="fas fa-hospital nav-icon text-success"></i>
+                  <p>Manajemen Puskesmas</p>
                 </a>
               </li>
             </ul>

@@ -117,10 +117,23 @@
                   <input type="text" name="no_telp" class="form-control"
                         value="<?= isset($form->no_telp) ? $form->no_telp : (isset($pasien_prefill->no_telp) ? $pasien_prefill->no_telp : '') ?>">
               </div>
-              <div class="mb-2">
-                  <label>Alamat</label>
-                  <input type="text" name="alamat" class="form-control"
-                        value="<?= isset($form->alamat) ? $form->alamat : '' ?>">
+              <div class="mb-2 border rounded p-2 bg-light">
+                  <label class="fw-bold text-primary mb-1" style="font-size:13px;"><i class="fas fa-map-marker-alt"></i> Alamat Pasien (Kec. & Kel.)</label>
+                  
+                  <div class="row gx-1 mt-2">
+                      <div class="col-6 mb-1">
+                          <select id="kecamatan_select" class="form-select form-select-sm" onchange="updateKelurahan()">
+                              <option value="">Kecamatan</option>
+                          </select>
+                      </div>
+                      <div class="col-6 mb-1">
+                          <select id="kelurahan_select" class="form-select form-select-sm" onchange="updateAlamatLengkap()">
+                              <option value="">Kelurahan</option>
+                          </select>
+                      </div>
+                  </div>
+                  <input type="text" id="detail_jalan" class="form-control form-control-sm mb-1" oninput="updateAlamatLengkap()" placeholder="Detail Jl/No">
+                  <textarea name="alamat" id="alamat_lengkap" class="form-control form-control-sm bg-white" rows="2" placeholder="(Bisa diketik manual)" required><?= isset($form->alamat) ? $form->alamat : '' ?></textarea>
               </div>
               <div class="mb-2">
                   <label>Pekerjaan</label>
@@ -1989,7 +2002,8 @@
                   if(document.querySelector('input[name="nik"]')) document.querySelector('input[name="nik"]').value = p.nik || '';
                   if(document.querySelector('select[name="gender"]')) document.querySelector('select[name="gender"]').value = p.gender || '';
                   if(document.querySelector('input[name="tgl_lahir"]')) document.querySelector('input[name="tgl_lahir"]').value = p.tgl_lahir || '';
-                  if(document.querySelector('input[name="alamat"]')) document.querySelector('input[name="alamat"]').value = p.alamat || '';
+                  if(document.querySelector('textarea[name="alamat"]')) document.querySelector('textarea[name="alamat"]').value = p.alamat || '';
+                  if(typeof parseAlamatToDropdowns === 'function') parseAlamatToDropdowns();
                   if(document.querySelector('input[name="no_telp"]')) document.querySelector('input[name="no_telp"]').value = p.no_telp || '';
                   if(document.querySelector('select[name="agama"]')) document.querySelector('select[name="agama"]').value = p.agama || '';
                   if(document.querySelector('select[name="status_nikah"]')) document.querySelector('select[name="status_nikah"]').value = p.status_nikah || '';
@@ -2038,7 +2052,8 @@
                                     if(document.querySelector('input[name="tgl_lahir"]')) document.querySelector('input[name="tgl_lahir"]').value = p.tgl_lahir || '';
                                     if(document.querySelector('input[name="umur"]')) document.querySelector('input[name="umur"]').value = p.umur || '';
                                     if(document.querySelector('select[name="gender"]')) document.querySelector('select[name="gender"]').value = p.gender || '';
-                                    if(document.querySelector('input[name="alamat"]')) document.querySelector('input[name="alamat"]').value = p.alamat_pasien || p.alamat || '';
+                                    if(document.querySelector('textarea[name="alamat"]')) document.querySelector('textarea[name="alamat"]').value = p.alamat_pasien || p.alamat || '';
+                                    if(typeof parseAlamatToDropdowns === 'function') parseAlamatToDropdowns();
                                     if(document.querySelector('input[name="no_telp"]')) document.querySelector('input[name="no_telp"]').value = p.no_telp_pasien || p.no_telp || '';
                                     if(document.querySelector('select[name="agama"]')) document.querySelector('select[name="agama"]').value = p.agama || '';
                                     if(document.querySelector('select[name="status_nikah"]')) document.querySelector('select[name="status_nikah"]').value = p.status_nikah || '';
@@ -2054,5 +2069,96 @@
                 }
             });
         }
+        initWilayah();
     });
+
+const dataWilayah = {
+    "Bukit Intan": ["Air Itam", "Air Mawar", "Bacang", "Pasir Putih", "Semabung Lama", "Sinar Bulan", "Temberan"],
+    "Gabek": ["Air Salemba", "Gabek Dua", "Gabek Satu", "Jerambah Gantung", "Selindung", "Selindung Baru"],
+    "Gerunggang": ["Air Kepala Tujuh", "Bukitmerapin", "Bukitsari", "Kacang Pedang", "Taman Bunga", "Tua Tunu"],
+    "Girimaya": ["Bukitbesar", "Bukitintan", "Pasar Padi", "Semabung Baru", "Sriwijaya"],
+    "Pangkal Balam": ["Ampui", "Ketapang", "Lontong Pancur", "Pasir Garam", "Rejosari"],
+    "Rangkui": ["Asam", "Bintang", "Gajah Mada", "Keramat", "Masjid Jamik", "Melintang", "Parit Lalang", "Pintu Air"],
+    "Taman Sari": ["Batin Tikal", "Gedung Nasional", "Kejaksaan", "Opas Indah", "Rawa Bangun"]
+};
+
+function initWilayah() {
+    const kecSelect = document.getElementById('kecamatan_select');
+    if (!kecSelect) return;
+    for (let kec in dataWilayah) {
+        let opt = document.createElement('option');
+        opt.value = kec;
+        opt.textContent = kec;
+        kecSelect.appendChild(opt);
+    }
+    parseAlamatToDropdowns();
+}
+
+function parseAlamatToDropdowns() {
+    let alamatEl = document.getElementById('alamat_lengkap');
+    if (!alamatEl) return;
+    let alamatLengkap = alamatEl.value;
+    const kecSelect = document.getElementById('kecamatan_select');
+    const kelSelect = document.getElementById('kelurahan_select');
+    const detailJalan = document.getElementById('detail_jalan');
+    
+    if (alamatLengkap) {
+        let foundKec = "";
+        let foundKel = "";
+        for (let kec in dataWilayah) {
+            if (alamatLengkap.includes("Kec. " + kec)) {
+                foundKec = kec;
+                break;
+            }
+        }
+        if (foundKec) {
+            kecSelect.value = foundKec;
+            updateKelurahan();
+            dataWilayah[foundKec].forEach(kel => {
+                if (alamatLengkap.includes("Kel. " + kel)) {
+                    foundKel = kel;
+                }
+            });
+            if (foundKel) {
+                kelSelect.value = foundKel;
+            }
+            let detail = alamatLengkap.replace(", Kel. " + foundKel, "").replace(", Kec. " + foundKec, "");
+            detailJalan.value = detail.trim();
+        } else {
+            detailJalan.value = alamatLengkap.trim();
+        }
+    }
+}
+
+function updateKelurahan() {
+    const kecSelect = document.getElementById('kecamatan_select');
+    const kelSelect = document.getElementById('kelurahan_select');
+    kelSelect.innerHTML = '<option value="">Kelurahan</option>';
+    
+    let kec = kecSelect.value;
+    if (kec && dataWilayah[kec]) {
+        dataWilayah[kec].forEach(kel => {
+            let opt = document.createElement('option');
+            opt.value = kel;
+            opt.textContent = kel;
+            kelSelect.appendChild(opt);
+        });
+    }
+    updateAlamatLengkap();
+}
+
+function updateAlamatLengkap() {
+    let kec = document.getElementById('kecamatan_select').value;
+    let kel = document.getElementById('kelurahan_select').value;
+    let detail = document.getElementById('detail_jalan').value;
+    
+    let hasil = [];
+    if (detail.trim() !== '') hasil.push(detail.trim());
+    if (kel !== '') hasil.push("Kel. " + kel);
+    if (kec !== '') hasil.push("Kec. " + kec);
+    
+    document.getElementById('alamat_lengkap').value = hasil.join(", ");
+}
+
+
 </script>

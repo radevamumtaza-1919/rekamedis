@@ -44,14 +44,14 @@ class Form_permintaan_klinik_model extends CI_Model {
     }
 
     public function get_all_formulir(){
-        $this->db->select('form_permintaan_klinik.*, pasien.nama_pasien, pasien.nik, pasien.gender, pasien.no_register');
+        $this->db->select('form_permintaan_klinik.*, pasien.nama_pasien, pasien.nik, pasien.gender, pasien.no_register, pasien.puskesmas_wilayah');
         $this->db->from('form_permintaan_klinik');
         $this->db->join('pasien', 'pasien.id_pasien = form_permintaan_klinik.id_pasien', 'left');
         return $this->db->get()->result();
     }
 
     public function get_today_formulir(){
-        $this->db->select('form_permintaan_klinik.*, pasien.nama_pasien, pasien.nik, pasien.gender, pasien.no_register');
+        $this->db->select('form_permintaan_klinik.*, pasien.nama_pasien, pasien.nik, pasien.gender, pasien.no_register, pasien.puskesmas_wilayah');
         $this->db->from('form_permintaan_klinik');
         $this->db->join('pasien', 'pasien.id_pasien = form_permintaan_klinik.id_pasien', 'left');
         $this->db->where('DATE(form_permintaan_klinik.tgl_form)', date('Y-m-d'));
@@ -59,7 +59,7 @@ class Form_permintaan_klinik_model extends CI_Model {
     }
 
     public function get_formulir_by_id($id){
-        $this->db->select('form_permintaan_klinik.*, pasien.no_telp as no_telp, pasien.alamat as alamat, pasien.nama_pasien, pasien.nik, pasien.gender, pasien.no_register');
+        $this->db->select('form_permintaan_klinik.*, pasien.no_telp as no_telp, pasien.alamat as alamat, pasien.nama_pasien, pasien.nik, pasien.gender, pasien.no_register, pasien.puskesmas_wilayah');
         $this->db->from('form_permintaan_klinik');
         $this->db->join('pasien', 'pasien.id_pasien = form_permintaan_klinik.id_pasien', 'left');
         $this->db->where('form_permintaan_klinik.id', $id);
@@ -78,7 +78,7 @@ class Form_permintaan_klinik_model extends CI_Model {
     // ambil data form berdasarkan ID
     public function get_by_id($id)
     {
-        $this->db->select('form_permintaan_klinik.*, pasien.no_telp as no_telp, pasien.alamat as alamat, pasien.nama_pasien as nama_pasien, pasien.nik, pasien.gender, pasien.tgl_lahir, pasien.umur, pasien.agama, pasien.status_nikah, pasien.pendidikan, pasien.pekerjaan, pasien.no_register');
+        $this->db->select('form_permintaan_klinik.*, pasien.no_telp as no_telp, pasien.alamat as alamat, pasien.nama_pasien as nama_pasien, pasien.nik, pasien.gender, pasien.tgl_lahir, pasien.umur, pasien.agama, pasien.status_nikah, pasien.pendidikan, pasien.pekerjaan, pasien.no_register, pasien.puskesmas_wilayah');
         $this->db->from('form_permintaan_klinik');
         $this->db->join('pasien', 'pasien.id_pasien = form_permintaan_klinik.id_pasien', 'left');
         $this->db->where('form_permintaan_klinik.id', $id);

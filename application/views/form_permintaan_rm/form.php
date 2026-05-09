@@ -1,5 +1,5 @@
 <div class="content-wrapper px-4 pt-4">
-    <h3 class="text-center fw-bold mb-4">FORMULIR PENDAFTARAN PASIEN REKAM MEDIS</h3>
+    <h3 class="text-center fw-bold mb-4">FORMULIR PENDAFTARAN IDENTITAS PASIEN</h3>
 
     <?php if ($this->session->flashdata('error')): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -64,10 +64,33 @@
                         Informasi Tambahan & Kontak
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
-                            <label>Alamat_Lengkap</label>
-                            <textarea name="alamat" class="form-control"
-                                rows="3"><?= isset($pasien->alamat) ? $pasien->alamat : '' ?></textarea>
+                        <div class="mb-3 border rounded p-3 bg-light">
+                            <label class="fw-bold text-primary mb-2"><i class="fas fa-map-marker-alt"></i> Alamat Pasien Terintegrasi</label>
+                            
+                            
+
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <label class="small">Kecamatan</label>
+                                    <select id="kecamatan_select" class="form-select form-select-sm" onchange="updateKelurahan()">
+                                        <option value="">-- Pilih Kecamatan --</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="small">Kelurahan</label>
+                                    <select id="kelurahan_select" class="form-select form-select-sm" onchange="updateAlamatLengkap()">
+                                        <option value="">-- Pilih Kelurahan --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="small">Detail Jalan / RT / RW</label>
+                                <input type="text" id="detail_jalan" class="form-control form-control-sm" oninput="updateAlamatLengkap()" placeholder="Contoh: Jl. Sudirman No. 10">
+                            </div>
+                            <div class="mt-2">
+                                <label class="small fw-bold">Alamat Lengkap (Tersimpan) <span class="text-danger">*</span> <small class="text-muted fw-normal">(Bisa diketik manual)</small></label>
+                                <textarea name="alamat" id="alamat_lengkap" class="form-control bg-white" rows="2" required><?= isset($pasien->alamat) ? $pasien->alamat : '' ?></textarea>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label>No. Telepon / HP</label>
@@ -191,6 +214,7 @@
                                     document.querySelector('input[name="umur"]').value = p.umur || '';
                                     document.querySelector('select[name="gender"]').value = p.gender || '';
                                     document.querySelector('textarea[name="alamat"]').value = p.alamat || '';
+                                    if(typeof parseAlamatToDropdowns === 'function') parseAlamatToDropdowns();
                                     document.querySelector('input[name="no_telp"]').value = p.no_telp || '';
                                     document.querySelector('select[name="agama"]').value = p.agama || '';
                                     document.querySelector('select[name="status_nikah"]').value = p.status_nikah || '';
@@ -212,5 +236,96 @@
                 }
             });
         }
+        initWilayah();
     });
+
+const dataWilayah = {
+    "Bukit Intan": ["Air Itam", "Air Mawar", "Bacang", "Pasir Putih", "Semabung Lama", "Sinar Bulan", "Temberan"],
+    "Gabek": ["Air Salemba", "Gabek Dua", "Gabek Satu", "Jerambah Gantung", "Selindung", "Selindung Baru"],
+    "Gerunggang": ["Air Kepala Tujuh", "Bukitmerapin", "Bukitsari", "Kacang Pedang", "Taman Bunga", "Tua Tunu"],
+    "Girimaya": ["Bukitbesar", "Bukitintan", "Pasar Padi", "Semabung Baru", "Sriwijaya"],
+    "Pangkal Balam": ["Ampui", "Ketapang", "Lontong Pancur", "Pasir Garam", "Rejosari"],
+    "Rangkui": ["Asam", "Bintang", "Gajah Mada", "Keramat", "Masjid Jamik", "Melintang", "Parit Lalang", "Pintu Air"],
+    "Taman Sari": ["Batin Tikal", "Gedung Nasional", "Kejaksaan", "Opas Indah", "Rawa Bangun"]
+};
+
+function initWilayah() {
+    const kecSelect = document.getElementById('kecamatan_select');
+    if (!kecSelect) return;
+    for (let kec in dataWilayah) {
+        let opt = document.createElement('option');
+        opt.value = kec;
+        opt.textContent = kec;
+        kecSelect.appendChild(opt);
+    }
+    parseAlamatToDropdowns();
+}
+
+function parseAlamatToDropdowns() {
+    let alamatEl = document.getElementById('alamat_lengkap');
+    if (!alamatEl) return;
+    let alamatLengkap = alamatEl.value;
+    const kecSelect = document.getElementById('kecamatan_select');
+    const kelSelect = document.getElementById('kelurahan_select');
+    const detailJalan = document.getElementById('detail_jalan');
+    
+    if (alamatLengkap) {
+        let foundKec = "";
+        let foundKel = "";
+        for (let kec in dataWilayah) {
+            if (alamatLengkap.includes("Kec. " + kec)) {
+                foundKec = kec;
+                break;
+            }
+        }
+        if (foundKec) {
+            kecSelect.value = foundKec;
+            updateKelurahan();
+            dataWilayah[foundKec].forEach(kel => {
+                if (alamatLengkap.includes("Kel. " + kel)) {
+                    foundKel = kel;
+                }
+            });
+            if (foundKel) {
+                kelSelect.value = foundKel;
+            }
+            let detail = alamatLengkap.replace(", Kel. " + foundKel, "").replace(", Kec. " + foundKec, "");
+            detailJalan.value = detail.trim();
+        } else {
+            detailJalan.value = alamatLengkap.trim();
+        }
+    }
+}
+
+function updateKelurahan() {
+    const kecSelect = document.getElementById('kecamatan_select');
+    const kelSelect = document.getElementById('kelurahan_select');
+    kelSelect.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
+    
+    let kec = kecSelect.value;
+    if (kec && dataWilayah[kec]) {
+        dataWilayah[kec].forEach(kel => {
+            let opt = document.createElement('option');
+            opt.value = kel;
+            opt.textContent = kel;
+            kelSelect.appendChild(opt);
+        });
+    }
+    updateAlamatLengkap();
+}
+
+function updateAlamatLengkap() {
+    let kec = document.getElementById('kecamatan_select').value;
+    let kel = document.getElementById('kelurahan_select').value;
+    let detail = document.getElementById('detail_jalan').value;
+    
+    let hasil = [];
+    if (detail.trim() !== '') hasil.push(detail.trim());
+    if (kel !== '') hasil.push("Kel. " + kel);
+    if (kec !== '') hasil.push("Kec. " + kec);
+    
+    document.getElementById('alamat_lengkap').value = hasil.join(", ");
+}
+
+
 </script>
