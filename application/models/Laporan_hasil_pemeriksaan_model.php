@@ -165,7 +165,38 @@ class Laporan_hasil_pemeriksaan_model extends CI_Model
             $result->perempuan = 0;
             $result->total = 0;
         }
-        
         return $result;
+    }
+
+    public function get_jumlah_puskesmas_bulan($bulan, $tahun)
+    {
+        $sql = "SELECT 
+                    COALESCE(UPPER(pw.kecamatan), 'LUAR WILAYAH') as kecamatan,
+                    CASE 
+                        WHEN combined_pasien.puskesmas_wilayah IS NULL OR combined_pasien.puskesmas_wilayah = '' THEN 'LUAR WILAYAH'
+                        ELSE UPPER(combined_pasien.puskesmas_wilayah) 
+                    END as wilayah,
+                    COUNT(*) as total
+                FROM (
+                    SELECT k.id, p.puskesmas_wilayah
+                    FROM kunjungan_rm k
+                    JOIN pasien p ON p.no_rm = k.no_rm
+                    WHERE MONTH(k.tanggal_kunjungan) = ? AND YEAR(k.tanggal_kunjungan) = ?
+                    
+                    UNION ALL
+                    
+                    SELECT f.id, p.puskesmas_wilayah
+                    FROM form_permintaan_klinik f
+                    JOIN pasien p ON p.id_pasien = f.id_pasien
+                    WHERE MONTH(f.tgl_form) = ? AND YEAR(f.tgl_form) = ?
+                ) as combined_pasien
+                LEFT JOIN puskesmas_wilayah pw ON pw.nama_puskesmas = combined_pasien.puskesmas_wilayah
+                GROUP BY pw.kecamatan, combined_pasien.puskesmas_wilayah
+                ORDER BY 
+                    CASE WHEN COALESCE(UPPER(pw.kecamatan), 'LUAR WILAYAH') = 'LUAR WILAYAH' THEN 1 ELSE 0 END, 
+                    COALESCE(UPPER(pw.kecamatan), 'LUAR WILAYAH') ASC, 
+                    total DESC";
+                
+        return $this->db->query($sql, [$bulan, $tahun, $bulan, $tahun])->result();
     }
 }

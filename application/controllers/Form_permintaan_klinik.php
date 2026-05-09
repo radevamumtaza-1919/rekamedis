@@ -105,6 +105,7 @@ class Form_permintaan_klinik extends CI_Controller {
 
     // 2️⃣ Simpan Pasien & Sinkronisasi ke Rekam Medis (pasien_rm)
     $this->load->model('Form_permintaan_rm_model');
+    $this->load->model('Puskesmas_wilayah_model');
     
     // Cek apakah pasien dengan NIK ini sudah ada di Rekam Medis
     $existing_rm = null;
@@ -117,12 +118,16 @@ class Form_permintaan_klinik extends CI_Controller {
     
     $no_register = $post['no_register'] ?? null;
     
+    $alamat = $post['alamat'] ?? '';
+    $puskesmas_wilayah = $this->Puskesmas_wilayah_model->auto_map_puskesmas($alamat);
+    
     $data_pasien_gabungan = [
         'nama_pasien'        => $post['nama_pasien'] ?? '',
         'nik'                => $post['nik'] ?? '',
         'tgl_lahir'          => $post['tgl_lahir'] ?? null,
         'umur'               => $post['umur'] ?? '',
-        'alamat'             => $post['alamat'] ?? '',
+        'alamat'             => $alamat,
+        'puskesmas_wilayah'  => $puskesmas_wilayah,
         'gender'             => $post['gender'] ?? '',
         'agama'              => $post['agama'] ?? '',
         'status_nikah'       => $post['status_nikah'] ?? '',
@@ -373,10 +378,15 @@ $this->db->insert('pembayaran', $data_bayar);
 
     // === Jalankan update ke tabel pasien ===
     if (!empty($post['nik'])) {
+        $this->load->model('Puskesmas_wilayah_model');
+        $alamat = $post['alamat'] ?? '';
+        $puskesmas_wilayah = $this->Puskesmas_wilayah_model->auto_map_puskesmas($alamat);
+        
         $data_pasien_update = [
             'nama_pasien' => $post['nama_pasien'] ?? '',
             'no_telp'     => $post['no_telp'] ?? '',
-            'alamat'      => $post['alamat'] ?? ''
+            'alamat'      => $alamat,
+            'puskesmas_wilayah' => $puskesmas_wilayah
         ];
         $this->db->where('nik', $post['nik']);
         $this->db->update('pasien', $data_pasien_update);

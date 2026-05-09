@@ -392,6 +392,10 @@ class Laporan_hasil_pemeriksaan extends CI_Controller
             $this->Laporan_hasil_pemeriksaan_model
             ->get_jumlah_pasien_bulan($bulan, $tahun);
 
+        $data['puskesmas_wilayah'] = 
+            $this->Laporan_hasil_pemeriksaan_model
+            ->get_jumlah_puskesmas_bulan($bulan, $tahun);
+
         $this->load->view('layout/header', $data);
         $this->load->view('layout/sidebar');
         $this->load->view('laporan_bulanan_tahunan/index', $data);

@@ -32,6 +32,7 @@
                         <li class="nav-item"><a class="nav-link" href="#tab_mikrobiologi" data-toggle="tab"><i class="fas fa-bacteria mr-1"></i> Mikrobiologi</a></li>
                         <li class="nav-item"><a class="nav-link" href="#tab_toksikologi" data-toggle="tab"><i class="fas fa-bug mr-1"></i> Toksikologi</a></li>
                         <li class="nav-item"><a class="nav-link" href="#tab_jumlah_pasien" data-toggle="tab"><i class="fas fa-user mr-1"></i>Jumlah Pasien</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#tab_puskesmas_wilayah" data-toggle="tab"><i class="fas fa-map-marker-alt mr-1"></i>Kunjungan per Wilayah</a></li>
                     </ul>
                 </div>
                 <div class="card-body bg-light">
@@ -421,6 +422,83 @@
                             </div>
                         </div>
 
+                        <!-- TAB PUSKESMAS WILAYAH -->
+                        <div class="tab-pane" id="tab_puskesmas_wilayah">
+                            <h4 class="text-success mb-4 font-weight-bold"><i class="fas fa-map-marker-alt"></i> Grafik & Data Kunjungan per Wilayah</h4>
+                            <div class="row">
+                                <div class="col-lg-7 mb-4 mb-lg-0">
+                                    <div class="card shadow-sm border-0 h-100">
+                                        <div class="card-body">
+                                            <div class="chart-container" style="position: relative; height:350px; width:100%">
+                                                <canvas id="chartPuskesmasWilayah"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="card shadow-sm border-0 h-100">
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <?php
+                                                $grouped_puskesmas = [];
+                                                $total_semua = 0;
+                                                foreach($puskesmas_wilayah as $p) {
+                                                    $kecamatan = $p->kecamatan;
+                                                    if(!isset($grouped_puskesmas[$kecamatan])) {
+                                                        $grouped_puskesmas[$kecamatan] = [];
+                                                    }
+                                                    $grouped_puskesmas[$kecamatan][] = $p;
+                                                    $total_semua += $p->total;
+                                                }
+
+                                                $nama_bulan = strtr(date('F', mktime(0, 0, 0, $bulan, 1)), ['January'=>'Januari','February'=>'Februari','March'=>'Maret','April'=>'April','May'=>'Mei','June'=>'Juni','July'=>'Juli','August'=>'Agustus','September'=>'September','October'=>'Oktober','November'=>'November','December'=>'Desember']);
+                                                ?>
+                                                <table class="table table-bordered table-hover m-0">
+                                                    <thead class="bg-success text-white text-center">
+                                                        <tr>
+                                                            <th colspan="3" class="text-uppercase py-3" style="font-size: 16px;">
+                                                                JUMLAH KUNJUNGAN PASIEN per KECAMATAN<br>
+                                                                <small>BULAN <?= strtoupper($nama_bulan) ?> <?= $tahun ?></small>
+                                                            </th>
+                                                        </tr>
+                                                        <tr class="bg-light text-dark">
+                                                            <th style="width: 35%;">Kecamatan</th>
+                                                            <th>Puskesmas Wilayah</th>
+                                                            <th style="width: 25%;">Total Kunjungan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php foreach($grouped_puskesmas as $kec => $items): ?>
+                                                            <?php $rowspan = count($items); ?>
+                                                            <?php foreach($items as $index => $item): ?>
+                                                                <tr>
+                                                                    <?php if($index === 0): ?>
+                                                                        <td rowspan="<?= $rowspan ?>" class="align-middle text-uppercase font-weight-bold bg-light"><?= $kec ?></td>
+                                                                    <?php endif; ?>
+                                                                    <td class="text-uppercase align-middle">
+                                                                        <?= str_replace('PUSKESMAS', 'PKM.', $item->wilayah) ?>
+                                                                    </td>
+                                                                    <td class="text-center align-middle">
+                                                                        <span class="badge badge-success px-3 py-2"><?= $item->total ?> Kunjungan</span>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endforeach; ?>
+                                                        <?php endforeach; ?>
+                                                        <tr class="bg-light font-weight-bold text-uppercase">
+                                                            <td colspan="2" class="text-right pr-4">Total Keseluruhan</td>
+                                                            <td class="text-center">
+                                                                <span class="badge badge-primary px-3 py-2"><?= $total_semua ?> Kunjungan</span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -536,6 +614,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // Menggunakan warna khusus: biru untuk Laki-laki, pink untuk Perempuan
     initChart('chartJumlahPasien', dataJumlahPasien.labels, dataJumlahPasien.data, ['#007bff', '#e83e8c']);
     
+    // Initialize chart Puskesmas Wilayah
+    const dataPuskesmas = {
+        labels: [<?php foreach($puskesmas_wilayah as $p) echo json_encode($p->wilayah).","; ?>],
+        data: [<?php foreach($puskesmas_wilayah as $p) echo json_encode($p->total).","; ?>]
+    };
+    initChart('chartPuskesmasWilayah', dataPuskesmas.labels, dataPuskesmas.data, colors);
+
     // Memicu event resize pada window setiap kali tab dibuka agar grafik Chart.js 
     // beradaptasi ulang dengan ukuran div tersembunyi yang baru menjadi terlihat.
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

@@ -76,6 +76,11 @@
                                 <td>: <?= isset($pasien->alamat) && $pasien->alamat != '' ? $pasien->alamat : '-' ?>
                                 </td>
                             </tr>
+                            <tr>
+                                <th>Puskesmas Wilayah</th>
+                                <td>: <span class="badge bg-info text-dark"><?= !empty($pasien->puskesmas_wilayah) ? $pasien->puskesmas_wilayah : 'Belum Dipetakan' ?></span>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

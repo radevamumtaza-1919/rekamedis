@@ -8,6 +8,7 @@ class Form_permintaan_rm extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Form_permintaan_rm_model');
+        $this->load->model('Puskesmas_wilayah_model');
         $this->load->database();
         $this->load->library('session');
     }
@@ -48,6 +49,9 @@ class Form_permintaan_rm extends CI_Controller
             return;
         }
 
+        $alamat = $post['alamat'] ?? '';
+        $puskesmas_wilayah = $this->Puskesmas_wilayah_model->auto_map_puskesmas($alamat);
+
         $data_simpan = [
             'no_rm' => $post['no_rm'] ?? '',
             'nik' => $nik,
@@ -55,7 +59,8 @@ class Form_permintaan_rm extends CI_Controller
             'tgl_lahir' => $post['tgl_lahir'] ?? null,
             'umur' => $post['umur'] ?? 0,
             'gender' => $post['gender'] ?? '',
-            'alamat' => $post['alamat'] ?? '',
+            'alamat' => $alamat,
+            'puskesmas_wilayah' => $puskesmas_wilayah,
             'no_telp' => $post['no_telp'] ?? '',
             'agama' => $post['agama'] ?? '',
             'status_nikah' => $post['status_nikah'] ?? '',
@@ -123,6 +128,9 @@ class Form_permintaan_rm extends CI_Controller
             return;
         }
 
+        $alamat = $post['alamat'] ?? '';
+        $puskesmas_wilayah = $this->Puskesmas_wilayah_model->auto_map_puskesmas($alamat);
+
         $data_update = [
             'no_rm' => $post['no_rm'] ?? '',
             'nik' => $post['nik'] ?? '',
@@ -130,7 +138,8 @@ class Form_permintaan_rm extends CI_Controller
             'tgl_lahir' => $post['tgl_lahir'] ?? null,
             'umur' => $post['umur'] ?? 0,
             'gender' => $post['gender'] ?? '',
-            'alamat' => $post['alamat'] ?? '',
+            'alamat' => $alamat,
+            'puskesmas_wilayah' => $puskesmas_wilayah,
             'no_telp' => $post['no_telp'] ?? '',
             'agama' => $post['agama'] ?? '',
             'status_nikah' => $post['status_nikah'] ?? '',

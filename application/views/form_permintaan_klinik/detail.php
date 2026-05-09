@@ -22,6 +22,7 @@
               <tr><td class="fw-semibold text-secondary">Tgl Lahir / Umur</td><td>: <?= $form->tgl_lahir ?> / <?= $form->umur ?></td></tr>
               <tr><td class="fw-semibold text-secondary">No. Telp</td><td>: <?= $form->no_telp ?></td></tr>
               <tr><td class="fw-semibold text-secondary">Alamat</td><td>: <?= nl2br($form->alamat) ?></td></tr>
+              <tr><td class="fw-semibold text-secondary">Puskesmas Wilayah</td><td>: <span class="badge bg-info text-dark"><?= !empty($form->puskesmas_wilayah) ? $form->puskesmas_wilayah : 'Belum Dipetakan' ?></span></td></tr>
             </tbody>
           </table>
         </div>
