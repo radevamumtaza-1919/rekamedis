@@ -14,6 +14,11 @@
 
                 <div class="col-sm-6 text-right">
 
+                    <a href="<?= site_url('Laporan_hasil_pemeriksaan/export_excel_tahunan?tahun=' . $tahun) ?>"
+                       class="btn btn-success mr-2">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </a>
+
                     <a href="<?= site_url('form_laporan_akhir') ?>"
                        class="btn btn-secondary">
 
@@ -85,6 +90,8 @@
                                 <th>Nov</th>
                                 <th>Des</th>
 
+                                <th>Total</th>
+
                             </tr>
 
                         </thead>
@@ -99,15 +106,24 @@
                                     <strong><?= $jenis ?></strong>
                                 </td>
 
-                                <?php for($i=1; $i<=12; $i++): ?>
+                            <?php 
+                                $total_setahun = 0;
+                                for($i=1; $i<=12; $i++): 
+                                    $val = isset($bulan_data[$i]) ? $bulan_data[$i] : 0;
+                                    $total_setahun += $val;
+                            ?>
 
                                 <td class="text-center">
 
-                                    <?= isset($bulan_data[$i]) ? $bulan_data[$i] : 0 ?>
+                                    <?= $val ?>
 
                                 </td>
 
                                 <?php endfor; ?>
+
+                                <td class="text-center font-weight-bold">
+                                    <?= $total_setahun ?>
+                                </td>
 
                             </tr>
 

@@ -143,13 +143,29 @@ class Uji_rekam_medis extends CI_Controller
         $kode = $this->input->post('kode');
         $nama = $this->input->post('nama');
 
+        $kode = trim($kode ?? '');
+        $nama = trim($nama ?? '');
+
         if (empty($nama)) {
             echo json_encode(['status' => 'error', 'message' => 'Nama diagnosa wajib diisi']);
             return;
         }
 
+        // Cek jika kode ICD kosong, buatkan kode sementara karena kolom 'kode' NOT NULL
+        if (empty($kode)) {
+            $kode = 'MAN-' . strtoupper(substr(uniqid(), -5));
+        } else {
+            // Jika kode diinput, pastikan tidak duplicate dengan yang ada di database
+            $existing = $this->db->get_where('diagnosa', ['kode' => $kode])->row();
+            if ($existing) {
+                // Jika sudah ada, kembalikan response sukses agar bisa langsung digunakan
+                echo json_encode(['status' => 'success', 'id' => $existing->id, 'kode' => $existing->kode, 'nama' => $existing->nama]);
+                return;
+            }
+        }
+
         $data = [
-            'kode' => empty($kode) ? null : $kode,
+            'kode' => $kode,
             'nama' => $nama,
             'dibuat_pada' => date('Y-m-d H:i:s')
         ];

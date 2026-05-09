@@ -28,7 +28,6 @@
                 <th>NIK</th>
                 <th>Jenis Kelamin</th>
                 <th>Umur</th>
-                <th>Waktu Terdaftar</th>
             </tr>
         </thead>
         <tbody>
@@ -40,7 +39,6 @@
                     <td><?= $p->nik; ?></td>
                     <td><?= $p->gender; ?></td>
                     <td><?= $p->umur; ?> Tahun</td>
-                    <td><?= date('H:i:s', strtotime($p->created_at ?? date('Y-m-d H:i:s'))); ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

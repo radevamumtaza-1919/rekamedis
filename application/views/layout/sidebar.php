@@ -57,7 +57,7 @@
   <a href="<?= site_url('dashboard') ?>" class="brand-link">
     <img src="<?= base_url('assets/img/logolabkes.png') ?>" alt="Logo" class="brand-image img-circle elevation-3"
       style="opacity: .8">
-    <span class="mb-0 h5 fw-bold d-none d-md-block">UPTD Labkes</span>
+    <span class="mb-0 h5 fw-bold d-none d-md-block">UPTD LABKES</span>
   </a>
 
   <!-- Sidebar Content -->
@@ -221,21 +221,13 @@
               </p>
             </a>
            <ul class="nav nav-treeview">
-               <!-- <li class="nav-item">
-                <a href="<?= site_url('laporan_rekam_medis') ?>"
+               <li class="nav-item">
+                <a href="<?= site_url('laporan_hasil_pemeriksaan') ?>"
                   class="nav-link <?= ($this->uri->segment(1) == 'laporan_rekam_medis' && $this->uri->segment(2) == '') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Data Pasien</p>
                 </a>
-              </li> -->
-            <!-- LAPORAN BULANAN & TAHUNAN -->
-            <!--<li class="nav-item">
-                <a href="<?= site_url('laporan_bulanan_tahunan') ?>"
-                    class="nav-link <?= ($this->uri->segment(1) == 'laporan_bulanan_tahunan' && $this->uri->segment(2) == '') ? 'active' : '' ?>">
-                    <i class="far fa-chart-bar nav-icon"></i>
-                    <p>Laporan Bulanan & Tahunan</p>
-                </a>
-            </li>-->
+              </li> 
             <li class="nav-item">
               <a href="<?= site_url('form_laporan_akhir') ?>"
                   class="nav-link <?= ($this->uri->segment(1) == 'form_laporan_akhir' && $this->uri->segment(2) == '') ? 'active' : '' ?>">

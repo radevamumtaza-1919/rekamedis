@@ -16,7 +16,7 @@
                 <div class="col-md-6">
                     <div class="card card-success">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-user-plus"></i> Daftar Pemeriksaan HEMATOLOGI </h3>
+                            <h3 class="card-title"><i class="fas fa-user-plus"></i> Identitas Pasien  </h3>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered table-striped" id="tabel-laporan-klinik">
@@ -52,7 +52,7 @@
                                                         class="fas fa-venus"></i> <?= $kl->total_p ?: 0 ?></span>
                                             </td>
                                             <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_pasien/' . $kl->tanggal) ?>"
+                                                <a href="<?= site_url('Laporan_hasil_pemeriksaan/detail_pasien/' . $kl->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Lihat Detail
                                                 </a>
@@ -98,7 +98,7 @@
                                             <td><span class="badge badge-success"
                                                     style="font-size: 14px;"><?= $reg->total_pasien ?> Pasien</span></td>
                                             <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_pendaftaran/' . $reg->tanggal) ?>"
+                                                <a href="<?= site_url('Laporan_hasil_pemeriksaan/detail_pendaftaran/' . $reg->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Lihat Detail
                                                 </a>
@@ -144,7 +144,7 @@
                                                     style="font-size: 14px;"><?= $vis->total_kunjungan ?> Kunjungan</span>
                                             </td>
                                             <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_kunjungan/' . $vis->tanggal) ?>"
+                                                <a href="<?= site_url('Laporan_hasil_pemeriksaan/detail_kunjungan/' . $vis->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Lihat Detail
                                                 </a>
@@ -189,7 +189,7 @@
                                             <td><span class="badge badge-warning"
                                                     style="font-size: 14px;"><?= $uk->total_pasien ?> Pemeriksaan</span></td>
                                             <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_uji_klinik/' . $uk->tanggal) ?>"
+                                                <a href="<?= site_url('Laporan_hasil_pemeriksaan/detail_uji_klinik/' . $uk->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Lihat Detail
                                                 </a>
@@ -237,7 +237,7 @@
                                             <td><span class="badge badge-info"
                                                     style="font-size: 14px;"><?= $uk->total_pasien ?> Pemeriksaan</span></td>
                                             <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_uji_klinik/' . $uk->tanggal) ?>"
+                                                <a href="<?= site_url('Laporan_hasil_pemeriksaan/detail_uji_klinik/' . $uk->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Lihat Detail
                                                 </a>
@@ -282,7 +282,7 @@
                                             <td><span class="badge badge-danger"
                                                     style="font-size: 14px;"><?= $uk->total_pasien ?> Pemeriksaan</span></td>
                                             <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_uji_klinik/' . $uk->tanggal) ?>"
+                                                <a href="<?= site_url('Laporan_hasil_pemeriksaan/detail_uji_klinik/' . $uk->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Lihat Detail
                                                 </a>
@@ -330,7 +330,7 @@
                                             <td><span class="badge badge-secondary"
                                                     style="font-size: 14px;"><?= $uk->total_pasien ?> Pemeriksaan</span></td>
                                             <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_uji_klinik/' . $uk->tanggal) ?>"
+                                                <a href="<?= site_url('Laporan_hasil_pemeriksaan/detail_uji_klinik/' . $uk->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Lihat Detail
                                                 </a>
@@ -385,7 +385,7 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_uji_klinik/' . $uk->tanggal) ?>"
+                                                <a href="<?= site_url('Laporan_hasil_pemeriksaan/detail_uji_klinik/' . $uk->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Detail
                                                 </a>

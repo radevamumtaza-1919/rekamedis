@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?= site_url('laporan_rekam_medis') ?>">Laporan Harian</a></li>
+                        <li class="breadcrumb-item"><a href="<?= site_url('Laporan_hasil_pemeriksaan') ?>">Laporan Harian</a></li>
                         <li class="breadcrumb-item active">Detail Identitas Pasien</li>
                     </ol>
                 </div>
@@ -18,13 +18,13 @@
     <div class="container-fluid mb-3">
         <div class="d-flex justify-content-between">
             <div>
-                <a href="<?= site_url('laporan_rekam_medis') ?>" class="btn btn-secondary px-4 py-2 shadow-sm">
+                <a href="<?= site_url('Laporan_hasil_pemeriksaan') ?>" class="btn btn-secondary px-4 py-2 shadow-sm">
                     <i class="fas fa-arrow-left me-2"></i> Kembali
                 </a>
             </div>
             <div>
                 <?php if(isset($tanggal) && $tanggal): ?>
-                <a href="<?= site_url('laporan_rekam_medis/print_pasien_pdf/' . $tanggal) ?>" target="_blank" class="btn btn-danger px-4 py-2 shadow-sm">
+                <a href="<?= site_url('Laporan_hasil_pemeriksaan/print_pasien_pdf/' . $tanggal) ?>" target="_blank" class="btn btn-danger px-4 py-2 shadow-sm">
                     <i class="fas fa-file-pdf me-2"></i> Cetak PDF
                 </a>
                 <?php endif; ?>
