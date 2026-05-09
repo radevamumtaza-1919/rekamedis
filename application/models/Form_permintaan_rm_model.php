@@ -32,9 +32,9 @@ class Form_permintaan_rm_model extends CI_Model
         return $this->db->query($sql, [$today, $today, $today, $today])->result();
     }
 
-    public function get_by_nik($nik)
+    public function get_by_nik($id_pasien)
     {
-        return $this->db->get_where($this->table, ['nik' => $nik])->row();
+        return $this->db->get_where($this->table, ['id_pasien' => $id_pasien])->row();
     }
 
     public function get_by_no_rm($no_rm)

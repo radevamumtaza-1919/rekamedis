@@ -38,11 +38,13 @@ class Laporan_rekam_medis extends CI_Controller
         $this->load->view('layout/footer');
     }
 
-    public function detail_pasien_klinik($date = null)
+    public function detail_pasien($date = null)
     {
-        $this->load->model('Form_permintaan_klinik_model');
+        $this->load->model('Pasien_model');
         $this->load->model('Laporan_rekam_medis_model');
         
+        $data['tanggal'] = $date;
+
         if ($date) {
             // Convert to nice format
             $timestamp = strtotime($date);
@@ -51,17 +53,41 @@ class Laporan_rekam_medis extends CI_Controller
                 'Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu',
                 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'
             ];
-            $data['title'] = 'Data Pasien Klinik - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
-            $data['formulir'] = $this->Laporan_rekam_medis_model->get_klinik_by_date($date);
+            $data['title'] = 'Identitas Pasien Klinik - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
+            $data['pasien'] = $this->Laporan_rekam_medis_model->get_patients_by_date($date);
         } else {
-            $data['title'] = 'Detail Data Seluruh Pasien Klinik';
-            $data['formulir'] = $this->Form_permintaan_klinik_model->get_all_formulir();
+            $data['title'] = 'Identitas Pasien Klinik';
+            $data['pasien'] = $this->Pasien_model->get_all();
         }
 
         $this->load->view('layout/header', $data);
         $this->load->view('layout/sidebar');
-        $this->load->view('laporan_rekam_medis/detail_pasien_klinik', $data);
+        $this->load->view('laporan_rekam_medis/detail_pasien', $data);
         $this->load->view('layout/footer');
+    }
+
+    public function print_pasien_pdf($date)
+    {
+        $data['tanggal'] = $date;
+        $timestamp = strtotime($date);
+        $hari_en = date('l', $timestamp);
+        $hari_indo = [
+            'Sunday' => 'Minggu',
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu'
+        ];
+
+        $data['title'] = 'Laporan Pasien Klinik - ' . $hari_indo[$hari_en] . ', ' . date('d-m-Y', $timestamp);
+        $this->load->model('Laporan_rekam_medis_model');
+        $data['pasien'] = $this->Laporan_rekam_medis_model->get_patients_by_date($date);
+        $data['is_pdf'] = true;
+
+        $this->load->library('pdf');
+        $this->pdf->generate_view('laporan_rekam_medis/print_pasien', $data, 'Laporan_Pasien_Klinik_' . $date . '.pdf', 'I');
     }
 
     public function detail_uji_klinik($date = null)

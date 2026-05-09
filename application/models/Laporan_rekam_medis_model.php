@@ -47,11 +47,14 @@ class Laporan_rekam_medis_model extends CI_Model
 
     public function get_daily_klinik()
     {
-        $this->db->select('DATE(tgl_form) as tanggal, COUNT(id) as total_pasien');
+        $this->db->select('DATE(form_permintaan_klinik.tgl_form) as tanggal, COUNT(form_permintaan_klinik.id) as total_pasien,
+                           SUM(CASE WHEN LOWER(pasien.gender) = "laki-laki" OR LOWER(pasien.gender) = "l" THEN 1 ELSE 0 END) as total_l,
+                           SUM(CASE WHEN LOWER(pasien.gender) = "perempuan" OR LOWER(pasien.gender) = "p" THEN 1 ELSE 0 END) as total_p');
         $this->db->from('form_permintaan_klinik');
-        $this->db->where('tgl_form IS NOT NULL');
-        $this->db->group_by('DATE(tgl_form)');
-        $this->db->order_by('DATE(tgl_form)', 'DESC');
+        $this->db->join('pasien', 'pasien.id_pasien = form_permintaan_klinik.id_pasien', 'left');
+        $this->db->where('form_permintaan_klinik.tgl_form IS NOT NULL');
+        $this->db->group_by('DATE(form_permintaan_klinik.tgl_form)');
+        $this->db->order_by('DATE(form_permintaan_klinik.tgl_form)', 'DESC');
         return $this->db->get()->result();
     }
 

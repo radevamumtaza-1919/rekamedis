@@ -12,6 +12,59 @@
     <section class="content">
         <div class="container-fluid">
 
+        <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-clinic-medical"></i> Daftar Identitas Pasien </h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped" id="tabel-laporan-klinik">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">No</th>
+                                        <th>Hari, Tanggal</th>
+                                        <th>Jumlah Pasien</th>
+                                        <th>Jumlah Jenis Kelamin</th>
+                                        <th style="width: 120px">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $no = 1;
+                                    foreach ($klinik as $kl): ?>
+                                        <?php
+                                        $ts = strtotime($kl->tanggal);
+                                        $hari_en = date('l', $ts);
+                                        $tanggal_indo = date('d-m-Y', $ts);
+                                        ?>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= isset($hari_indo[$hari_en]) ? $hari_indo[$hari_en] : $hari_en ?>,
+                                                <?= $tanggal_indo ?>
+                                            </td>
+                                            <td><span class="badge badge-success"
+                                                    style="font-size: 14px;"><?= $kl->total_pasien ?> Pasien</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-info" title="Laki-laki"><i
+                                                        class="fas fa-mars"></i> <?= $kl->total_l ?: 0 ?></span>
+                                                <span class="badge badge-danger" title="Perempuan"><i
+                                                        class="fas fa-venus"></i> <?= $kl->total_p ?: 0 ?></span>
+                                            </td>
+                                            <td>
+                                                <a href="<?= site_url('laporan_rekam_medis/detail_pasien/' . $kl->tanggal) ?>"
+                                                    class="btn btn-sm btn-info">
+                                                    <i class="fas fa-eye"></i> Lihat Detail
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             <div class="row">
                 <!-- Data Pendaftaran (Pasien Baru) -->
                 <div class="col-md-6">
@@ -92,54 +145,6 @@
                                             </td>
                                             <td>
                                                 <a href="<?= site_url('laporan_rekam_medis/detail_kunjungan/' . $vis->tanggal) ?>"
-                                                    class="btn btn-sm btn-info">
-                                                    <i class="fas fa-eye"></i> Lihat Detail
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tambahan Baris untuk Pasien Klinik -->
-            <div class="row mt-4">
-                <!-- Data Pendaftaran (Pasien Klinik) -->
-                <div class="col-md-6">
-                    <div class="card card-success">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-clinic-medical"></i> Daftar Pasien Klinik</h3>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped" id="tabel-laporan-klinik">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 10px">No</th>
-                                        <th>Hari, Tanggal</th>
-                                        <th>Jumlah Pasien</th>
-                                        <th style="width: 120px">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $no = 1;
-                                    foreach ($klinik as $kl): ?>
-                                        <?php
-                                        $ts = strtotime($kl->tanggal);
-                                        $hari_en = date('l', $ts);
-                                        $tanggal_indo = date('d-m-Y', $ts);
-                                        ?>
-                                        <tr>
-                                            <td><?= $no++; ?></td>
-                                            <td><?= isset($hari_indo[$hari_en]) ? $hari_indo[$hari_en] : $hari_en ?>,
-                                                <?= $tanggal_indo ?>
-                                            </td>
-                                            <td><span class="badge badge-success"
-                                                    style="font-size: 14px;"><?= $kl->total_pasien ?> Pasien</span></td>
-                                            <td>
-                                                <a href="<?= site_url('laporan_rekam_medis/detail_pasien_klinik/' . $kl->tanggal) ?>"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> Lihat Detail
                                                 </a>

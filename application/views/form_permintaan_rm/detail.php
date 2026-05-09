@@ -1,12 +1,12 @@
 <div class="content-wrapper px-4 pt-4">
-    <h3 class="text-center fw-bold mb-4">DETAIL PASIEN REKAM MEDIS</h3>
+    <h3 class="text-center fw-bold mb-4">Detail Identitas Pasien</h3>
 
     <div class="row justify-content-center mb-4">
         <!-- Card Detail Pasien -->
         <div class="col-md-8">
             <div class="card border border-dark shadow-lg w-100 bg-white">
                 <div class="card-header bg-secondary text-white fw-bold mb-0" style="font-weight: 800">
-                    Informasi Lengkap Pasien
+                    Informasi Identitas Pasien
                 </div>
                 <div class="card-body">
                     <table class="table table-borderless">
@@ -85,7 +85,7 @@
                 <a href="<?= site_url('form_permintaan_rm') ?>" class="btn btn-secondary px-5 py-2">
                     <i class="fas fa-arrow-left me-2"></i> Kembali ke Data Pasien
                 </a>
-                <a href="<?= site_url('form_permintaan_rm/edit/' . (isset($pasien->id) ? $pasien->id : '')) ?>"
+                <a href="<?= site_url('form_permintaan_rm/edit/' . (isset($pasien->id_pasien) ? $pasien->id_pasien : '')) ?>"
                     class="btn btn-success px-5 py-2 ms-2">
                     <i class="fas fa-edit me-2"></i> Edit Data
                 </a>
