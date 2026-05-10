@@ -2,7 +2,7 @@
   <h4 class="fw-bold text-center mb-4 text-uppercase">Laporan Hasil Uji Laboratorium</h4>
 
   <!-- Button Back -->
-    <a href="<?= site_url('uji_rekam_medis/index') ?>" class="btn btn-secondary px-4">
+    <a href="<?= site_url('laporan_uji_klinik/index') ?>" class="btn btn-secondary px-4">
       <i class="fas fa-arrow-left"></i> Kembali ke Daftar Pasien
     </a>
 

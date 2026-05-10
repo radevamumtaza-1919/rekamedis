@@ -11,7 +11,11 @@
   <div class="custom-alert mb-4">
     <i class="fas fa-hand-sparkles me-3"></i>
     <div>
-        Halo, <span class="fw-bold text-primary"><?= $this->session->userdata('nama') ?></span>. Anda login sebagai <span class="text-danger fw-bold"><?= $this->session->userdata('role') ?></span>.
+        <?php 
+          $sess_role_dash = $this->session->userdata('role');
+          $display_role_dash = (strtolower($sess_role_dash) == 'petugas rm') ? 'Dokter' : $sess_role_dash;
+        ?>
+        Halo, <span class="fw-bold text-primary"><?= $this->session->userdata('nama') ?></span>. Anda login sebagai <span class="text-danger fw-bold"><?= $display_role_dash ?></span>.
     </div>
   </div>
 
