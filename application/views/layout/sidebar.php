@@ -11,7 +11,11 @@
 
       <li class="nav-item">
         <span class="fw-bold text-dark ms-1">
-          Hallo <?= ucfirst($this->session->userdata('role')) ?>
+          <?php 
+            $sess_role = $this->session->userdata('role');
+            $display_role = (strtolower($sess_role) == 'petugas rm') ? 'Dokter' : ucfirst($sess_role);
+          ?>
+          Hallo <?= $display_role ?>
         </span>
       </li>
     </ul>
@@ -84,7 +88,7 @@
         $is_admin = ($user_role === 'admin');
         $is_pemeriksa = ($user_role === 'pemeriksa sampel');
         $is_pendaftaran = ($user_role === 'petugas pendaftaran');
-        $is_rm = ($user_role === 'petugas rekam medis' || $user_role === 'petugas rm');
+        $is_rm = ($user_role === 'petugas rm');
         ?>
 
         <!-- Sidebar Title: Menu Utama -->
@@ -136,7 +140,7 @@
                 </li>
               <?php endif; ?>
 
-              <?php if ($is_admin || $is_pendaftaran): ?>
+              <?php if ($is_admin || $is_pendaftaran || $is_pemeriksa): ?>
                 <li
                   class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['laporan_uji_klinik', 'laporan_pemeriksaan']) ? 'menu-open' : '' ?>">
                   <a href="#"
