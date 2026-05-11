@@ -153,3 +153,53 @@ body {
     width: 100%;
     padding: 0 20px 20px 20px;
 }
+
+/* Custom Styles for Dashboard Pendaftaran */
+.progress-bar-custom {
+    background-color: #20c997;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+.progress-wrapper {
+    background-color: #f1f3f5;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.table-custom th {
+    background-color: #f8f9fe;
+    font-weight: 600;
+    color: #4a5568;
+    border-bottom: 2px solid #e2e8f0;
+    font-size: 0.85rem;
+}
+.table-custom td {
+    vertical-align: middle;
+    color: #2d3748;
+    font-size: 0.85rem;
+}
+.btn-cyan {
+    background-color: #459a96; 
+    color: #fff;
+    border: none;
+}
+.btn-cyan:hover {
+    background-color: #38807d;
+    color: #fff;
+}
+.search-input {
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    padding: 5px 10px;
+    outline: none;
+}
+.search-input:focus {
+    border-color: #459a96;
+    box-shadow: 0 0 0 2px rgba(69, 154, 150, 0.2);
+}

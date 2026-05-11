@@ -36,9 +36,33 @@ class Dashboard extends CI_Controller
 
         $data['total_pasien'] = $query->row()->total;
 
+        // Ambil data pendaftaran terbaru hari ini
+        $query_terbaru = $this->db->query("
+            SELECT COALESCE(updated_at, created_at) as tgl_daftar, no_register as no_registrasi, nama_pasien, gender as jenis_kelamin 
+            FROM pasien
+            WHERE DATE(created_at) = '$today' OR DATE(updated_at) = '$today'
+            ORDER BY tgl_daftar DESC
+            LIMIT 10
+        ");
+        $data['pasien_terbaru'] = $query_terbaru->result();
+
+        // Ambil total pembayaran hari ini
+        $query_pembayaran = $this->db->query("
+            SELECT SUM(total_biaya) as total_pendapatan 
+            FROM pembayaran 
+            WHERE DATE(created_at) = '$today'
+        ");
+        $data['total_pendapatan'] = $query_pembayaran->row()->total_pendapatan ?? 0;
+
         $this->load->view('layout/header', $data);
         $this->load->view('layout/sidebar');
-        $this->load->view('dashboard', $data);
+        
+        if (strtolower($this->session->userdata('role')) == 'petugas pendaftaran') {
+            $this->load->view('dashboard/Dashboard_pendaftaran', $data);
+        } else {
+            $this->load->view('dashboard', $data);
+        }
+        
         $this->load->view('layout/footer');
     }
 
