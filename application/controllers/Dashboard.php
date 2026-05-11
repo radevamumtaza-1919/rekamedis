@@ -38,7 +38,7 @@ class Dashboard extends CI_Controller
 
         // Ambil data pendaftaran terbaru hari ini
         $query_terbaru = $this->db->query("
-            SELECT COALESCE(updated_at, created_at) as tgl_daftar, no_register as no_registrasi, nama_pasien, gender as jenis_kelamin 
+            SELECT COALESCE(updated_at, created_at) as tgl_daftar, no_register as no_registrasi, nama_pasien, gender as jenis_kelamin, no_rm, nik, umur 
             FROM pasien
             WHERE DATE(created_at) = '$today' OR DATE(updated_at) = '$today'
             ORDER BY tgl_daftar DESC
@@ -65,6 +65,8 @@ class Dashboard extends CI_Controller
             $data['formulir'] = $this->Uji_klinik_model->get_today_formulir_belum_input();
             $data['hasil_lab_siap'] = count($this->Hasil_laporan_model->get_pasien_dengan_soap());
             $this->load->view('dashboard/Dashboard_klinik', $data);
+        } elseif (strtolower($this->session->userdata('role')) == 'petugas rm') {
+            $this->load->view('dashboard/Dashboard_dokter', $data);
         } else {
             $this->load->view('dashboard', $data);
         }
