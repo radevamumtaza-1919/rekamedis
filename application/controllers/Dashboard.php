@@ -59,6 +59,12 @@ class Dashboard extends CI_Controller
         
         if (strtolower($this->session->userdata('role')) == 'petugas pendaftaran') {
             $this->load->view('dashboard/Dashboard_pendaftaran', $data);
+        } elseif (strtolower($this->session->userdata('role')) == 'pemeriksa sampel') {
+            $this->load->model('Uji_klinik_model');
+            $this->load->model('Hasil_laporan_model');
+            $data['formulir'] = $this->Uji_klinik_model->get_today_formulir_belum_input();
+            $data['hasil_lab_siap'] = count($this->Hasil_laporan_model->get_pasien_dengan_soap());
+            $this->load->view('dashboard/Dashboard_klinik', $data);
         } else {
             $this->load->view('dashboard', $data);
         }
