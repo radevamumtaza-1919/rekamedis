@@ -212,7 +212,7 @@
           </li>
         <?php endif; ?>
 
-        <?php if ($is_admin): ?>
+        <?php if ($is_admin || $is_rm): ?>
           <li class="nav-header text-uppercase">Menu Laporan Akhir</li>
           <li
             class="nav-item has-treeview <?= in_array($this->uri->segment(1), ['laporan_rekam_medis','laporan_bulanan_tahunan','form_laporan_akhir']) ? 'menu-open' : '' ?>">
