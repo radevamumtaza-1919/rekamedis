@@ -14,7 +14,7 @@ class Laporan_uji_klinik extends CI_Controller {
         $data['title'] = 'Laporan Uji Klinik';
 
         // Ambil data form yang SUDAH diinput hasilnya
-        $this->db->select('f.id, p.no_register, p.nama_pasien, p.nik, p.gender, f.tgl_form, f.nama_dokter');
+        $this->db->select('f.id, f.no_register, p.nama_pasien, p.nik, p.gender, f.tgl_form, f.nama_dokter');
         $this->db->from('form_permintaan_klinik f');
         $this->db->join('pasien p', 'p.id_pasien = f.id_pasien', 'left');
         $this->db->join('form_permintaan_klinik_detail d', 'f.id = d.id_form');

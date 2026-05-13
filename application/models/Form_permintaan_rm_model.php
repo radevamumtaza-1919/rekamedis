@@ -23,7 +23,7 @@ class Form_permintaan_rm_model extends CI_Model
         $today = date('Y-m-d');
         $sql = "SELECT DISTINCT pasien.* 
                 FROM pasien 
-                LEFT JOIN form_permintaan_klinik ON form_permintaan_klinik.no_rm = pasien.no_rm 
+                LEFT JOIN form_permintaan_klinik ON form_permintaan_klinik.id_pasien = pasien.id_pasien 
                 LEFT JOIN kunjungan_rm ON kunjungan_rm.no_rm = pasien.no_rm
                 WHERE DATE(pasien.created_at) = ? 
                    OR DATE(pasien.updated_at) = ? 
