@@ -17,6 +17,12 @@ class Form_permintaan_klinik extends CI_Controller {
                 'id_kunjungan' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE]
             ]);
         }
+
+        if (!$this->db->field_exists('no_register', 'form_permintaan_klinik')) {
+            $this->dbforge->add_column('form_permintaan_klinik', [
+                'no_register' => ['type' => 'VARCHAR', 'constraint' => 50, 'null' => TRUE]
+            ]);
+        }
     }
 
     // =======================
@@ -138,7 +144,6 @@ class Form_permintaan_klinik extends CI_Controller {
         'diagnosa'           => $post['diagnosa_klinis'] ?? '',
         'obat'               => $post['obat_dikonsumsi'] ?? '',
         'id_dokter_pengirim' => $id_dokter,
-        'no_register'        => $no_register,
         'petugas_pendaftaran'=> $post['petugas_pendaftaran'] ?? ''
     ];
 
@@ -165,9 +170,10 @@ class Form_permintaan_klinik extends CI_Controller {
         $id_pasien = $this->db->insert_id();
     }
 
-    // Set no_rm ke $post agar ikut tersimpan di form_permintaan_klinik
+    // Set no_rm & no_register ke $post agar ikut tersimpan di form_permintaan_klinik
     $post['no_rm'] = $no_rm;
     $post['id_pasien'] = $id_pasien;
+    $post['no_register'] = $no_register;
 
     
 
@@ -326,7 +332,7 @@ $this->db->insert('pembayaran', $data_bayar);
     // === Siapkan data utama (semua dalam satu tabel) ===
     $data_update = [
         // IDENTITAS PASIEN
-        'no_rm'             => $post['no_rm'] ?? '',
+        // (no_rm removed as it is no longer in form_permintaan_klinik table)
 
         // INFORMASI KLINIS
         'diagnosa_klinis'   => $post['diagnosa_klinis'] ?? '',
@@ -371,6 +377,7 @@ $this->db->insert('pembayaran', $data_bayar);
         'metode_pembayaran'  => ($post['metode_pembayaran'] == 'Lain-lain')
                                 ? ($post['metode_lainnya'] ?? 'Lain-lain')
                                 : ($post['metode_pembayaran'] ?? ''),
+        'no_register'        => $post['no_register'] ?? null,
     ];
 
     // === Jalankan update ke tabel form_permintaan_klinik ===
@@ -437,7 +444,7 @@ $this->db->insert('pembayaran', $data_bayar);
     $this->db->like('no_register', $prefix, 'before');
     $this->db->order_by('id', 'DESC');
     $this->db->limit(1);
-    $last = $this->db->get('pasien')->row();
+    $last = $this->db->get('form_permintaan_klinik')->row();
 
     $last_number = 1;
 

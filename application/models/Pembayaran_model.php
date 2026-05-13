@@ -8,7 +8,7 @@ class Pembayaran_model extends CI_Model {
     public function get_all() {
         $this->db->select('pembayaran.*, pasien.nama_pasien');
         $this->db->from($this->table);
-        $this->db->join('pasien', 'pasien.no_register = pembayaran.no_register');
+        $this->db->join('pasien', 'pasien.id_pasien = pembayaran.id_pasien');
         return $this->db->get()->result();
     }
 

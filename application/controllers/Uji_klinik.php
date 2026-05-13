@@ -42,9 +42,8 @@ class Uji_klinik extends CI_Controller {
         $this->db->where('d.id_form', $id_form);
         $data['detail'] = $this->db->get()->result();
 
-        // Ambil ID pasien berdasarkan no_register
-        $pasien = $this->db->get_where('pasien', ['no_register' => $data['form']->no_register])->row();
-        $data['id_pasien'] = $pasien ? $pasien->id_pasien : null;
+        // Ambil ID pasien dari form yang sudah menyertakan data pasien via join
+        $data['id_pasien'] = $data['form']->id_pasien ?? null;
 
         // ✅ Tambahan: ambil daftar petugas & penanggung teknis & verifikator
         $data['daftar_petugas'] = $this->db->get('petugas_sampel_klinik')->result();

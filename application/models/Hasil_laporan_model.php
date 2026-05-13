@@ -5,7 +5,7 @@ class Hasil_laporan_model extends CI_Model {
 
     public function get_pasien_dengan_soap() {
         $this->db->select('
-            p.id_pasien, p.no_rm, p.no_register, p.nama_pasien, p.nik, p.gender,
+            p.id_pasien, p.no_rm, f.no_register, p.nama_pasien, p.nik, p.gender,
             k.id as kunjungan_id, k.status_soap, k.tanggal_kunjungan,
             f.id as id_form, f.tgl_form,
             COUNT(d.hasil) as total_hasil
@@ -18,7 +18,7 @@ class Hasil_laporan_model extends CI_Model {
         
         $this->db->where('DATE(f.tgl_form)', date('Y-m-d'));
         
-        $this->db->group_by(['p.id_pasien', 'p.no_rm', 'p.no_register', 'p.nama_pasien', 'p.nik', 'p.gender', 'k.id', 'k.status_soap', 'k.tanggal_kunjungan', 'f.id', 'f.tgl_form']);
+        $this->db->group_by(['p.id_pasien', 'p.no_rm', 'f.no_register', 'p.nama_pasien', 'p.nik', 'p.gender', 'k.id', 'k.status_soap', 'k.tanggal_kunjungan', 'f.id', 'f.tgl_form']);
         $this->db->order_by('f.tgl_form', 'DESC');
         return $this->db->get()->result();
     }
@@ -32,7 +32,7 @@ class Hasil_laporan_model extends CI_Model {
         $this->db->select('
             p.id_pasien, p.nama_pasien, p.no_rm, p.gender, p.tgl_lahir, p.umur, p.nik,
             k.id as kunjungan_id, k.tanggal_kunjungan, k.keluhan_utama, k.riwayat_penyakit, k.asesmen_diagnosa, k.plan_rencana, k.nama_dokter_pemeriksa, k.unit, k.status_soap,
-            f.id as id_form, p.no_register, f.diagnosa_klinis,
+            f.id as id_form, f.no_register, f.diagnosa_klinis,
             d.id_detail, d.nama_jenis as nama_pemeriksaan, d.kategori, d.sub_kategori, d.hasil, COALESCE(j.satuan, d.satuan) as satuan, COALESCE(j.nilai_rujukan, d.nilai_rujukan) as nilai_rujukan, COALESCE(j.metode, d.metode) as metode,
             a.petugas_pengambilan, a.tgl_jam_pengambilan, a.petugas_hasil, a.tgl_jam_pemeriksaan, a.verifikator_hasil, a.penanggung_jawab_teknis, a.sip_penanggung, a.note
         ');
