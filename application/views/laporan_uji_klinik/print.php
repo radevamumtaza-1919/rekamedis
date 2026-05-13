@@ -203,10 +203,14 @@ $sub = '';
 
 foreach ($detail as $d):
 
-  // === HEADER KATEGORI ===
+  // HEADER KATEGORI
   if ($kategori != $d->kategori):
+
       $kategori = $d->kategori;
-      $sub = ''; // reset sub kategori setiap ganti kategori
+      $sub = '';
+
+      // reset nomor
+      $no = 1;
 ?>
 <tr class="row-kategori">
     <td colspan="6"><?= strtoupper($kategori) ?></td>

@@ -149,6 +149,7 @@
                                 <?php
                                 $kategori = $d->kategori;
                                 $sub = '';
+                                $no = 1;
                                 ?>
 
                                 <tr class="table-primary">

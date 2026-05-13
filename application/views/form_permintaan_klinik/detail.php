@@ -173,6 +173,7 @@
               <?php 
                 $kategori_sebelumnya = $d->kategori;
                 $sub_sebelumnya = "";
+                $no = 1;
               ?>
             <?php endif; ?>
 

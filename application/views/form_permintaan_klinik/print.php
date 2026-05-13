@@ -291,6 +291,7 @@ foreach ($detail as $d):
     if ($kategori != $d->kategori):
         $kategori = $d->kategori;
         $sub = '';
+        $no = 1;
 ?>
 <tr style="background:#e6e6e6; font-weight:bold;">
     <td colspan="2" style="border:1px solid #000; padding:5px;">
