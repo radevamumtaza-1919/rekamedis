@@ -333,6 +333,7 @@ $this->db->insert('pembayaran', $data_bayar);
         'obat_dikonsumsi'   => $post['obat_dikonsumsi'] ?? '',
         'asal_sampel'       => $post['asal_sampel'] ?? '',
         'puasa'             => $post['puasa'] ?? '',
+        'keterangan_puasa'  => $post['keterangan_puasa'] ?? '',
         'tgl_permintaan'    => $post['tgl_permintaan'] ?? null,
 
         // SAMPEL

@@ -224,17 +224,38 @@
       </div>
 
       <!-- Status Puasa -->
-      <div class="mb-3 col-md-6">
-        <label>Status Puasa</label><br>
-        <?php foreach(['Puasa', 'Tidak Puasa'] as $val): ?>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="puasa" value="<?= $val ?>"
-              <?= (isset($form) && $form->puasa == $val) ? 'checked' : '' ?>>
-            <label class="form-check-label"><?= $val ?></label>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
+            <div class="col-md-6 mb-3">
+                <label class="font-weight-bold">Status Puasa</label>
+
+                <div class="border rounded p-3">
+
+                    <div class="d-flex align-items-center flex-wrap">
+
+                        <?php foreach(['Puasa', 'Tidak Puasa'] as $val): ?>
+                            <div class="form-check mr-4">
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="puasa"
+                                       value="<?= $val ?>"
+                                       <?= (isset($form) && $form->puasa == $val) ? 'checked' : '' ?>>
+
+                                <label class="form-check-label">
+                                    <?= $val ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+
+                        <!-- Keterangan -->
+                        <input type="text"
+                               name="keterangan_puasa"
+                               class="form-control ml-3"
+                               style="max-width:250px;"
+                               placeholder="Contoh: 8 jam"
+                               value="<?= isset($form) ? $form->keterangan_puasa : '' ?>">
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <!-- Lokasi Pengambilan -->
     <div class="mb-3">
@@ -1269,6 +1290,24 @@
                       <?= in_array(75, $selected_jenis ?? []) ? 'checked' : '' ?>>
                   </td>
                   <td>Anti HCV Total</td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <input type="checkbox" 
+                      name="jenis_pemeriksaan[]" 
+                      value="69|IgG/IgM Dengue||Imunologi"
+                      <?= in_array(69, $selected_jenis ?? []) ? 'checked' : '' ?>>
+                  </td>
+                  <td>IgG IgM Dengue</td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <input type="checkbox" 
+                      name="jenis_pemeriksaan[]" 
+                      value="75|Tubex TF||Imunologi"
+                      <?= in_array(67, $selected_jenis ?? []) ? 'checked' : '' ?>>
+                  </td>
+                  <td>TUBEX TF</td>
                 </tr>
               </tbody>
             </table>

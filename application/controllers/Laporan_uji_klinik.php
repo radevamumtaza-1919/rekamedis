@@ -39,7 +39,12 @@ class Laporan_uji_klinik extends CI_Controller {
     $data['form'] = $this->Form_permintaan_klinik_model->get_by_id($id_form);
 
     // Ambil hasil pemeriksaan
-    $this->db->select('d.*, j.satuan, j.nilai_rujukan, j.metode');
+    $this->db->select('
+    d.*,
+    COALESCE(j.satuan, d.satuan) AS satuan,
+    COALESCE(j.nilai_rujukan, d.nilai_rujukan) AS nilai_rujukan,
+    COALESCE(j.metode, d.metode) AS metode
+');
     $this->db->from('form_permintaan_klinik_detail d');
     $this->db->join('jenis_pemeriksaan j', 'd.id_jenis = j.id_jenis', 'left');
     $this->db->where('d.id_form', $id_form);

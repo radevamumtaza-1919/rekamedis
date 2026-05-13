@@ -61,7 +61,15 @@
     <div class="card-body fs-6 bg-white">
       <div class="row mb-3">
         <div class="col-md-6"><span class="fw-semibold text-secondary">Asal Sampel</span><div class="border rounded px-3 py-2 bg-light"><?= $form->asal_sampel ?></div></div>
-        <div class="col-md-6"><span class="fw-semibold text-secondary">Status Puasa</span><div class="border rounded px-3 py-2 bg-light"><?= $form->puasa ?></div></div>
+        <div class="col-md-6">
+      <span class="fw-semibold text-secondary">Status Puasa</span>
+      <div class="border rounded px-3 py-2 bg-light">
+          <?= $form->puasa ?>
+          <?php if (!empty($form->keterangan_puasa)): ?>
+              <span> - <?= $form->keterangan_puasa ?></span>
+          <?php endif; ?>
+      </div>
+      </div>
       </div>
       <div class="mb-3"><span class="fw-semibold text-secondary">Lokasi Pengambilan</span><div class="border rounded px-3 py-2 bg-light"><?= $form->lokasi_pengambilan ?><?= $form->lokasi_lainnya ? ', ' . $form->lokasi_lainnya : '' ?></div></div>
       <div class="mb-3"><span class="fw-semibold text-secondary">Jenis Spesimen</span><div class="border rounded px-3 py-2 bg-light"><?= $form->jenis_spesimen ?><?= $form->spesimen_lainnya ? ', ' . $form->spesimen_lainnya : '' ?></div></div>
@@ -97,16 +105,117 @@
           </tr>
         </thead>
         <tbody>
-          <?php $no=1; foreach ($detail as $d): ?>
-          <tr>
-            <td class="text-center"><?= $no++ ?></td>
-            <td><?= $d->nama_jenis ?></td>
-            <td><input type="text" name="hasil[<?= $d->id_detail ?>]" class="form-control form-control-sm" value="<?= $d->hasil ?? '' ?>"></td>
-            <td><input type="text" name="satuan[<?= $d->id_detail ?>]" class="form-control form-control-sm bg-light" value="<?= $d->satuan ?>" readonly></td>
-            <td><input type="text" name="nilai_rujukan[<?= $d->id_detail ?>]" class="form-control form-control-sm bg-light" value="<?= $d->nilai_rujukan ?>" readonly></td>
-            <td><input type="text" name="metode[<?= $d->id_detail ?>]" class="form-control form-control-sm bg-light" value="<?= $d->metode ?>" readonly></td>
-          </tr>
+          <?php 
+          $no = 1;
+          $kategori_sebelumnya = "";
+          $sub_sebelumnya = "";
+          ?>
+          <?php foreach ($detail as $d): ?>
+              <!-- HEADER KATEGORI -->
+              <?php if ($kategori_sebelumnya != $d->kategori): ?>
+                  <tr class="table-primary">
+                      <td colspan="6" class="fw-bold text-uppercase">
+                          <?= $d->kategori ?>
+                      </td>
+                  </tr>
+
+                  <?php 
+                  $kategori_sebelumnya = $d->kategori;
+                  $sub_sebelumnya = "";
+                  ?>
+              <?php endif; ?>
+
+              <!-- HEADER SUBKATEGORI -->
+              <?php if ($sub_sebelumnya != $d->sub_kategori): ?>
+                  <tr class="table-info">
+                      <td colspan="6" class="fw-bold ps-4 text-uppercase">
+                          <?= $d->sub_kategori ?>
+                      </td>
+                  </tr>
+
+                  <?php $sub_sebelumnya = $d->sub_kategori; ?>
+              <?php endif; ?>
+
+              <!-- DATA PEMERIKSAAN -->
+              <tr>
+                  <td class="text-center"><?= $no++ ?></td>
+                  <td>
+                      <?= $d->nama_jenis ?>
+                  </td>
+                  <td>
+                      <input type="text"
+                            name="hasil[<?= $d->id_detail ?>]"
+                            class="form-control form-control-sm hasil-input"
+                            value="<?= $d->hasil ?? '' ?>"
+                            data-rujukan="<?= $d->nilai_rujukan ?>">
+                  </td>
+                  <td>
+                      <input type="text"
+                            name="satuan[<?= $d->id_detail ?>]"
+                            class="form-control form-control-sm bg-light"
+                            value="<?= $d->satuan ?>"
+                            readonly>
+                  </td>
+                  <td>
+                      <input type="text"
+                            name="nilai_rujukan[<?= $d->id_detail ?>]"
+                            class="form-control form-control-sm bg-light"
+                            value="<?= $d->nilai_rujukan ?>"
+                            readonly>
+                  </td>
+                  <td>
+                      <input type="text"
+                            name="metode[<?= $d->id_detail ?>]"
+                            class="form-control form-control-sm bg-light"
+                            value="<?= $d->metode ?>"
+                            readonly>
+                  </td>
+              </tr>
           <?php endforeach; ?>
+          <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const hasilInputs = document.querySelectorAll('.hasil-input');
+
+    hasilInputs.forEach(function(input) {
+
+        input.addEventListener('input', function() {
+
+            let hasil = parseFloat(this.value);
+            let rujukan = this.dataset.rujukan;
+
+            // Reset style
+            this.style.fontWeight = 'normal';
+            this.style.color = '';
+            
+            // Hapus bintang lama
+            this.value = this.value.replace('*', '');
+
+            // Cek format contoh: 4 - 10
+            if (rujukan.includes('-')) {
+
+                let split = rujukan.split('-');
+
+                let min = parseFloat(split[0]);
+                let max = parseFloat(split[1]);
+
+                if (!isNaN(hasil) && (hasil < min || hasil > max)) {
+
+                    this.style.fontWeight = 'bold';
+                    this.style.color = 'red';
+
+                    if (!this.value.includes('*')) {
+                        this.value = this.value + ' *';
+                    }
+                }
+            }
+
+        });
+
+    });
+
+});
+</script>
         </tbody>
       </table>
 
@@ -185,9 +294,15 @@
           </select>
           </div>
           <div class="mb-3">
-            <label class="fw-semibold">Tanggal / Jam Pengambilan</label>
-            <input type="datetime-local" name="tgl_jam_pengambilan" class="form-control form-control-sm">
-          </div>
+    <label class="fw-semibold">
+        Tanggal / Jam Pengambilan
+    </label>
+
+    <input type="text"
+           class="form-control form-control-sm"
+           value="<?= date('d-m-Y', strtotime($form->tgl_pengambilan)) . ' / ' . date('H:i', strtotime($form->jam_pengambilan)) ?>"
+           readonly>
+</div>
           <div class="mb-3">
             <label class="fw-semibold">Tanggal / Jam Pemeriksaan</label>
             <input type="datetime-local" name="tgl_jam_pemeriksaan" class="form-control form-control-sm">

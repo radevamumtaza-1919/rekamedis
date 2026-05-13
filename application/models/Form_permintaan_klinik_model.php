@@ -16,6 +16,7 @@ class Form_permintaan_klinik_model extends CI_Model {
         'obat_dikonsumsi' => $data['obat_dikonsumsi'] ?? '',
         'asal_sampel' => implode(',', $data['asal_sampel'] ?? []),
         'puasa' => $data['puasa'] ?? '',
+        'keterangan_puasa' => $data['keterangan_puasa'] ?? '',
         'lokasi_pengambilan' => implode(',', $data['lokasi_pengambilan'] ?? []),
         'lokasi_lainnya' => $data['lokasi_lainnya'] ?? '',
         'jenis_spesimen' => implode(',', $data['jenis_spesimen'] ?? []),

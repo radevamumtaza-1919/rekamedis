@@ -214,7 +214,7 @@
   <table class="tbl-spesimen">
     <tr>
       <td class="">Asal Sampel</td><td>: <?= $form->asal_sampel ?></td>
-      <td class="">Status Puasa</td><td>: <?= $form->puasa ?></td>
+      <td class="">Status Puasa</td><td>: <?= $form->puasa ?> - <?= $form->keterangan_puasa ?></td>
     </tr>
     <tr>
       <td class="">Lokasi Pengambilan</td>

@@ -82,9 +82,20 @@
           <div class="border rounded px-3 py-2 bg-light"><?= $form->asal_sampel ?></div>
         </div>
         <div class="col-md-6">
-          <span class="fw-semibold text-secondary d-block mb-1">Status Puasa</span>
-          <div class="border rounded px-3 py-2 bg-light"><?= $form->puasa ?></div>
-        </div>
+    <span class="fw-semibold text-secondary d-block mb-1">
+        Status Puasa
+    </span>
+
+    <div class="border rounded px-3 py-2 bg-light">
+
+        <?= $form->puasa ?>
+
+        <?php if (!empty($form->keterangan_puasa)) : ?>
+            - <?= $form->keterangan_puasa ?>
+        <?php endif; ?>
+
+    </div>
+</div>
       </div>
 
       <!-- Lokasi -->

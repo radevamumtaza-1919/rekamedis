@@ -223,21 +223,282 @@ foreach ($detail as $d):
 </tr>
 <?php endif; ?>
 
+<?php
+
+// =====================================
+// CEK HASIL ABNORMAL PDF
+// =====================================
+
+$is_abnormal = false;
+
+$hasil = trim($d->hasil);
+$rujukan = trim($d->nilai_rujukan);
+$gender = strtolower(trim($form->gender));
+
+// ubah koma menjadi titik
+$hasil = str_replace(',', '.', $hasil);
+$rujukan = str_replace(',', '.', $rujukan);
+
+// hasil angka
+$hasil_angka = (float) preg_replace('/[^0-9\.]/', '', $hasil);
+
+// =====================================
+// CEK RUJUKAN KHUSUS GENDER
+// =====================================
+
+if (stripos($rujukan, 'Laki-laki') !== false || stripos($rujukan, 'Perempuan') !== false) {
+
+    if ($gender == 'laki-laki') {
+
+        preg_match('/Laki-laki\s*:\s*([^\n,]+)/i', $rujukan, $match);
+
+    } else {
+
+        preg_match('/Perempuan\s*:\s*([^\n,]+)/i', $rujukan, $match);
+    }
+
+    if (!empty($match[1])) {
+        $rujukan = trim($match[1]);
+    }
+}
+
+// =====================================
+// CEK NEGATIF / NON REAKTIF / NORMAL
+// =====================================
+
+$hasil_text = strtolower(trim($hasil));
+$rujukan_text = strtolower(trim($rujukan));
+
+if (
+    strpos($rujukan_text, 'negatif') !== false ||
+    strpos($rujukan_text, 'non reaktif') !== false ||
+    strpos($rujukan_text, 'normal') !== false
+) {
+
+    if ($hasil_text != $rujukan_text) {
+        $is_abnormal = true;
+    }
+}
+
+// =====================================
+// CEK < ANGKA
+// contoh <38
+// =====================================
+
+elseif (preg_match('/<\s*([0-9\.]+)/', $rujukan, $match)) {
+
+    $max = (float)$match[1];
+
+    if ($hasil_angka >= $max) {
+        $is_abnormal = true;
+    }
+}
+
+// =====================================
+// CEK RANGE 10-20
+// =====================================
+
+elseif (preg_match('/([0-9\.]+)\s*[–-]\s*([0-9\.]+)/', $rujukan, $match)) {
+
+    $min = (float)$match[1];
+    $max = (float)$match[2];
+
+    if ($hasil_angka < $min || $hasil_angka > $max) {
+        $is_abnormal = true;
+    }
+}
+
+?>
+
 <!-- DATA ITEM PEMERIKSAAN -->
+<?php
+
+$is_abnormal = false;
+
+$hasil = trim(strtolower($d->hasil));
+$rujukan = trim(strtolower($d->nilai_rujukan));
+$gender = trim(strtolower($form->gender));
+
+/*
+|--------------------------------------------------------------------------
+| NORMALISASI
+|--------------------------------------------------------------------------
+*/
+
+$hasil = str_replace(',', '.', $hasil);
+$rujukan = str_replace(',', '.', $rujukan);
+$rujukan = str_replace(['–', '—'], '-', $rujukan);
+
+/*
+|--------------------------------------------------------------------------
+| AMBIL RUJUKAN BERDASARKAN GENDER
+|--------------------------------------------------------------------------
+*/
+
+$rujukan_gender = $rujukan;
+
+// perempuan
+if (
+    ($gender == 'perempuan' || $gender == 'wanita' || $gender == 'p')
+    &&
+    preg_match('/perempuan\s*:\s*([^,]+)/', $rujukan, $match)
+) {
+    $rujukan_gender = trim($match[1]);
+}
+
+// laki-laki
+elseif (
+    ($gender == 'laki-laki' || $gender == 'l')
+    &&
+    preg_match('/laki-laki\s*:\s*([^,]+)/', $rujukan, $match)
+) {
+    $rujukan_gender = trim($match[1]);
+}
+
+/*
+|--------------------------------------------------------------------------
+| HASIL ANGKA
+|--------------------------------------------------------------------------
+*/
+
+$hasil_angka = (float) preg_replace('/[^0-9\.]/', '', $hasil);
+
+/*
+|--------------------------------------------------------------------------
+| FORMAT RANGE
+|--------------------------------------------------------------------------
+| contoh:
+| 3.5-5.5
+|--------------------------------------------------------------------------
+*/
+
+if (preg_match('/([0-9\.]+)\s*-\s*([0-9\.]+)/', $rujukan_gender, $match)) {
+
+    $min = (float)$match[1];
+    $max = (float)$match[2];
+
+    if ($hasil_angka < $min || $hasil_angka > $max) {
+        $is_abnormal = true;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| FORMAT <
+|--------------------------------------------------------------------------
+*/
+
+elseif (preg_match('/<\s*([0-9\.]+)/', $rujukan_gender, $match)) {
+
+    $max = (float)$match[1];
+
+    if ($hasil_angka >= $max) {
+        $is_abnormal = true;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| FORMAT >
+|--------------------------------------------------------------------------
+*/
+
+elseif (preg_match('/>\s*([0-9\.]+)/', $rujukan_gender, $match)) {
+
+    $min = (float)$match[1];
+
+    if ($hasil_angka <= $min) {
+        $is_abnormal = true;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| NEGATIF / NORMAL / NON REAKTIF
+|--------------------------------------------------------------------------
+*/
+
+elseif (
+    strpos($rujukan_gender, 'negatif') !== false ||
+    strpos($rujukan_gender, 'normal') !== false ||
+    strpos($rujukan_gender, 'non reaktif') !== false
+) {
+
+    if (
+        $hasil != 'negatif' &&
+        $hasil != 'normal' &&
+        $hasil != 'non reaktif'
+    ) {
+        $is_abnormal = true;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| TEXT BIASA
+|--------------------------------------------------------------------------
+*/
+
+else {
+
+    if (!empty($rujukan_gender) && $hasil != $rujukan_gender) {
+        $is_abnormal = true;
+    }
+}
+
+?>
+
 <tr>
-  <td style="text-align:center;"><?= $no++ ?></td>
-  <td><?= $d->nama_jenis ?></td>
-  <td style="text-align:center;"><?= $d->hasil ?? '-' ?></td>
-  <td style="text-align:center;"><?= $d->satuan ?? '-' ?></td>
-  <td style="text-align:center;"><?= $d->nilai_rujukan ?? '-' ?></td>
-  <td style="text-align:center;"><?= $d->metode ?? '-' ?></td>
+
+  <td style="text-align:center;">
+    <?= $no++ ?>
+  </td>
+
+  <td>
+    <?= $d->nama_jenis ?>
+  </td>
+
+  <!-- HASIL -->
+  <td style="text-align:center;">
+
+    <?php if ($is_abnormal): ?>
+
+      <span style="color:red; font-weight:bold; font-size:11pt;">
+        <?= $d->hasil ?> *
+      </span>
+
+    <?php else: ?>
+
+      <?= $d->hasil ?>
+
+    <?php endif; ?>
+
+  </td>
+
+  <!-- SATUAN -->
+  <td style="text-align:center;">
+    <?= $d->satuan ?? '-' ?>
+  </td>
+
+  <!-- NILAI RUJUKAN -->
+  <td style="text-align:center;">
+    <?= $d->nilai_rujukan ?? '-' ?>
+  </td>
+
+  <!-- METODE -->
+  <td style="text-align:center;">
+    <?= $d->metode ?? '-' ?>
+  </td>
+
 </tr>
 
 <?php endforeach; ?>
 </tbody>
 </table>
-
-<strong>*Note : <?= $pengambilan->note ?? 'Pemeriksaan dilakukan >2 jam setelah sampel diambil' ?></strong>
+<div style="margin-top:5px; color:red; font-weight:bold;">
+    * Menunjukkan hasil di luar nilai rujukan
+</div>
+<strong>* Note : <?= $pengambilan->note ?? 'Pemeriksaan dilakukan >2 jam setelah sampel diambil' ?></strong>
 <table class="no-border footer-table" style="margin-top:40px;">
 <tr>
   <td class="footer-left">
