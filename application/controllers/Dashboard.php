@@ -36,9 +36,8 @@ class Dashboard extends CI_Controller
 
         $data['total_pasien'] = $query->row()->total;
 
-        // Ambil data pendaftaran terbaru hari ini
         $query_terbaru = $this->db->query("
-            SELECT COALESCE(updated_at, created_at) as tgl_daftar, no_register as no_registrasi, nama_pasien, gender as jenis_kelamin, no_rm, nik, umur 
+            SELECT COALESCE(updated_at, created_at) as tgl_daftar, no_rm as no_registrasi, nama_pasien, gender as jenis_kelamin, no_rm, nik, umur 
             FROM pasien
             WHERE DATE(created_at) = '$today' OR DATE(updated_at) = '$today'
             ORDER BY tgl_daftar DESC
